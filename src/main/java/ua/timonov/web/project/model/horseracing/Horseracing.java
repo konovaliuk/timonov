@@ -3,14 +3,15 @@ package ua.timonov.web.project.model.horseracing;
 /**
  *
  */
+@Deprecated
 public class HorseRacing {
 
-    private static HorseRacing instance;
+    private static final HorseRacing instance = new HorseRacing();
+
+    private HorseRacing() {
+    }
 
     public static synchronized HorseRacing getInstance() {
-        if (instance == null) {
-            instance = new HorseRacing();
-        }
         return instance;
     }
 }

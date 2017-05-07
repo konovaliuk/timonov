@@ -24,9 +24,33 @@
         </nav>
 
         <article>
-            <h3>123</h3>
-            <h4>456</h4>
-            <h4>789</h4>
+            <div>
+                <h3>123</h3>
+                <h4>456</h4>
+                <h4>789</h4>
+
+                <h3>Horses</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Year of birth</th>
+                        <th>Total races</th>
+                        <th>Won races</th>
+                    </tr>
+                    <c:forEach var="horse" items="${horses}">
+                        <c:url var="employeeUrl" value="/horseracing/races"/>
+                        <tr>
+                            <td>${horse.id}</td>
+                            <td><a href="${employeeUrl}">${horse.name}</a></td>
+                            <td>${horse.yearOfBirth}</td>
+                            <td>${horse.totalRaces}</td>
+                            <td>${horse.wonRaces}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+
+            </div>
         </article>
 
         <footer>Copyright &copy; Alexey Timonov</footer>

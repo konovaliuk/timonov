@@ -17,6 +17,7 @@
         <nav>
             <ul>
                 <li><a href="/races?action=races">Races</a></li>
+                <li><a href="/races?action=race">Race</a></li>
                 <li><a href="/library/books">456</a></li>
                 <li><a href="/library/classes">789</a></li>
                 <li><a href="/error">ERROR</a></li>
