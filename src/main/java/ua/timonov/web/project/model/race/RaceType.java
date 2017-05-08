@@ -3,8 +3,6 @@ package ua.timonov.web.project.model.race;
 /**
  *
  */
-@Deprecated
 public enum RaceType {
-    DERBY, OAKS, FLAT, STEEPLECHASE,
-    HARNESS, ENDURANCE
+    OPEN_TO_BET, CLOSED_TO_BET, IN_PROCESS, RESULTS_FIXED
 }

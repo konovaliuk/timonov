@@ -1,37 +1,32 @@
 package ua.timonov.web.project.model.bet;
 
-import ua.timonov.web.project.model.race.Race;
+import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.user.User;
 
 /**
  *
  */
 public class Bet {
+    /*private BetType betType;
     private Race race;
     private User user;
+    private List<Horse> betHorses;
+    private Odds odds;
+    private double betSum;*/
+
+    private User user;
     private BetType betType;
-    private double rate;
+    private HorseInRace betHorseInRace;
     private double betSum;
-    private boolean betWon;
 
     public Bet() {
     }
 
-    public Bet(Race race, User user, BetType betType, double rate, double betSum, boolean betWon) {
-        this.race = race;
+    public Bet(User user, BetType betType, HorseInRace betHorseInRace, double betSum) {
         this.user = user;
         this.betType = betType;
-        this.rate = rate;
+        this.betHorseInRace = betHorseInRace;
         this.betSum = betSum;
-        this.betWon = betWon;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
     }
 
     public User getUser() {
@@ -50,12 +45,12 @@ public class Bet {
         this.betType = betType;
     }
 
-    public double getRate() {
-        return rate;
+    public HorseInRace getBetHorseInRace() {
+        return betHorseInRace;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void setBetHorseInRace(HorseInRace betHorseInRace) {
+        this.betHorseInRace = betHorseInRace;
     }
 
     public double getBetSum() {
@@ -64,13 +59,5 @@ public class Bet {
 
     public void setBetSum(double betSum) {
         this.betSum = betSum;
-    }
-
-    public boolean isBetWon() {
-        return betWon;
-    }
-
-    public void setBetWon(boolean betWon) {
-        this.betWon = betWon;
     }
 }

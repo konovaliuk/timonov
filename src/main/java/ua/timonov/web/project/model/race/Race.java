@@ -1,6 +1,6 @@
 package ua.timonov.web.project.model.race;
 
-import ua.timonov.web.project.model.horse.Horse;
+import ua.timonov.web.project.model.horse.HorseInRace;
 
 import java.util.Date;
 import java.util.List;
@@ -9,27 +9,19 @@ import java.util.List;
  *
  */
 public class Race {
-    private Date date;
     private String location;
-    private boolean isFinished;
-    private List<Horse> horses;
+    private String country;
+    private Date date;
+    private List<HorseInRace> horsesInRace;
 
     public Race() {
     }
 
-    public Race(Date date, String location, boolean isFinished, List<Horse> horses) {
-        this.date = date;
+    public Race(String location, String country, Date date, List<HorseInRace> horsesInRace) {
         this.location = location;
-        this.isFinished = isFinished;
-        this.horses = horses;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
+        this.country = country;
         this.date = date;
+        this.horsesInRace = horsesInRace;
     }
 
     public String getLocation() {
@@ -40,20 +32,29 @@ public class Race {
         this.location = location;
     }
 
-    public boolean isFinished() {
-        return isFinished;
+    public String getCountry() {
+        return country;
     }
 
-    public void setFinished(boolean finished) {
-        isFinished = finished;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public List<Horse> getHorses() {
-        return horses;
+    public Date getDate() {
+        return date;
     }
 
-    public void setHorses(List<Horse> horses) {
-        // TODO make copies
-        this.horses = horses;
+    public void setDate(Date date) {
+        this.date = date;
     }
+
+    public List<HorseInRace> getHorsesInRace() {
+        return horsesInRace;
+    }
+
+    public void setHorsesInRace(List<HorseInRace> horsesInRace) {
+        this.horsesInRace = horsesInRace;
+    }
+
+    // TODO make copies
 }

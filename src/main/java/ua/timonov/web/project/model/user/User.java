@@ -5,10 +5,10 @@ package ua.timonov.web.project.model.user;
  */
 public class User {
     private long id;
+    private UserType userType;
     private String login;
     private String password;
     private String name;
-    private UserType userType;
     private UserAccount account;
 
     public User() {
