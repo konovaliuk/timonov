@@ -30,7 +30,7 @@ CREATE TABLE `probe`.`location` (
     ON UPDATE NO ACTION);
 
 
-CREATE TABLE `probe`.`race_type` (
+CREATE TABLE `probe`.`race_status` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`));
@@ -38,15 +38,15 @@ CREATE TABLE `probe`.`race_type` (
 
 CREATE TABLE `probe`.`race` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `type_id` INT NOT NULL,
+  `status_id` INT NOT NULL,
   `location_id` INT NOT NULL,
   `date` DATE NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `typeFK_idx` (`type_id` ASC),
+  INDEX `statusFK_idx` (`status_id` ASC),
   INDEX `locationFK_idx` (`location_id` ASC),
-  CONSTRAINT `typeFK`
-  FOREIGN KEY (`type_id`)
-  REFERENCES `probe`.`race_type` (`id`)
+  CONSTRAINT `statusFK`
+  FOREIGN KEY (`status_id`)
+  REFERENCES `probe`.`race_status` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `locationFK`
@@ -180,7 +180,7 @@ INSERT INTO `probe`.`horse` (`id`, `name`, `year`, `totalraces`, `wonraces`) VAL
 INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('1', 'open to bet');
 INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('2', 'closed to bet');
 INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('3', 'in process');
-INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('4', 'results are fixed');
+INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('4', 'results fixed');
 
 
 INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('1', '4', '2', '2017-05-01');
@@ -210,10 +210,11 @@ INSERT INTO `probe`.`account` (`id`, `balance`) VALUES ('7', '5000');
 
 
 INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('1', 'winner');
-INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('2', 'first or second place');
+INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('2', 'second place');
 INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('3', 'prize place');
 INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('4', 'double express');
 INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('5', 'triple express');
+INSERT INTO `probe`.`bet_type` (`id`, `name`) VALUES ('6', 'quinella');
 
 
 INSERT INTO `probe`.`user` (`id`, `type_id`, `login`, `password`, `name`) VALUES ('1', '1', 'admin', 'admin', 'Andrew Ashton');
@@ -357,3 +358,10 @@ INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds
 INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('88', '30', '1', '10', '1');
 INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('89', '30', '2', '6', '1');
 INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('90', '30', '3', '3', '1');
+
+
+SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE
+FROM RACE
+  INNER JOIN RACE_STATUS ON RACE.status_id = RACE_STATUS.ID
+  INNER JOIN LOCATION ON LOCATION_ID = LOCATION.ID
+  INNER JOIN COUNTRY ON LOCATION.COUNTRY_ID = COUNTRY.ID
