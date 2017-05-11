@@ -3,6 +3,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/WEB-INF/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horse Racing. Race</title>
+</head>
+
 <body>
 <div>
     <div class="container">
@@ -25,11 +32,24 @@
 
         <article>
             <div>
-                <h3>123</h3>
-                <h4>456</h4>
-                <h4>789</h4>
+                <h2>Race info</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <th>Location</th>
+                        <th>Country</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>${race.id}</td>
+                        <td>${race.location}</td>
+                        <td>${race.country}</td>
+                        <td>${race.date}</td>
+                        <td>${race.raceStatus}</td>
+                    </tr>
 
-                <h3>Horses</h3>
+                <h3>Horses in race</h3>
                 <table class="table table-striped">
                     <tr>
                         <th>ID</th>
@@ -37,15 +57,21 @@
                         <th>Year of birth</th>
                         <th>Total races</th>
                         <th>Won races</th>
+                        <th>Bet type</th>
+                        <th>Rate</th>
+                        <th>Place at finish</th>
                     </tr>
-                    <c:forEach var="horse" items="${horses}">
-                        <c:url var="employeeUrl" value="/horseracing/races"/>
+                    <c:forEach var="horseInRace" items="${horsesInRace}">
+                        <c:url var="raceUrl" value="/horseracing/races"/>
                         <tr>
-                            <td>${horse.id}</td>
-                            <td><a href="${employeeUrl}">${horse.name}</a></td>
-                            <td>${horse.yearOfBirth}</td>
-                            <td>${horse.totalRaces}</td>
-                            <td>${horse.wonRaces}</td>
+                            <td>${horseInRace.horse.id}</td>
+                            <td><a href="${raceUrl}">${horseInRace.horse.name}</a></td>
+                            <td>${horseInRace.horse.yearOfBirth}</td>
+                            <td>${horseInRace.horse.totalRaces}</td>
+                            <td>${horseInRace.horse.wonRaces}</td>
+                            <td>${horseInRace.betType}</td>
+                            <td>${horseInRace.odds.total} / ${horseInRace.odds.chances}</td>
+                            <td>${horseInRace.finishPlace}</td>
                         </tr>
                     </c:forEach>
                 </table>

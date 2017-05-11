@@ -1,8 +1,7 @@
 package ua.timonov.web.project.dao;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.Properties;
 public class DataSourceFactory {
 
     private static final DataSourceFactory instance = new DataSourceFactory();
-    private static final Logger LOGGER = LogManager.getLogger(DataSourceFactory.class);
+    private static final Logger LOGGER = Logger.getLogger(DataSourceFactory.class);
     public static final String JDBC_PROPERTIES = "jdbc.properties";
     public static final String JDBC_DRIVER = "jdbc.driver";
     public static final String JDBC_USERNAME = "jdbc.username";
@@ -25,7 +24,7 @@ public class DataSourceFactory {
         try {
             dataSource = initializeDataSource();
         } catch (Exception e) {
-            LOGGER.error("Datasource init error", e.getMessage());
+            LOGGER.error("Datasource init error: " + e.getMessage());
             throw new RuntimeException("Error in database connection initialization");
         }
     }

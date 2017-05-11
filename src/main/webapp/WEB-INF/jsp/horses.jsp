@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/WEB-INF/css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Horse Racing. Main page</title>
+    <title>Horse Racing. Horses</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <div class="container">
         <header>
             <div class="container">
-                <h2>Main page</h2>
+                <h2>Horses</h2>
             </div>
         </header>
 
@@ -24,28 +24,40 @@
                 <li><a href="/horseracing">Home page</a></li>
                 <li><a href="/races?action=races">Races</a></li>
                 <li><a href="/races?action=race">Race</a></li>
-                <li><a href="/races?action=horses">Horses</a></li>
                 <li><a href="/error">ERROR</a></li>
             </ul>
         </nav>
 
         <article>
-            <h3>Horse Racing at William Hill</h3>
-            <p>For the last word in horse racing, look no further
-                than William Hill - the Home of Betting. Covering
-                all meetings in the UK, Ireland and a wide
-                selection of global horse races, we aim to provide
-                you with the best online betting options & odds.
-                Find markets for Cheltenham, Ascot, the Grand
-                National and more. Watch live races on your PC,
-                smartphone or tablet and get up to the minute odds
-                and updates. Join us and discover why William Hill
-                should be your only bookmaker for horse racing
-                betting.</p>
+            <div>
+                <h2>Horses</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Year of birth</th>
+                        <th>Total races</th>
+                        <th>Won races</th>
+                    </tr>
+                    <c:forEach var="horseInRace" items="${horses}">
+                        <c:url var="raceUrl" value="/horseracing/races"/>
+                        <tr>
+                            <td>${horseInRace.id}</td>
+                            <td><a href="${raceUrl}">${horseInRace.name}</a></td>
+                            <td>${horseInRace.yearOfBirth}</td>
+                            <td>${horseInRace.totalRaces}</td>
+                            <td>${horseInRace.wonRaces}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
         </article>
 
         <footer>Copyright &copy; Alexey Timonov</footer>
     </div>
+
+
 </div>
 </body>
 </html>
+

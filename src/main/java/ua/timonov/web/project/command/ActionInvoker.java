@@ -15,6 +15,7 @@ public final class ActionInvoker {
         actionMap.put("default", new DefaultAction());
         actionMap.put("login", new LoginAction());
         actionMap.put("races", new GetRacesAction());
+        actionMap.put("horses", new GetHorsesAction());
         actionMap.put("race", new GetRaceHorsesAction());
         actionMap.put("error", new ErrorAction());
     }

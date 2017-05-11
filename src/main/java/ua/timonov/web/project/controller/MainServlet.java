@@ -1,7 +1,6 @@
 package ua.timonov.web.project.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.ActionInvoker;
 
 import javax.servlet.RequestDispatcher;
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 public class MainServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LogManager.getLogger(MainServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(MainServlet.class);
     public static final String ERROR_PAGE = "/WEB-INF/jsp/error.jsp";
 
     private static final ActionInvoker actionInvoker = ActionInvoker.getInstance();
