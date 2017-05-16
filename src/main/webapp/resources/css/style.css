@@ -1,0 +1,61 @@
+div.container {
+    width: 100%;
+}
+
+header, footer {
+    padding: 1em;
+    clear: left;
+    text-align: center;
+}
+
+header {
+    color: lightyellow;
+    background-color: darkblue;
+}
+
+footer {
+    color: darkslategray;
+    background-color: lavender;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+    font-size: 16px;
+
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul a {
+    text-decoration: none;
+}
+
+article {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
+.signblock {
+    float: right;
+    display: block;
+    width: 120px;
+    text-align: left;
+    color: lightyellow;
+    padding: 5px;
+}
+
+.text-small{
+    font-size: small;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
+}

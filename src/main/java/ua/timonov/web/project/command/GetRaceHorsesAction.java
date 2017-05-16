@@ -15,7 +15,7 @@ public class GetRaceHorsesAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        long raceId = Integer.valueOf(request.getParameter("id"));
+        long raceId = Long.valueOf(request.getParameter("id"));
         request.setAttribute("race", raceService.getById(raceId));
         request.setAttribute("horsesInRace", horseInRaceService.getByRace(raceId));
         return RACE_PAGE;

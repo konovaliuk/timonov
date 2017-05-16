@@ -1,31 +1,38 @@
 package ua.timonov.web.project.model.horse;
 
-import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HorseInRace {
     private long id;
     private Horse horse;
     private int finishPlace;
-//    private Map<BetType, Odds> horseOdds;
-    private BetType betType;
-    private Odds odds;
+    private List<Odds> oddsValues = new ArrayList<>();
 
     public HorseInRace() {
     }
 
-    /*public HorseInRace(Horse horse, int finishPlace, Map<BetType, Odds> horseOdds) {
-        this.horse = horse;
-        this.finishPlace = finishPlace;
-        this.horseOdds = horseOdds;
-    }*/
-
-    public HorseInRace(long id, Horse horse, int finishPlace, BetType betType, Odds odds) {
+    public HorseInRace(Long id, Horse horse, int finishPlace) {
         this.id = id;
         this.horse = horse;
         this.finishPlace = finishPlace;
-        this.betType = betType;
-        this.odds = odds;
+    }
+
+    public HorseInRace(long id, Horse horse, int finishPlace, List<Odds> oddsValues) {
+        this.id = id;
+        this.horse = horse;
+        this.finishPlace = finishPlace;
+        this.oddsValues = oddsValues;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Horse getHorse() {
@@ -44,19 +51,11 @@ public class HorseInRace {
         this.finishPlace = finishPlace;
     }
 
-    public BetType getBetType() {
-        return betType;
+    public List<Odds> getOddsValues() {
+        return oddsValues;
     }
 
-    public void setBetType(BetType betType) {
-        this.betType = betType;
-    }
-
-    public Odds getOdds() {
-        return odds;
-    }
-
-    public void setOdds(Odds odds) {
-        this.odds = odds;
+    public void setOddsValues(List<Odds> oddsValues) {
+        this.oddsValues = oddsValues;
     }
 }

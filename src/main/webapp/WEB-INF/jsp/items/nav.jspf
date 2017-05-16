@@ -1,0 +1,6 @@
+<ul>
+    <li><a href="/horseracing">Home page</a></li>
+    <li><a href="/races?action=races">Races</a></li>
+    <li><a href="/races?action=horses">Horses</a></li>
+    <li><a href="/races?action=bets">Bets</a></li>
+</ul>

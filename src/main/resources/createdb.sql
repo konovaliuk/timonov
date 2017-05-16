@@ -110,12 +110,12 @@ CREATE TABLE `probe`.`user` (
     ON UPDATE NO ACTION);
 
 
-CREATE TABLE `probe`.`horse_odds` (
+CREATE TABLE `probe`.`odds` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `horse_in_race_id` INT NOT NULL,
   `bet_type_id` INT NOT NULL,
-  `odds_total` INT NOT NULL,
-  `odds_chances` INT NOT NULL,
+  `total` INT NOT NULL,
+  `chances` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `horseInRaceFK_idx` (`horse_in_race_id` ASC),
   INDEX `betTypeFK_idx` (`bet_type_id` ASC),
@@ -135,6 +135,33 @@ CREATE TABLE `probe`.`bet_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`));
+
+
+CREATE TABLE `probe`.`bet` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `betType_id` INT NOT NULL,
+  `horse_in_race_id` INT NOT NULL,
+  `sum` DOUBLE NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `userFK_idx` (`user_id` ASC),
+  INDEX `betTypeFK_idx` (`betType_id` ASC),
+  INDEX `horseInRaceFK_idx` (`horse_in_race_id` ASC),
+  CONSTRAINT `betUserFK`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `probe`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `betBetTypeFK`
+  FOREIGN KEY (`betType_id`)
+  REFERENCES `probe`.`bet_type` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `betHorseInRaceFK`
+  FOREIGN KEY (`horse_in_race_id`)
+  REFERENCES `probe`.`horse_in_race` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 INSERT INTO `probe`.`country` (`id`, `name`) VALUES ('1', 'England');
@@ -177,22 +204,22 @@ INSERT INTO `probe`.`horse` (`id`, `name`, `year`, `totalraces`, `wonraces`) VAL
 INSERT INTO `probe`.`horse` (`id`, `name`, `year`, `totalraces`, `wonraces`) VALUES ('20', 'Milky Way', '2015', '10', '2');
 
 
-INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('1', 'open to bet');
-INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('2', 'closed to bet');
-INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('3', 'in process');
-INSERT INTO `probe`.`race_type` (`id`, `name`) VALUES ('4', 'results fixed');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('1', 'open to bet');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('2', 'closed to bet');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('3', 'in process');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('4', 'results fixed');
 
 
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('1', '4', '2', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('2', '4', '3', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('3', '3', '4', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('4', '2', '5', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('5', '1', '6', '2017-05-03');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('6', '1', '7', '2017-05-03');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('7', '1', '8', '2017-05-04');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('8', '1', '9', '2017-05-05');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('9', '1', '1', '2017-05-05');
-INSERT INTO `probe`.`race` (`id`, `type_id`, `location_id`, `date`) VALUES ('10', '1', '3', '2017-05-06');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '4', '2', '2017-05-01');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('2', '4', '3', '2017-05-01');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('3', '3', '4', '2017-05-02');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('4', '2', '5', '2017-05-02');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('5', '1', '6', '2017-05-03');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('6', '1', '7', '2017-05-03');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('7', '1', '8', '2017-05-04');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('8', '1', '9', '2017-05-05');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('9', '1', '1', '2017-05-05');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('10', '1', '3', '2017-05-06');
 
 
 INSERT INTO `probe`.`user_type` (`id`, `name`) VALUES ('1', 'admin');
@@ -263,101 +290,109 @@ INSERT INTO `probe`.`horse_in_race` (`id`, `race_id`, `horse_id`) VALUES ('29', 
 INSERT INTO `probe`.`horse_in_race` (`id`, `race_id`, `horse_id`) VALUES ('30', '7', '10');
 
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('1', '1', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('2', '1', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('3', '1', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('4', '2', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('5', '2', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('6', '2', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('7', '3', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('8', '3', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('9', '3', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('10', '4', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('11', '4', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('12', '4', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('13', '5', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('14', '5', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('15', '5', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('1', '1', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('2', '1', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('3', '1', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('4', '2', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('5', '2', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('6', '2', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('7', '3', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('8', '3', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('9', '3', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('10', '4', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('11', '4', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('12', '4', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('13', '5', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('14', '5', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('15', '5', '3', '3', '1');
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('16', '6', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('17', '6', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('18', '6', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('19', '7', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('20', '7', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('21', '7', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('22', '8', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('23', '8', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('24', '8', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('25', '9', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('26', '9', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('27', '9', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('28', '10', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('29', '10', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('30', '10', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('16', '6', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('17', '6', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('18', '6', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('19', '7', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('20', '7', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('21', '7', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('22', '8', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('23', '8', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('24', '8', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('25', '9', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('26', '9', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('27', '9', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('28', '10', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('29', '10', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('30', '10', '3', '3', '1');
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('31', '11', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('32', '11', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('33', '11', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('34', '12', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('35', '12', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('36', '12', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('37', '13', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('38', '13', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('39', '13', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('40', '14', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('41', '14', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('42', '14', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('43', '15', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('44', '15', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('45', '15', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('31', '11', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('32', '11', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('33', '11', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('34', '12', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('35', '12', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('36', '12', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('37', '13', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('38', '13', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('39', '13', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('40', '14', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('41', '14', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('42', '14', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('43', '15', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('44', '15', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('45', '15', '3', '3', '1');
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('46', '16', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('47', '16', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('48', '16', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('49', '17', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('50', '17', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('51', '17', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('52', '18', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('53', '18', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('54', '18', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('55', '19', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('56', '19', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('57', '19', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('58', '20', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('59', '20', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('60', '20', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('46', '16', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('47', '16', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('48', '16', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('49', '17', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('50', '17', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('51', '17', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('52', '18', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('53', '18', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('54', '18', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('55', '19', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('56', '19', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('57', '19', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('58', '20', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('59', '20', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('60', '20', '3', '3', '1');
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('61', '21', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('62', '21', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('63', '21', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('64', '22', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('65', '22', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('66', '22', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('67', '23', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('68', '23', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('69', '23', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('70', '24', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('71', '24', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('72', '24', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('73', '25', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('74', '25', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('75', '25', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('61', '21', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('62', '21', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('63', '21', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('64', '22', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('65', '22', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('66', '22', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('67', '23', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('68', '23', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('69', '23', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('70', '24', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('71', '24', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('72', '24', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('73', '25', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('74', '25', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('75', '25', '3', '3', '1');
 
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('76', '26', '1', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('77', '26', '2', '3', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('78', '26', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('79', '27', '1', '8', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('80', '27', '2', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('81', '27', '3', '5', '2');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('82', '28', '1', '4', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('83', '28', '2', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('84', '28', '3', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('85', '29', '1', '2', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('86', '29', '2', '5', '3');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('87', '29', '3', '7', '5');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('88', '30', '1', '10', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('89', '30', '2', '6', '1');
-INSERT INTO `probe`.`horse_odds` (`id`, `horse_in_race_id`, `bet_type_id`, `odds_total`, `odds_chances`) VALUES ('90', '30', '3', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('76', '26', '1', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('77', '26', '2', '3', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('78', '26', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('79', '27', '1', '8', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('80', '27', '2', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('81', '27', '3', '5', '2');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('82', '28', '1', '4', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('83', '28', '2', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('84', '28', '3', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('85', '29', '1', '2', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('86', '29', '2', '5', '3');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('87', '29', '3', '7', '5');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('88', '30', '1', '10', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('89', '30', '2', '6', '1');
+INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('90', '30', '3', '3', '1');
+
+
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('1', '6', '1', '6', '10');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('2', '7', '2', '7', '15');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('3', '8', '3', '8', '20');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('4', '9', '1', '9', '25');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('6', '10', '2', '10', '30');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('7', '6', '3', '8', '35');
 
 
 SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE

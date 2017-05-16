@@ -17,4 +17,8 @@ public class RaceService {
     public Race getById(long raceId) {
         return raceDao.getById(raceId);
     }
+
+    public Race getByHorseInRaceId(long horseInRaceId) {
+        return raceDao.getByHorseInRaceId(horseInRaceId);
+    }
 }

@@ -4,10 +4,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/WEB-INF/css/index.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Horse Racing. Horses</title>
+    <%@include file="items/header.jspf"%>
 </head>
 
 <body>
@@ -20,12 +17,7 @@
         </header>
 
         <nav>
-            <ul>
-                <li><a href="/horseracing">Home page</a></li>
-                <li><a href="/races?action=races">Races</a></li>
-                <li><a href="/races?action=race">Race</a></li>
-                <li><a href="/error">ERROR</a></li>
-            </ul>
+            <%@include file="items/nav.jspf"%>
         </nav>
 
         <article>
@@ -53,7 +45,7 @@
             </div>
         </article>
 
-        <footer>Copyright &copy; Alexey Timonov</footer>
+        <footer><%@include file="items/footer.jspf"%></footer>
     </div>
 
 

@@ -1,6 +1,8 @@
 package ua.timonov.web.project.model.bet;
 
 public class Odds {
+    private long id;
+    private BetType betType;
     private int total;
     private int chances;
     private double oddsValue;
@@ -14,8 +16,24 @@ public class Odds {
         this.oddsValue = (double) total / chances;
     }
 
+    public Odds(long id, BetType betType, int total, int chances) {
+        this.id = id;
+        this.betType = betType;
+        this.total = total;
+        this.chances = chances;
+        this.oddsValue = (double) total / chances;
+    }
+
     public Odds(double oddsValue) {
         this.oddsValue = oddsValue;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getTotal() {
@@ -40,6 +58,14 @@ public class Odds {
 
     public void setOddsValue(double oddsValue) {
         this.oddsValue = oddsValue;
+    }
+
+    public BetType getBetType() {
+        return betType;
+    }
+
+    public void setBetType(BetType betType) {
+        this.betType = betType;
     }
 
     @Override

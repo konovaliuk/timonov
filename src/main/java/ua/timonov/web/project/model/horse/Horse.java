@@ -60,4 +60,29 @@ public class Horse {
     public void setWonRaces(int wonRaces) {
         this.wonRaces = wonRaces;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Horse)) return false;
+
+        Horse horse = (Horse) o;
+
+        if (id != horse.id) return false;
+        if (yearOfBirth != horse.yearOfBirth) return false;
+        if (totalRaces != horse.totalRaces) return false;
+        if (wonRaces != horse.wonRaces) return false;
+        return name.equals(horse.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + yearOfBirth;
+        result = 31 * result + totalRaces;
+        result = 31 * result + wonRaces;
+        return result;
+    }
 }

@@ -36,7 +36,7 @@ public class HorseDao extends EntityDao {
     }
 
     private Horse getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("id");
+        long id = resultSet.getLong("id");
         String name = resultSet.getString("name");
         int yearOfBirth = resultSet.getInt("year");
         int totalRaces = resultSet.getInt("totalraces");

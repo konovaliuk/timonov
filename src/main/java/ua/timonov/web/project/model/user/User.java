@@ -18,6 +18,15 @@ public class User {
         this.userType = userType;
     }
 
+    public User(long id, UserType userType, String login, String password, String name, UserAccount account) {
+        this.id = id;
+        this.userType = userType;
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.account = account;
+    }
+
     public User(long id, String login, String password, String name, UserType userType, UserAccount account) {
         this.id = id;
         this.login = login;

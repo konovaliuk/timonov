@@ -2,14 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
-
-<head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/WEB-INF/css/index.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Horse Racing. Main page</title>
-</head>
-
+    <%@include file="items/header.jspf"%>
 <body>
 <div>
     <div class="container">
@@ -20,13 +13,7 @@
         </header>
 
         <nav>
-            <ul>
-                <li><a href="/horseracing">Home page</a></li>
-                <li><a href="/races?action=races">Races</a></li>
-                <li><a href="/races?action=race">Race</a></li>
-                <li><a href="/races?action=horses">Horses</a></li>
-                <li><a href="/error">ERROR</a></li>
-            </ul>
+            <%@include file="items/nav.jspf"%>
         </nav>
 
         <article>
@@ -44,7 +31,7 @@
                 betting.</p>
         </article>
 
-        <footer>Copyright &copy; Alexey Timonov</footer>
+        <footer><%@include file="items/footer.jspf"%></footer>
     </div>
 </div>
 </body>
