@@ -15,7 +15,7 @@ public class BetService {
             betDao.save(bet);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            // TODO - customize!
+            // TODO - customize exception!
             throw new RuntimeException("Bet saving failed!", e);
         }
 

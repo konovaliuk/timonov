@@ -12,7 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
-                <h3>Race results</h3>
+                <h3>Fixate race results</h3>
             </div>
         </header>
 
@@ -40,8 +40,31 @@
                     </tr>
                 </table>
 
-
-
+                <form class="form-inline" action="/races" method="POST">
+                    <div>
+                        <input class="form-control" name="action" value="raceStatusSave" type="hidden"/>
+                        <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label" for="raceStatus">Change race status:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="raceStatus" name="raceStatus">
+                            <option disabled>Choose race status:</option>
+                            <c:forEach var="raceStatus" items="${raceStatuses}">
+                                <option <c:if test="${raceStatus == race.raceStatus}">selected</c:if>
+                                        value=${raceStatus}>${raceStatus.toString()}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Change race status</button>
+                    </div>
+                </form>
+                <br>
+                <br>
                 <h4>Horses in race</h4>
                 <table class="table table-striped">
                     <tr>

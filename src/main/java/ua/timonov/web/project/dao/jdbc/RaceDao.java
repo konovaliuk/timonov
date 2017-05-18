@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +99,57 @@ public class RaceDao extends EntityDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    public void save(Race race) {
+        if (race.getId() == 0) {
+            race.setId(create(race));
+        } else {
+            update(race);
+        }
+    }
+
+    private long create(Race race) {
+        String sql = "INSERT INTO race (status_id, location_id, date)\n" +
+                "VALUES (?, ?, ?)";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            setEntityToParameters(race, statement);
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                generatedKeys.next();
+                return generatedKeys.getLong(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void update(Race race) {
+        String sql = "UPDATE race SET status_id = ?, location_id = ?, date = ? WHERE id = ?";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            setEntityToParameters(race, statement);
+            statement.execute();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void setEntityToParameters(Race race, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, race.getRaceStatus().ordinal() + 1);
+        statement.setString(2, race.getLocation());
+        // TODO consider Date problem
+        statement.setDate(3, (java.sql.Date) race.getDate());
+        if (statement.getParameterMetaData().getParameterCount() == 4) {
+            statement.setLong(4, race.getId());
         }
     }
 }

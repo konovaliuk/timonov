@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +65,72 @@ public class OddsDao extends EntityDao {
             }
             return result; // TODO
 //            return new QueryResult<T>(result, result.size());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    public void save(long horseInRaceId, Odds odds) {
+        if (odds.getId() == 0) {
+            odds.setId(create(horseInRaceId, odds));
+        } else {
+            update(horseInRaceId, odds);
+        }
+    }
+
+    private long create(long horseInRaceId, Odds odds) {
+        String sql = "INSERT INTO odds (horse_in_race_id, bet_type_id, total, chances)\n" +
+                "VALUES (?, ?, ?, ?)";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            setEntityToParameters(horseInRaceId, odds, statement);
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                generatedKeys.next();
+                return generatedKeys.getLong(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void update(long horseInRaceId, Odds odds) {
+        String sql = "UPDATE odds SET horse_in_race_id = ?, bet_type_id = ?, total = ?, chances = ?\n" +
+                "WHERE id = ?";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            setEntityToParameters(horseInRaceId, odds, statement);
+            statement.execute();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void setEntityToParameters(long horseInRaceId, Odds odds, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, horseInRaceId);
+        statement.setLong(2, odds.getBetType().ordinal() + 1);
+        statement.setLong(3, odds.getTotal());
+        statement.setDouble(4, odds.getChances());
+        if (statement.getParameterMetaData().getParameterCount() == 5) {
+            statement.setLong(5, odds.getId());
+        }
+    }
+
+    public void delete(long oddsId) {
+        String sql = "DELETE FROM odds WHERE id = ?";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, oddsId);
+            statement.execute();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException("Database operation failed! " + e.getMessage());

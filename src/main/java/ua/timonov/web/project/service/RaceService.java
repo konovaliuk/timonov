@@ -21,4 +21,14 @@ public class RaceService {
     public Race getByHorseInRaceId(long horseInRaceId) {
         return raceDao.getByHorseInRaceId(horseInRaceId);
     }
+
+    public void save(Race race) {
+        try {
+            raceDao.save(race);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            // TODO - customize exception!
+            throw new RuntimeException("Race saving failed!", e);
+        }
+    }
 }

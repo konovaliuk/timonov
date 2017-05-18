@@ -9,7 +9,7 @@ import ua.timonov.web.project.service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SaveBetAction extends Action {
+public class MakeBetAction extends Action {
 
     public static final String BET_SAVED_PAGE = "/WEB-INF/jsp/bet/save.jsp";
 

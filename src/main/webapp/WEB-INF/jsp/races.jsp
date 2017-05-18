@@ -31,19 +31,26 @@
                         <th>Date</th>
                         <th>Status</th>
                         <th>Details</th>
+                        <th>Fixate results</th>
                     </tr>
                     <c:forEach var="race" items="${races}">
-                        <c:url var="raceUrl" value="/races?action=race&id=${race.id}"/>
                         <tr>
                             <td>${race.id}</td>
                             <td>${race.location}</td>
                             <td>${race.country}</td>
                             <td>${race.date}</td>
-                            <td>${race.raceStatus}</td>
-                            <td><a href="${raceUrl}">Race details</a></td>
+                            <td>${race.raceStatus.toString()}</td>
+                            <td><a href="/races?action=race&raceId=${race.id}">Race details</a></td>
+                            <td><a href="/races?action=raceFixate&raceId=${race.id}">Fixate results</a></td>
                         </tr>
                     </c:forEach>
                 </table>
+                <form class="form-horizontal" action="/horseracing" method="GET">
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-triangle-left"></span> Return to home page</button>
+                    </div>
+                </form>
             </div>
         </article>
 

@@ -12,8 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
-                <h2>Horse in Race</h2>
-                <h3>Horse: ${horseInRace.horse.name}, ${horseInRace.horse.yearOfBirth}</h3>
+                <h3>Make bet on horse ${horseInRace.horse.name}, race ${race.location}, ${race.country}</h3>
             </div>
         </header>
 
@@ -37,7 +36,7 @@
                         <td>${race.location}</td>
                         <td>${race.country}</td>
                         <td>${race.date}</td>
-                        <td>${race.raceStatus}</td>
+                        <td>${race.raceStatus.toString()}</td>
                     </tr>
                 </table>
                 <br>
@@ -53,7 +52,7 @@
                     <tr>
                         <c:set var="horse" value="${horseInRace.horse}"/>
                         <td>${horse.id}</td>
-                        <td><a href="${raceUrl}">!!!${horse.name}</a></td>
+                        <td><a href="/races?action=horse&id=${horse.id}">${horse.name}</a></td>
                         <td>${horse.yearOfBirth}</td>
                         <td>${horse.totalRaces}</td>
                         <td>${horse.wonRaces}</td>
@@ -75,7 +74,7 @@
                                 <div class="form-group">
                                     <td>
                                         <div>
-                                            <input class="form-control" name="action" type="hidden" value="create_bet"/>
+                                            <input class="form-control" name="action" type="hidden" value="makeBet"/>
                                             <input class="form-control" name="horse_in_race" type="hidden" value="${horseInRace.id}"/>
                                             <input class="form-control" name="odds" type="hidden" value="${odds.id}"/>
                                         </div>
@@ -84,7 +83,7 @@
                                     <td>${odds.total} / ${odds.chances}</td>
                                     <td>
                                         <div>
-                                            <input class="form-control" name="sum" type="number"/>
+                                            <input class="form-control" name="sum" type="number" min="0.01" step="0.01"/>
                                         </div>
                                     </td>
                                     <td><button class="btn btn-primary" type="submit">
@@ -95,6 +94,16 @@
                         </tr>
                     </c:forEach>
                 </table>
+                <form class="form-horizontal" action="/races" method="GET">
+                    <div>
+                        <input class="form-control" name="action" value="race" type="hidden"/>
+                        <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-triangle-left"></span> Return to race</button>
+                    </div>
+                </form>
 
             </div>
         </article>

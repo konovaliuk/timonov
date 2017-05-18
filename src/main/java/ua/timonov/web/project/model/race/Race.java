@@ -5,9 +5,6 @@ import ua.timonov.web.project.model.horse.HorseInRace;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- */
 public class Race {
     private long id;
     private RaceStatus raceStatus;

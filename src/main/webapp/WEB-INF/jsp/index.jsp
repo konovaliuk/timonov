@@ -12,9 +12,7 @@
             </div>
         </header>
 
-        <nav>
-            <%@include file="items/nav.jspf"%>
-        </nav>
+        <%@include file="items/nav.jspf"%>
 
         <article>
             <h3>Horse Racing at William Hill</h3>
