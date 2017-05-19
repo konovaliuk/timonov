@@ -20,6 +20,7 @@ public final class ActionInvoker {
         actionMap.put("race", new GetRaceHorsesAction());
         actionMap.put("raceFixate", new GetRaceFixateResultAction());
         actionMap.put("raceStatusSave", new SaveRaceStatusAction());
+        actionMap.put("racePlacesSave", new SaveRacePlacesAction());
         actionMap.put("horseInRace", new GetHorseInRaceAction());
         actionMap.put("horseInRaceBookie", new GetHorseInRaceBookieAction());
         actionMap.put("makeBet", new MakeBetAction());

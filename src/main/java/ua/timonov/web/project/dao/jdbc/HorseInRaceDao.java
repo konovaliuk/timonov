@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +96,56 @@ public class HorseInRaceDao extends EntityDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    public void save(long raceId, HorseInRace horseInRace) {
+        if (horseInRace.getId() == 0) {
+            horseInRace.setId(create(raceId, horseInRace));
+        } else {
+            update(raceId, horseInRace);
+        }
+    }
+
+    private long create(long raceId, HorseInRace horseInRace) {
+        String sql = "INSERT INTO horse_in_race (race_id, horse_id, place)\n" +
+                "VALUES (?, ?, ?)";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            setEntityToParameters(raceId, horseInRace, statement);
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                generatedKeys.next();
+                return generatedKeys.getLong(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void update(long raceId, HorseInRace horseInRace) {
+        String sql = "UPDATE horse_in_race SET race_id = ?, horse_id = ?, place = ? WHERE id = ?";
+        LOGGER.info(sql);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            setEntityToParameters(raceId, horseInRace, statement);
+            statement.execute();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("Database operation failed! " + e.getMessage());
+        }
+    }
+
+    private void setEntityToParameters(long raceId, HorseInRace horseInRace, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, raceId);
+        statement.setLong(2, horseInRace.getHorse().getId());
+        statement.setInt(3, horseInRace.getFinishPlace());
+        if (statement.getParameterMetaData().getParameterCount() == 4) {
+            statement.setLong(4, horseInRace.getId());
         }
     }
 }

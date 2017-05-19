@@ -38,6 +38,7 @@ public class HorseInRaceService {
     }
 
 
+    @Deprecated
     private List<HorseInRace> unitEqualRecords(List<HorseInRace> listFromDatabase) {
         List<HorseInRace> result = new ArrayList<>();
         if (listFromDatabase.size() == 0) {
@@ -57,5 +58,15 @@ public class HorseInRaceService {
         }
         result.add(currentUnitedHorse);
         return result;
+    }
+
+    public void save(long raceId, HorseInRace horseInRace) {
+        try {
+            horseInRaceDao.save(raceId, horseInRace);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            // TODO - customize exception!
+            throw new RuntimeException("HorseInRace saving failed!", e);
+        }
     }
 }

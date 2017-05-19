@@ -12,7 +12,8 @@
     <div class="container">
         <header>
             <div class="container">
-                <h3>Make bet on horse ${horseInRace.horse.name}, race ${race.location}, ${race.country}</h3>
+                <h3>Make bet on horse ${horseInRace.horse.name}, race at ${race.location.name},
+                ${race.location.country.name}</h3>
             </div>
         </header>
 
@@ -22,42 +23,7 @@
 
         <article>
             <div>
-                <h3>Race</h3>
-                <table class="table table-striped">
-                    <tr>
-                        <th>ID</th>
-                        <th>Location</th>
-                        <th>Country</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                    <tr>
-                        <td>${race.id}</td>
-                        <td>${race.location}</td>
-                        <td>${race.country}</td>
-                        <td>${race.date}</td>
-                        <td>${race.raceStatus.toString()}</td>
-                    </tr>
-                </table>
-                <br>
-                <h3>Horse</h3>
-                <table class="table table-striped">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Year of birth</th>
-                        <th>Total races</th>
-                        <th>Won races</th>
-                    </tr>
-                    <tr>
-                        <c:set var="horse" value="${horseInRace.horse}"/>
-                        <td>${horse.id}</td>
-                        <td><a href="/races?action=horse&id=${horse.id}">${horse.name}</a></td>
-                        <td>${horse.yearOfBirth}</td>
-                        <td>${horse.totalRaces}</td>
-                        <td>${horse.wonRaces}</td>
-                    </tr>
-                </table>
+                <%@include file="items/raceAndHorse.jspf"%>
                 <br>
                 <h3>Available bets</h3>
                 <table class="table table-striped">
@@ -79,7 +45,7 @@
                                             <input class="form-control" name="odds" type="hidden" value="${odds.id}"/>
                                         </div>
                                     </td>
-                                    <td>${odds.betType}</td>
+                                    <td>${odds.betType.toString()}</td>
                                     <td>${odds.total} / ${odds.chances}</td>
                                     <td>
                                         <div>
@@ -110,8 +76,6 @@
 
         <footer><%@include file="items/footer.jspf"%></footer>
     </div>
-
-
 </div>
 </body>
 </html>

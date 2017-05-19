@@ -1,6 +1,7 @@
 package ua.timonov.web.project.dao.jdbc;
 
 import org.apache.log4j.Logger;
+import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 
@@ -12,12 +13,15 @@ import java.util.List;
 public class RaceDao extends EntityDao {
     private static final Logger LOGGER = Logger.getLogger(HorseDao.class);
 
+    private LocationDao locationDao = new LocationDao();
+
     public List<Race> getAll() {
-        String sql = "SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE \n" +
-                "FROM RACE\n" +
-                "INNER JOIN RACE_STATUS ON RACE.status_id = RACE_STATUS.ID\n" +
-                "INNER JOIN LOCATION ON LOCATION_ID = LOCATION.ID\n" +
-                "INNER JOIN COUNTRY ON LOCATION.COUNTRY_ID = COUNTRY.ID";
+        String sql = "SELECT race.id AS id, race_status.name AS status, location.name AS location, " +
+                "location.id AS location_id, country.name AS country, country.id AS country_id, date\n" +
+                "FROM race\n" +
+                "INNER JOIN race_status ON race.status_id = race_status.id\n" +
+                "INNER JOIN location ON race.location_id = location.id\n" +
+                "INNER JOIN country ON location.country_id = country.id";
 //        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -38,11 +42,12 @@ public class RaceDao extends EntityDao {
     }
 
     public Race getById(long raceId) {
-        String sql = "SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE \n" +
-                "FROM RACE\n" +
-                "INNER JOIN RACE_STATUS ON RACE.status_id = RACE_STATUS.ID\n" +
-                "INNER JOIN LOCATION ON LOCATION_ID = LOCATION.ID\n" +
-                "INNER JOIN COUNTRY ON LOCATION.COUNTRY_ID = COUNTRY.ID WHERE RACE.ID = ?";
+        String sql = "SELECT race.id AS id, race_status.name AS status, location.name AS location, \n" +
+                "location.id AS location_id, country.name AS country, country.id AS country_id, date\n" +
+                "FROM race\n" +
+                "INNER JOIN race_status ON race.status_id = race_status.id\n" +
+                "INNER JOIN location ON race.location_id = location.id\n" +
+                "INNER JOIN country ON location.country_id = country.id WHERE RACE.ID = ?";
         LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -67,14 +72,14 @@ public class RaceDao extends EntityDao {
     private Race getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         RaceStatus raceStatus = RaceStatus.valueOf(transformToConstantView(resultSet.getString("status")));
-        String location = resultSet.getString("location");
-        String country = resultSet.getString("country");
+        Location location = locationDao.getEntityFromResultSet(resultSet);
         Date date = resultSet.getDate("date");
-        return new Race(id, raceStatus, location, country, date);
+        return new Race(id, raceStatus, location, date);
     }
 
     public Race getByHorseInRaceId(long horseInRaceId) {
-        String sql = "SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE \n" +
+        String sql = "SELECT race.id AS id, race_status.name AS status, location.name AS location, \n" +
+                "location.id AS location_id, country.name AS country, country.id AS country_id, date\n" +
                 "FROM RACE\n" +
                 "INNER JOIN RACE_STATUS ON RACE.status_id = RACE_STATUS.ID\n" +
                 "INNER JOIN LOCATION ON LOCATION_ID = LOCATION.ID\n" +
@@ -145,7 +150,7 @@ public class RaceDao extends EntityDao {
 
     private void setEntityToParameters(Race race, PreparedStatement statement) throws SQLException {
         statement.setLong(1, race.getRaceStatus().ordinal() + 1);
-        statement.setString(2, race.getLocation());
+        statement.setLong(2, race.getLocation().getId());
         // TODO consider Date problem
         statement.setDate(3, (java.sql.Date) race.getDate());
         if (statement.getParameterMetaData().getParameterCount() == 4) {

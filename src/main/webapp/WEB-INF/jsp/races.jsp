@@ -36,8 +36,8 @@
                     <c:forEach var="race" items="${races}">
                         <tr>
                             <td>${race.id}</td>
-                            <td>${race.location}</td>
-                            <td>${race.country}</td>
+                            <td>${race.location.name}</td>
+                            <td>${race.location.country.name}</td>
                             <td>${race.date}</td>
                             <td>${race.raceStatus.toString()}</td>
                             <td><a href="/races?action=race&raceId=${race.id}">Race details</a></td>

@@ -19,41 +19,7 @@
 
     <article>
     <div>
-        <h4>Race</h4>
-        <table class="table table-striped">
-            <tr>
-                <th>ID</th>
-                <th>Location</th>
-                <th>Country</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>${race.id}</td>
-                <td>${race.location}</td>
-                <td>${race.country}</td>
-                <td>${race.date}</td>
-                <td>${race.raceStatus.toString()}</td>
-            </tr>
-        </table>
-        <h4>Horse</h4>
-        <table class="table table-striped">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Year of birth</th>
-                <th>Total races</th>
-                <th>Won races</th>
-            </tr>
-            <tr>
-                <c:set var="horse" value="${horseInRace.horse}"/>
-                <td>${horse.id}</td>
-                <td><a href="/races?action=horse&id=${horse.id}">${horse.name}</a></td>
-                <td>${horse.yearOfBirth}</td>
-                <td>${horse.totalRaces}</td>
-                <td>${horse.wonRaces}</td>
-            </tr>
-        </table>
+        <%@include file="items/raceAndHorse.jspf"%>
         <h4>Existing bets</h4>
         <table class="table table-striped">
             <tr>

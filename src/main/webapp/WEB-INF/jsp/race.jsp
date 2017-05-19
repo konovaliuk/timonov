@@ -33,14 +33,12 @@
                     </tr>
                     <tr>
                         <td>${race.id}</td>
-                        <td>${race.location}</td>
-                        <td>${race.country}</td>
+                        <td>${race.location.name}</td>
+                        <td>${race.location.country.name}</td>
                         <td>${race.date}</td>
                         <td>${race.raceStatus.toString()}</td>
                     </tr>
                 </table>
-
-
 
                 <h4>Horses in race</h4>
                 <table class="table table-striped">

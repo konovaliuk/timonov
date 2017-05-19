@@ -12,7 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
-                <h2>Race results</h2>
+                <h3>Made bet</h3>
             </div>
         </header>
 
@@ -33,7 +33,7 @@
                         <label class="control-label">Race location:</label>
                     </div>
                     <div class="col-sm-8">
-                        <label class="control-label">${race.location}, ${race.country}</label>
+                        <label class="control-label">${race.location.name}, ${race.location.country.name}</label>
                     </div>
                 </div>
 

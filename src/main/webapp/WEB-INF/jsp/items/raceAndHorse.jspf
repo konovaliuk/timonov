@@ -1,0 +1,35 @@
+<h3>Race</h3>
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Location</th>
+        <th>Country</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>${race.id}</td>
+        <td>${race.location.name}</td>
+        <td>${race.location.country.name}</td>
+        <td>${race.date}</td>
+        <td>${race.raceStatus.toString()}</td>
+    </tr>
+</table>
+<h3>Horse</h3>
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Year of birth</th>
+        <th>Total races</th>
+        <th>Won races</th>
+    </tr>
+    <tr>
+        <c:set var="horse" value="${horseInRace.horse}"/>
+        <td>${horse.id}</td>
+        <td><a href="/races?action=horse&id=${horse.id}">${horse.name}</a></td>
+        <td>${horse.yearOfBirth}</td>
+        <td>${horse.totalRaces}</td>
+        <td>${horse.wonRaces}</td>
+    </tr>
+</table>

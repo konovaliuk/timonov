@@ -1,17 +1,15 @@
 package ua.timonov.web.project.model.location;
 
-public class Location {
+public class Country {
     private long id;
     private String name;
-    private Country country;
 
-    public Location() {
+    public Country() {
     }
 
-    public Location(long id, String name, Country country) {
+    public Country(long id, String name) {
         this.id = id;
         this.name = name;
-        this.country = country;
     }
 
     public long getId() {
@@ -28,13 +26,5 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
     }
 }
