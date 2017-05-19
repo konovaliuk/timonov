@@ -10,6 +10,7 @@ import ua.timonov.web.project.service.ServiceFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SaveRacePlacesAction extends Action {
@@ -32,27 +33,29 @@ public class SaveRacePlacesAction extends Action {
             places.add(Integer.valueOf(request.getParameter("places" + i)));
         }
 
-        // TODO validate inputted places
-
-        for (int i = 0; i < nHorsesInRace; i++) {
-            HorseInRace horseInRace = listOfHorsesInRace.get(i);
-            horseInRace.setFinishPlace(places.get(i));
-            horseInRaceService.save(raceId, horseInRace);
+        if (validateInputtedPlaces(new ArrayList<>(places))) {
+            for (int i = 0; i < nHorsesInRace; i++) {
+                HorseInRace horseInRace = listOfHorsesInRace.get(i);
+                horseInRace.setFinishPlace(places.get(i));
+                horseInRaceService.save(raceId, horseInRace);
+            }
+            raceService.save(race);
+        } else {
+            request.setAttribute("errorMessage", "Error while fixating results");
         }
-        raceService.save(race);
-
-//        RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
-//        race.setRaceStatus(raceStatus);
-
-//        String[] places = request.getParameterValues("places");
-
-//        int length2 = Integer.valueOf(request.getParameter("places.size"));
-//        int length1 = Integer.valueOf(request.getParameter("places.length"));
-
-
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", listOfHorsesInRace);
         request.setAttribute("raceStatuses", RaceStatus.values());
         return RACE_ADMIN_PAGE;
+    }
+
+    private boolean validateInputtedPlaces(List<Integer> places) {
+        Collections.sort(places);
+        for (int i = 0; i < places.size(); i++) {
+            if (places.get(i) != i + 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }

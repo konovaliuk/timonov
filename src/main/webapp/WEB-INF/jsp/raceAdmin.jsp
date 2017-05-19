@@ -23,6 +23,9 @@
         <article>
             <div>
                 <h4>Race info</h4>
+                <div class="error-message">
+                    <h4>${errorMessage}</h4>
+                </div>
                 <table class="table table-striped">
                     <tr>
                         <th>ID</th>

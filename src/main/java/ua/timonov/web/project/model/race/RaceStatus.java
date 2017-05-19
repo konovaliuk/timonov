@@ -1,7 +1,7 @@
 package ua.timonov.web.project.model.race;
 
 public enum RaceStatus {
-    NOT_ARRANGED, OPEN_TO_BET, CLOSED_TO_BET, IN_PROCESS, RESULTS_FIXATED;
+    NOT_ARRANGED, OPEN_TO_BET, CLOSED_TO_BET, STARTED, FINISHED, RESULTS_FIXATED;
 
     public static final String SPACE = " ";
     public static final String UNDERSCORE = "_";

@@ -211,11 +211,11 @@ INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('4', 'in process');
 INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('5', 'results fixated');
 
 
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '5', '2', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('2', '5', '3', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('3', '4', '4', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('4', '3', '5', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('5', '2', '6', '2017-05-03');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '6', '2', '2017-05-01');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('2', '6', '3', '2017-05-01');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('3', '5', '4', '2017-05-02');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('4', '4', '5', '2017-05-02');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('5', '3', '6', '2017-05-03');
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('6', '2', '7', '2017-05-03');
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('7', '2', '8', '2017-05-04');
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('8', '2', '9', '2017-05-05');

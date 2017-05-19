@@ -44,3 +44,7 @@ article {
     color: lightyellow;
     padding: 5px;
 }
+
+.error-message {
+    color: red;
+}
