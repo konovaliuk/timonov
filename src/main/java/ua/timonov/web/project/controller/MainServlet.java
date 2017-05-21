@@ -2,6 +2,7 @@ package ua.timonov.web.project.controller;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.ActionInvoker;
+import ua.timonov.web.project.parser.ParsingException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,7 +36,7 @@ public class MainServlet extends HttpServlet {
         try {
             page = actionInvoker.invoke(request, response);
             LOGGER.info("page: " + page);
-        } catch (ServletException | IOException e) {
+        } catch (ServletException | IOException | ParsingException e) {
             page = ERROR_PAGE;
             LOGGER.error(e.getMessage());
         }

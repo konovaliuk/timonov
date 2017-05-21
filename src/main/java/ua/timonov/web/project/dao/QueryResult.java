@@ -2,6 +2,7 @@ package ua.timonov.web.project.dao;
 
 import java.util.List;
 
+@Deprecated
 public class QueryResult<T> {
     private List<T> result;
     private int totalRowsCount;

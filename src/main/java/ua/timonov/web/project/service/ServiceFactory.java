@@ -9,6 +9,8 @@ public class ServiceFactory {
     private BetService betService = new BetService();
     private OddsService oddsService = new OddsService();
     private UserService userService = new UserService();
+    private LocationService locationService = new LocationService();
+    private CountryService countryService = new CountryService();
 
     public static ServiceFactory getInstance() {
         return INSTANCE;
@@ -32,5 +34,13 @@ public class ServiceFactory {
 
     public UserService getUserService() {
         return userService;
+    }
+
+    public LocationService getLocationService() {
+        return locationService;
+    }
+
+    public CountryService getCountryService() {
+        return countryService;
     }
 }

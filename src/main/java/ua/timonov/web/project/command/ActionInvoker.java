@@ -1,5 +1,7 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.parser.ParsingException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +20,8 @@ public final class ActionInvoker {
         actionMap.put("horse", new GetHorseAction());
         actionMap.put("races", new GetRacesAction());
         actionMap.put("race", new GetRaceHorsesAction());
-        actionMap.put("raceFixate", new GetRaceFixateResultAction());
-        actionMap.put("raceStatusSave", new SaveRaceStatusAction());
+        actionMap.put("raceEdit", new EditRaceAction());
+        actionMap.put("raceSaveEdited", new SaveEditedRaceAction());
         actionMap.put("racePlacesSave", new SaveRacePlacesAction());
         actionMap.put("horseInRace", new GetHorseInRaceAction());
         actionMap.put("horseInRaceBookie", new GetHorseInRaceBookieAction());
@@ -38,8 +40,8 @@ public final class ActionInvoker {
         return Holder.instance;
     }
 
-    public String invoke(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-                                                                                          IOException {
+    public String invoke(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ParsingException {
         String actionName = request.getParameter("action");
         Action action = actionMap.get(actionName);
         if (action == null) {

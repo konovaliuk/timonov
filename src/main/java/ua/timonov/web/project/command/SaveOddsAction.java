@@ -32,14 +32,11 @@ public class SaveOddsAction extends Action {
     }
 
     private Odds createOddsFromRequest(HttpServletRequest request) {
+        String parameterId = request.getParameter("id");
+        long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         BetType betType = BetType.valueOf(request.getParameter("betType"));
         int total = Integer.valueOf(request.getParameter("total"));
         int chances = Integer.valueOf(request.getParameter("chances"));
-        String parameterId = request.getParameter("id");
-        long id = 0;
-        if (parameterId != null) {
-            id = Long.valueOf(parameterId);
-        }
         return new Odds(id, betType, total, chances);
     }
 }

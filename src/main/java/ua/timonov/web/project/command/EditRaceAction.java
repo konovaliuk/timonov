@@ -2,32 +2,34 @@ package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
-import ua.timonov.web.project.service.HorseInRaceService;
-import ua.timonov.web.project.service.RaceService;
-import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SaveRaceStatusAction extends Action {
+public class EditRaceAction extends Action {
 
-    public static final String RACE_ADMIN_PAGE = "/WEB-INF/jsp/raceAdmin.jsp";
+    public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
 
     private RaceService raceService = ServiceFactory.getInstance().getRaceService();
     private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
+    private CountryService countryService = ServiceFactory.getInstance().getCountryService();
+    private LocationService locationService = ServiceFactory.getInstance().getLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.getById(raceId);
-
-        RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
-        race.setRaceStatus(raceStatus);
-        raceService.save(race);
-
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", horseInRaceService.getByRace(raceId));
         request.setAttribute("raceStatuses", RaceStatus.values());
-        return RACE_ADMIN_PAGE;
+        request.setAttribute("countries", countryService.getAll());
+        request.setAttribute("locations", locationService.getAll());
+//        return choosePage(raceStatus);
+        return RACE_EDIT_PAGE;
+    }
+
+    private String choosePage(RaceStatus raceStatus) {
+        return "/WEB-INF/jsp/race/edit" + raceStatus.nameForJspFile() + ".jsp";
     }
 }

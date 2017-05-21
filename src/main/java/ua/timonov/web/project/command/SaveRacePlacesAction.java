@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SaveRacePlacesAction extends Action {
 
-    public static final String RACE_ADMIN_PAGE = "/WEB-INF/jsp/raceAdmin.jsp";
+    public static final String RACE_ADMIN_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
 
     private RaceService raceService = ServiceFactory.getInstance().getRaceService();
     private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();

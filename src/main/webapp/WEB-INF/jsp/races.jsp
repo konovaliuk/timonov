@@ -31,7 +31,7 @@
                         <th>Date</th>
                         <th>Status</th>
                         <th>Details</th>
-                        <th>Fixate results</th>
+                        <th>Edit races</th>
                     </tr>
                     <c:forEach var="race" items="${races}">
                         <tr>
@@ -41,7 +41,7 @@
                             <td>${race.date}</td>
                             <td>${race.raceStatus.toString()}</td>
                             <td><a href="/races?action=race&raceId=${race.id}">Race details</a></td>
-                            <td><a href="/races?action=raceFixate&raceId=${race.id}">Fixate results</a></td>
+                            <td><a href="/races?action=raceEdit&raceId=${race.id}">Edit races</a></td>
                         </tr>
                     </c:forEach>
                 </table>

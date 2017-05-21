@@ -40,7 +40,7 @@ CREATE TABLE `probe`.`race` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `status_id` INT NOT NULL,
   `location_id` INT NOT NULL,
-  `date` DATE NOT NULL,
+  `date` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `statusFK_idx` (`status_id` ASC),
   INDEX `locationFK_idx` (`location_id` ASC),
@@ -207,8 +207,9 @@ INSERT INTO `probe`.`horse` (`id`, `name`, `year`, `totalraces`, `wonraces`) VAL
 INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('1', 'not arranged');
 INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('2', 'open to bet');
 INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('3', 'closed to bet');
-INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('4', 'in process');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('4', 'finished');
 INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('5', 'results fixated');
+INSERT INTO `probe`.`race_status` (`id`, `name`) VALUES ('6', 'winnings paid');
 
 
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '6', '2', '2017-05-01');
@@ -221,6 +222,7 @@ INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('7
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('8', '2', '9', '2017-05-05');
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('9', '1', '1', '2017-05-06');
 INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('10', '1', '3', '2017-05-06');
+INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('11', '1', '5', '2017-05-07');
 
 
 INSERT INTO `probe`.`user_type` (`id`, `name`) VALUES ('1', 'admin');

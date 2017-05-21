@@ -11,6 +11,7 @@ import java.util.Properties;
 public class DataSourceFactory {
 
     private static final DataSourceFactory instance = new DataSourceFactory();
+
     private static final Logger LOGGER = Logger.getLogger(DataSourceFactory.class);
     public static final String JDBC_PROPERTIES = "jdbc.properties";
     public static final String JDBC_DRIVER = "jdbc.driver";
