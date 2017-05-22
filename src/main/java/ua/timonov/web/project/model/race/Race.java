@@ -61,6 +61,7 @@ public class Race implements Entity {
         this.date = date;
     }
 
+    // TODO make copies
     public List<HorseInRace> getHorsesInRace() {
         return horsesInRace;
     }
@@ -77,5 +78,37 @@ public class Race implements Entity {
         this.raceStatus = raceStatus;
     }
 
-    // TODO make copies
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Race)) return false;
+
+        Race race = (Race) o;
+
+        if (raceStatus != race.raceStatus) return false;
+        if (!location.equals(race.location)) return false;
+        if (!date.equals(race.date)) return false;
+        return horsesInRace.equals(race.horsesInRace);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = raceStatus.hashCode();
+        result = 31 * result + location.hashCode();
+        result = 31 * result + date.hashCode();
+        result = 31 * result + horsesInRace.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Race{" +
+                "id=" + id +
+                ", raceStatus=" + raceStatus +
+                ", location=" + location +
+                ", date=" + date +
+                ", horsesInRace=" + horsesInRace +
+                '}';
+    }
 }

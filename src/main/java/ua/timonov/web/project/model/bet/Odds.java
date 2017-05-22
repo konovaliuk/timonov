@@ -71,6 +71,29 @@ public class Odds implements Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Odds)) return false;
+
+        Odds odds = (Odds) o;
+
+        if (id != odds.id) return false;
+        if (total != odds.total) return false;
+        if (chances != odds.chances) return false;
+        return betType == odds.betType;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + betType.hashCode();
+        result = 31 * result + total;
+        result = 31 * result + chances;
+        return result;
+    }
+
+    @Override
     public String toString() {
         if (oddsValue == 0) {
             return String.format("%d / %d", total, chances);

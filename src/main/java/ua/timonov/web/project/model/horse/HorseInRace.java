@@ -22,14 +22,6 @@ public class HorseInRace implements Entity {
         this.finishPlace = finishPlace;
     }
 
-    // TODO remove if not used
-    public HorseInRace(long id, Horse horse, int finishPlace, List<Odds> oddsValues) {
-        this.id = id;
-        this.horse = horse;
-        this.finishPlace = finishPlace;
-        this.oddsValues = oddsValues;
-    }
-
     public long getId() {
         return id;
     }
@@ -54,11 +46,45 @@ public class HorseInRace implements Entity {
         this.finishPlace = finishPlace;
     }
 
+    // TODO make copies
     public List<Odds> getOddsValues() {
         return oddsValues;
     }
 
     public void setOddsValues(List<Odds> oddsValues) {
         this.oddsValues = oddsValues;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HorseInRace)) return false;
+
+        HorseInRace that = (HorseInRace) o;
+
+        if (id != that.id) return false;
+        if (finishPlace != that.finishPlace) return false;
+        if (!horse.equals(that.horse)) return false;
+        return oddsValues.equals(that.oddsValues);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + horse.hashCode();
+        result = 31 * result + finishPlace;
+        result = 31 * result + oddsValues.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HorseInRace{" +
+                "id=" + id +
+                ", horse=" + horse +
+                ", finishPlace=" + finishPlace +
+                ", oddsValues=" + oddsValues +
+                '}';
     }
 }

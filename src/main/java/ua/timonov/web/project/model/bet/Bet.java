@@ -71,4 +71,41 @@ public class Bet implements Entity {
     public void setSum(double sum) {
         this.sum = sum;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bet)) return false;
+
+        Bet bet = (Bet) o;
+
+        if (Double.compare(bet.sum, sum) != 0) return false;
+        if (!user.equals(bet.user)) return false;
+        if (betType != bet.betType) return false;
+        return horseInRace.equals(bet.horseInRace);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = user.hashCode();
+        result = 31 * result + betType.hashCode();
+        result = 31 * result + horseInRace.hashCode();
+        temp = Double.doubleToLongBits(sum);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "id=" + id +
+                ", user=" + user +
+                ", betType=" + betType +
+                ", horseInRace=" + horseInRace +
+                ", sum=" + sum +
+                '}';
+    }
 }

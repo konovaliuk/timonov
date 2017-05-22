@@ -70,7 +70,6 @@ public class Horse implements Entity {
 
         Horse horse = (Horse) o;
 
-        if (id != horse.id) return false;
         if (yearOfBirth != horse.yearOfBirth) return false;
         if (totalRaces != horse.totalRaces) return false;
         if (wonRaces != horse.wonRaces) return false;
@@ -80,11 +79,21 @@ public class Horse implements Entity {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + name.hashCode();
+        int result = name.hashCode();
         result = 31 * result + yearOfBirth;
         result = 31 * result + totalRaces;
         result = 31 * result + wonRaces;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Horse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", yearOfBirth=" + yearOfBirth +
+                ", totalRaces=" + totalRaces +
+                ", wonRaces=" + wonRaces +
+                '}';
     }
 }
