@@ -1,9 +1,11 @@
 package ua.timonov.web.project.model.horse;
 
+import ua.timonov.web.project.dao.Entity;
+
 /**
  *
  */
-public class Horse {
+public class Horse implements Entity {
     private long id;
     private String name;
     private int yearOfBirth;

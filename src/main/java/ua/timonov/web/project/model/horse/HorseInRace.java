@@ -1,12 +1,14 @@
 package ua.timonov.web.project.model.horse;
 
+import ua.timonov.web.project.dao.Entity;
 import ua.timonov.web.project.model.bet.Odds;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorseInRace {
+public class HorseInRace implements Entity {
     private long id;
+//    private long raceId;
     private Horse horse;
     private int finishPlace;
     private List<Odds> oddsValues = new ArrayList<>();
@@ -20,6 +22,7 @@ public class HorseInRace {
         this.finishPlace = finishPlace;
     }
 
+    // TODO remove if not used
     public HorseInRace(long id, Horse horse, int finishPlace, List<Odds> oddsValues) {
         this.id = id;
         this.horse = horse;

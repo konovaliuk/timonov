@@ -2,8 +2,9 @@ package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.JdbcDataManager;
-import ua.timonov.web.project.dao.jdbc.HorseInRaceDao;
-import ua.timonov.web.project.dao.jdbc.OddsDao;
+import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
+import ua.timonov.web.project.dao.daointerface.OddsDao;
+import ua.timonov.web.project.dao.jdbc.mysql.MysqlDaoFactory;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
@@ -14,26 +15,24 @@ public class HorseInRaceService {
     private static final Logger LOGGER = Logger.getLogger(HorseInRaceService.class);
     private static final JdbcDataManager dataManager = JdbcDataManager.getInstance();
 
-    private HorseInRaceDao horseInRaceDao = new HorseInRaceDao();
-    private OddsDao oddsDao = new OddsDao();
+    private HorseInRaceDao horseInRaceDao = MysqlDaoFactory.getInstance().createHorseInRaceDao();
+    private OddsDao oddsDao = MysqlDaoFactory.getInstance().createOddsDao();
 
-    public List<HorseInRace> getAll() {
-        return horseInRaceDao.getAll();
-//        return horseDao.getAll().getResult();
+    public List<HorseInRace> findAll() {
+        return horseInRaceDao.findAll();
     }
 
     public List<HorseInRace> getByRace(long raceId) {
-        List<HorseInRace> listFromDatabase = horseInRaceDao.getByRace(raceId);
+        List<HorseInRace> listFromDatabase = horseInRaceDao.findListByRaceId(raceId);
         for (HorseInRace horseInRace : listFromDatabase) {
-            horseInRace.setOddsValues(oddsDao.getByHorseInRace(horseInRace.getId()));
+            horseInRace.setOddsValues(oddsDao.findByHorseInRace(horseInRace.getId()));
         }
         return listFromDatabase;
-//        return unitEqualRecords(listFromDatabase);
     }
 
     public HorseInRace getById(long id) {
-        HorseInRace horseInRace = horseInRaceDao.getById(id);
-        horseInRace.setOddsValues(oddsDao.getByHorseInRace(horseInRace.getId()));
+        HorseInRace horseInRace = horseInRaceDao.findById(id);
+        horseInRace.setOddsValues(oddsDao.findByHorseInRace(horseInRace.getId()));
         return horseInRace;
     }
 
@@ -60,9 +59,9 @@ public class HorseInRaceService {
         return result;
     }
 
-    public void save(long raceId, HorseInRace horseInRace) {
+    public void save(HorseInRace horseInRace, long raceId) {
         try {
-            horseInRaceDao.save(raceId, horseInRace);
+            horseInRaceDao.save(horseInRace, raceId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             // TODO - customize exception!

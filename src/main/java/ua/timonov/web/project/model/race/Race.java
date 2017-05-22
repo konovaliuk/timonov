@@ -1,12 +1,13 @@
 package ua.timonov.web.project.model.race;
 
+import ua.timonov.web.project.dao.Entity;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.location.Location;
 
 import java.util.Date;
 import java.util.List;
 
-public class Race {
+public class Race implements Entity {
     private long id;
     private RaceStatus raceStatus;
     private Location location;

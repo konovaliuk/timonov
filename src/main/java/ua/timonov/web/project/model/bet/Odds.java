@@ -1,6 +1,8 @@
 package ua.timonov.web.project.model.bet;
 
-public class Odds {
+import ua.timonov.web.project.dao.Entity;
+
+public class Odds implements Entity {
     private long id;
     private BetType betType;
     private int total;

@@ -2,7 +2,7 @@ package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.JdbcDataManager;
-import ua.timonov.web.project.dao.jdbc.HorseDao;
+import ua.timonov.web.project.dao.jdbc.deprecated.HorseDao;
 import ua.timonov.web.project.model.horse.Horse;
 
 import java.util.List;
@@ -15,6 +15,6 @@ public class HorseService {
 
     public List<Horse> getAll() {
         return horseDao.getAll();
-//        return horseDao.getAll().getResult();
+//        return horseDao.findAll().getResult();
     }
 }

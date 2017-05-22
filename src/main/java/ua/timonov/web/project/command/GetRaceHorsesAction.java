@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.service.DataServiceException;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 
@@ -14,7 +15,7 @@ public class GetRaceHorsesAction extends Action {
     private HorseInRaceService horseInRaceService = new HorseInRaceService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         request.setAttribute("race", raceService.getById(raceId));
         request.setAttribute("horsesInRace", horseInRaceService.getByRace(raceId));

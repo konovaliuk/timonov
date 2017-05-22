@@ -4,21 +4,21 @@ import ua.timonov.web.project.dao.daointerface.*;
 
 public abstract class DaoFactory {
 
-    public abstract IBetDao createBetDao();
+    public abstract BetDao createBetDao();
 
-    public abstract ICountryDao createCountryDao();
+    public abstract CountryDao createCountryDao();
 
-    public abstract IHorseDao createHorseDao();
+    public abstract HorseDao createHorseDao();
 
-    public abstract IHorseInRaceDao createHorseInRaceDao();
+    public abstract HorseInRaceDao createHorseInRaceDao();
 
-    public abstract ILocationDao createLocationDao();
+    public abstract LocationDao createLocationDao();
 
-    public abstract IOddsDao createOddsDao();
+    public abstract OddsDao createOddsDao();
 
-    public abstract IRaceDao createRaceDao();
+    public abstract RaceDao createRaceDao();
 
-    public abstract IUserDao createUserDao();
+    public abstract UserDao createUserDao();
 
-    public abstract IUserAccountDao createUserAccountDao();
+    public abstract UserAccountDao createUserAccountDao();
 }

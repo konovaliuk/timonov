@@ -23,14 +23,15 @@ public class SaveEditedRaceAction extends Action {
     private LocationService locationService = ServiceFactory.getInstance().getLocationService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ParsingException, DataServiceException {
         Race race = createRaceFromRequest(request);
         RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
         race.setRaceStatus(raceStatus);
         raceService.save(race);
 
 //        long raceId = Long.valueOf(request.getParameter("raceId"));
-//        Race race = raceService.getById(raceId);
+//        Race race = raceService.findById(raceId);
 
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", horseInRaceService.getByRace(race.getId()));
@@ -48,7 +49,7 @@ public class SaveEditedRaceAction extends Action {
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);
         RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
-        Location location = locationService.getById(locationId);
+        Location location = locationService.findById(locationId);
         return new Race(id, raceStatus, location, date);
     }
 }

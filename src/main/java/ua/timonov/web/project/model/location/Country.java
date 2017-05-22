@@ -1,6 +1,8 @@
 package ua.timonov.web.project.model.location;
 
-public class Country {
+import ua.timonov.web.project.dao.Entity;
+
+public class Country implements Entity {
     private long id;
     private String name;
 

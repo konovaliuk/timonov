@@ -1,12 +1,17 @@
 package ua.timonov.web.project.dao.jdbc.mysql;
 
-import ua.timonov.web.project.dao.daointerface.IUserAccountDao;
+import ua.timonov.web.project.dao.daointerface.UserAccountDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.user.UserAccount;
 
-import java.util.List;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class MysqlUserAccountDao extends EntityDao<UserAccount> implements IUserAccountDao {
+public class MysqlUserAccountDao extends EntityDao<UserAccount> implements UserAccountDao {
+
+    public static final int BALANCE_INDEX = 1;
+    public static final int ID_INDEX = 2;
 
     private static final MysqlUserAccountDao instance = new MysqlUserAccountDao();
 
@@ -18,6 +23,24 @@ public class MysqlUserAccountDao extends EntityDao<UserAccount> implements IUser
     }
 
     @Override
+    protected UserAccount getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        long id = resultSet.getLong("id");
+        double balance = resultSet.getDouble("balance");
+        return new UserAccount(id, balance);
+    }
+
+    @Override
+    protected void setEntityToParameters(UserAccount account, PreparedStatement statement, long... externalId)
+            throws SQLException {
+
+        statement.setDouble(BALANCE_INDEX, account.getBalance());
+        if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
+            statement.setLong(ID_INDEX, account.getId());
+        }
+    }
+}
+
+/*@Override
     public boolean save(UserAccount userAccount) {
         return false;
     }
@@ -31,9 +54,4 @@ public class MysqlUserAccountDao extends EntityDao<UserAccount> implements IUser
     public UserAccount findById(long id) {
         return null;
     }
-
-    @Override
-    public List<UserAccount> findAll() {
-        return null;
-    }
-}
+*/

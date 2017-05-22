@@ -1,9 +1,10 @@
 package ua.timonov.web.project.model.bet;
 
+import ua.timonov.web.project.dao.Entity;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.user.User;
 
-public class Bet {
+public class Bet implements Entity {
     private long id;
     private User user;
     private BetType betType;
@@ -13,6 +14,7 @@ public class Bet {
     public Bet() {
     }
 
+    // TODO remove if not used
     public Bet(User user, BetType betType, HorseInRace horseInRace, double sum) {
         this.user = user;
         this.betType = betType;
@@ -20,10 +22,20 @@ public class Bet {
         this.sum = sum;
     }
 
+    public Bet(long id, User user, BetType betType, HorseInRace horseInRace, double sum) {
+        this.id = id;
+        this.user = user;
+        this.betType = betType;
+        this.horseInRace = horseInRace;
+        this.sum = sum;
+    }
+
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }

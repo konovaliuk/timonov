@@ -3,6 +3,7 @@ package ua.timonov.web.project.command;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
+import ua.timonov.web.project.service.DataServiceException;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -22,7 +23,7 @@ public class SaveRacePlacesAction extends Action {
 
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.getById(raceId);
         List<HorseInRace> listOfHorsesInRace = horseInRaceService.getByRace(raceId);
@@ -37,7 +38,7 @@ public class SaveRacePlacesAction extends Action {
             for (int i = 0; i < nHorsesInRace; i++) {
                 HorseInRace horseInRace = listOfHorsesInRace.get(i);
                 horseInRace.setFinishPlace(places.get(i));
-                horseInRaceService.save(raceId, horseInRace);
+                horseInRaceService.save(horseInRace, raceId);
             }
             raceService.save(race);
         } else {

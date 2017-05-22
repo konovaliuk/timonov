@@ -1,6 +1,7 @@
 package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.parser.ParsingException;
+import ua.timonov.web.project.service.DataServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public final class ActionInvoker {
     }
 
     public String invoke(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParsingException {
+            throws ServletException, IOException, ParsingException, DataServiceException {
         String actionName = request.getParameter("action");
         Action action = actionMap.get(actionName);
         if (action == null) {

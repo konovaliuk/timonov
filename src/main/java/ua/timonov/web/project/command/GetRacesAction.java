@@ -13,7 +13,7 @@ public class GetRacesAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("races", raceService.getAll());
+        request.setAttribute("races", raceService.findAll());
         return RACES_PAGE;
     }
 }

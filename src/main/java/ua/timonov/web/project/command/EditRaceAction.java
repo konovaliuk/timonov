@@ -17,7 +17,7 @@ public class EditRaceAction extends Action {
     private LocationService locationService = ServiceFactory.getInstance().getLocationService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.getById(raceId);
         request.setAttribute("race", race);

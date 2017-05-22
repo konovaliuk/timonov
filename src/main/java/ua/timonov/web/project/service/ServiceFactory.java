@@ -2,7 +2,7 @@ package ua.timonov.web.project.service;
 
 public class ServiceFactory {
 
-    private static final ServiceFactory INSTANCE = new ServiceFactory();
+    private static final ServiceFactory instance = new ServiceFactory();
 
     private HorseInRaceService horseInRaceService = new HorseInRaceService();
     private RaceService raceService = new RaceService();
@@ -13,7 +13,7 @@ public class ServiceFactory {
     private CountryService countryService = new CountryService();
 
     public static ServiceFactory getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     public HorseInRaceService getHorseInRaceService() {

@@ -1,9 +1,11 @@
 package ua.timonov.web.project.model.user;
 
+import ua.timonov.web.project.dao.Entity;
+
 /**
  *
  */
-public class User {
+public class User implements Entity {
     private long id;
     private UserType userType;
     private String login;

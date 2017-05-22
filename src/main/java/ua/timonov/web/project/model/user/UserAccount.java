@@ -1,6 +1,8 @@
 package ua.timonov.web.project.model.user;
 
-public class UserAccount {
+import ua.timonov.web.project.dao.Entity;
+
+public class UserAccount implements Entity {
     private long id;
     private double balance;
 
