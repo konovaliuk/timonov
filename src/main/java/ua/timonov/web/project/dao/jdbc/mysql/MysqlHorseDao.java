@@ -11,15 +11,18 @@ import java.sql.SQLException;
 
 public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlHorseDao.class);
-    private static final MysqlHorseDao instance = new MysqlHorseDao();
     public static final int NAME_INDEX = 1;
     public static final int YEAR_INDEX = 2;
     public static final int TOTAL_RACES_INDEX = 3;
     public static final int WON_RACES_INDEX = 4;
     public static final int ID_INDEX = 5;
+    public static final String ENTITY_NAME = "horse";
+
+    private static final Logger LOGGER = Logger.getLogger(MysqlHorseDao.class);
+    private static final MysqlHorseDao instance = new MysqlHorseDao();
 
     private MysqlHorseDao() {
+        super(ENTITY_NAME);
     }
 
     public static MysqlHorseDao getInstance() {
@@ -69,7 +72,7 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
         return null;
     }*/
 
-    /*public List<Horse> getAll() {
+    /*public List<Horse> findAll() {
         String sql = "SELECT ID, NAME, YEAR, TOTALRACES, WONRACES FROM HORSE";
 //        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();

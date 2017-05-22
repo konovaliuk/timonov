@@ -41,7 +41,7 @@ public class SaveEditedRaceAction extends Action {
         return RACE_EDIT_PAGE;
     }
 
-    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException {
+    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, DataServiceException {
         String parameterId = request.getParameter("id");
         long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         long locationId = Long.valueOf(request.getParameter("location"));

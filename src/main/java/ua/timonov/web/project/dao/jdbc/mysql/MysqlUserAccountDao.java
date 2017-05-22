@@ -12,10 +12,12 @@ public class MysqlUserAccountDao extends EntityDao<UserAccount> implements UserA
 
     public static final int BALANCE_INDEX = 1;
     public static final int ID_INDEX = 2;
+    public static final String ENTITY_NAME = "account";
 
     private static final MysqlUserAccountDao instance = new MysqlUserAccountDao();
 
     private MysqlUserAccountDao() {
+        super(ENTITY_NAME);
     }
 
     public static MysqlUserAccountDao getInstance() {

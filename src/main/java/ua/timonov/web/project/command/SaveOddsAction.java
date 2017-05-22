@@ -2,10 +2,7 @@ package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
-import ua.timonov.web.project.service.HorseInRaceService;
-import ua.timonov.web.project.service.OddsService;
-import ua.timonov.web.project.service.RaceService;
-import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +16,7 @@ public class SaveOddsAction extends Action {
     private OddsService oddsService = ServiceFactory.getInstance().getOddsService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
         Odds odds = createOddsFromRequest(request);
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
         // TODO what if there is such odds in DB

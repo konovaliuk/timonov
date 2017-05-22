@@ -11,12 +11,15 @@ import java.sql.SQLException;
 
 public class MysqlCountryDao extends EntityDao<Country> implements CountryDao {
 
+    public static final int NAME_INDEX = 1;
+    public static final int ID_INDEX = 2;
+    public static final String ENTITY_NAME = "country";
+
     private static final Logger LOGGER = Logger.getLogger(MysqlCountryDao.class);
     private static final MysqlCountryDao instance = new MysqlCountryDao();
-    public static final int ID_INDEX = 2;
-    public static final int NAME_INDEX = 1;
 
     private MysqlCountryDao() {
+        super(ENTITY_NAME);
     }
 
     public static MysqlCountryDao getInstance() {
@@ -40,7 +43,7 @@ public class MysqlCountryDao extends EntityDao<Country> implements CountryDao {
     }
 }
 
-/*public List<Country> getAll() {
+/*public List<Country> findAll() {
         String sql = "SELECT id AS country_id, name AS country FROM country";
 //        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();

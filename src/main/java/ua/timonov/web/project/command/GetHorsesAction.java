@@ -12,7 +12,7 @@ public class GetHorsesAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("horses", horseService.getAll());
+        request.setAttribute("horses", horseService.findAll());
         return HORSES_PAGE;
     }
 }

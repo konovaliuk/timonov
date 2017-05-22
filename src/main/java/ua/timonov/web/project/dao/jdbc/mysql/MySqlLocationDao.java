@@ -15,11 +15,13 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
     public static final int COUNTRY_ID_INDEX = 1;
     public static final int NAME_INDEX = 2;
     public static final int ID_INDEX = 3;
+    public static final String ENTITY_NAME = "location";
 
     private static final Logger LOGGER = Logger.getLogger(MySqlLocationDao.class);
     private static final MySqlLocationDao instance = new MySqlLocationDao();
 
     private MySqlLocationDao() {
+        super(ENTITY_NAME);
     }
 
     public static MySqlLocationDao getInstance() {
@@ -70,7 +72,7 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
         return null;
     }*/
 
-    /*public List<Location> getAll() {
+    /*public List<Location> findAll() {
         String sql = "SELECT location.id AS location_id, location.name AS location, " +
                 "country.id AS country_id, country.name AS country FROM location\n" +
                 "INNER JOIN country ON location.country_id = country.id";

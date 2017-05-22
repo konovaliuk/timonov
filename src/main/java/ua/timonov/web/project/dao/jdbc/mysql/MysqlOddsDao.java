@@ -12,16 +12,19 @@ import java.util.List;
 
 public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlOddsDao.class);
-    private static final MysqlOddsDao instance = new MysqlOddsDao();
-    public static final String FIND_BY_HORSE_IN_RACE = "findByHorseInRace";
     public static final int HORSE_IN_RACE_ID_INDEX = 1;
     public static final int BET_TYPE_INDEX = 2;
     public static final int TOTAL_INDEX = 3;
     public static final int CHANCES_INDEX = 4;
     public static final int ID_INDEX = 5;
+    public static final String FIND_BY_HORSE_IN_RACE = "findByHorseInRace";
+    public static final String ENTITY_NAME = "odds";
+
+    private static final Logger LOGGER = Logger.getLogger(MysqlOddsDao.class);
+    private static final MysqlOddsDao instance = new MysqlOddsDao();
 
     private MysqlOddsDao() {
+        super(ENTITY_NAME);
     }
 
     public static MysqlOddsDao getInstance() {

@@ -16,13 +16,15 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public static final int HORSE_ID_INDEX = 2;
     public static final int FINISH_PLACE_INDEX = 3;
     public static final int ID_INDEX = 4;
+    public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
+    public static final String ENTITY_NAME = "horseInRace";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlHorseInRaceDao.class);
     private static final MysqlHorseInRaceDao instance = new MysqlHorseInRaceDao();
-    public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
+
 
     private MysqlHorseInRaceDao() {
-        super();
+        super(ENTITY_NAME);
     }
 
     public static MysqlHorseInRaceDao getInstance() {
@@ -99,7 +101,7 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
         return null;
     }*/
 
-    /*public List<HorseInRace> getAll() {
+    /*public List<HorseInRace> findAll() {
         String sql = "SELECT horse_in_race.id AS id, horse_id, horse.name, horse.year, horse.totalraces, " +
                 "horse.wonraces, place\n" +
                 "FROM horse_in_race\n" +

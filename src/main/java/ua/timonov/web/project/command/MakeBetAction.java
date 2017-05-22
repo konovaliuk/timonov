@@ -20,7 +20,7 @@ public class MakeBetAction extends Action {
     private BetService betService = ServiceFactory.getInstance().getBetService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
         Bet bet = createBetFromRequest(request);
         betService.save(bet);
         request.setAttribute("bet", bet);

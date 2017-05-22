@@ -14,15 +14,18 @@ import java.sql.SQLException;
 
 public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
-    private static final MysqlBetDao instance = new MysqlBetDao();
     public static final int USER_INDEX = 1;
     public static final int BET_TYPE_INDEX = 2;
     public static final int HORSE_IN_RACE_INDEX = 3;
     public static final int SUM_INDEX = 4;
     public static final int ID_INDEX = 5;
+    public static final String ENTITY_NAME = "bet";
+
+    private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
+    private static final MysqlBetDao instance = new MysqlBetDao();
 
     private MysqlBetDao() {
+        super(ENTITY_NAME);
     }
 
     public static MysqlBetDao getInstance() {
