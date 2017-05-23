@@ -2,13 +2,13 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 
 import ua.timonov.web.project.dao.daointerface.UserAccountDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
-import ua.timonov.web.project.model.user.UserAccount;
+import ua.timonov.web.project.model.user.Account;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MysqlUserAccountDao extends EntityDao<UserAccount> implements UserAccountDao {
+public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccountDao {
 
     public static final int BALANCE_INDEX = 1;
     public static final int ID_INDEX = 2;
@@ -25,14 +25,14 @@ public class MysqlUserAccountDao extends EntityDao<UserAccount> implements UserA
     }
 
     @Override
-    protected UserAccount getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+    protected Account getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         double balance = resultSet.getDouble("balance");
-        return new UserAccount(id, balance);
+        return new Account(id, balance);
     }
 
     @Override
-    protected void setEntityToParameters(UserAccount account, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Account account, PreparedStatement statement, long... externalId)
             throws SQLException {
 
         statement.setDouble(BALANCE_INDEX, account.getBalance());

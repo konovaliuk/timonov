@@ -2,14 +2,14 @@ package ua.timonov.web.project.model.user;
 
 import ua.timonov.web.project.dao.Entity;
 
-public class UserAccount implements Entity {
+public class Account implements Entity {
     private long id;
     private double balance;
 
-    public UserAccount() {
+    public Account() {
     }
 
-    public UserAccount(long id, double balance) {
+    public Account(long id, double balance) {
         this.id = id;
         this.balance = balance;
     }
@@ -33,9 +33,9 @@ public class UserAccount implements Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserAccount)) return false;
+        if (!(o instanceof Account)) return false;
 
-        UserAccount that = (UserAccount) o;
+        Account that = (Account) o;
 
         if (id != that.id) return false;
         return Double.compare(that.balance, balance) == 0;

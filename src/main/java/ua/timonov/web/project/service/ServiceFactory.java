@@ -4,43 +4,48 @@ public class ServiceFactory {
 
     private static final ServiceFactory instance = new ServiceFactory();
 
-    private HorseInRaceService horseInRaceService = new HorseInRaceService();
-    private RaceService raceService = new RaceService();
-    private BetService betService = new BetService();
-    private OddsService oddsService = new OddsService();
-    private UserService userService = new UserService();
-    private LocationService locationService = new LocationService();
-    private CountryService countryService = new CountryService();
+    private HorseInRaceService horseInRaceService = HorseInRaceService.getInstance();
+    private HorseService horseService = HorseService.getInstance();
+    private RaceService raceService = RaceService.getInstance();
+    private BetService betService = BetService.getInstance();
+    private OddsService oddsService = OddsService.getInstance();
+    private UserService userService = UserService.getInstance();
+    private LocationService locationService = LocationService.getInstance();
+    private CountryService countryService = CountryService.getInstance();
 
     public static ServiceFactory getInstance() {
         return instance;
     }
 
-    public HorseInRaceService getHorseInRaceService() {
+    public HorseService createHorseService() {
+        return horseService;
+    }
+
+    public HorseInRaceService createHorseInRaceService() {
         return horseInRaceService;
     }
 
-    public RaceService getRaceService() {
+    public RaceService createRaceService() {
         return raceService;
     }
 
-    public BetService getBetService() {
+    public BetService createBetService() {
         return betService;
     }
 
-    public OddsService getOddsService() {
+    public OddsService createOddsService() {
         return oddsService;
     }
 
-    public UserService getUserService() {
+    public UserService createUserService() {
         return userService;
     }
 
-    public LocationService getLocationService() {
+    public LocationService createLocationService() {
         return locationService;
     }
 
-    public CountryService getCountryService() {
+    public CountryService createCountryService() {
         return countryService;
     }
 }

@@ -35,19 +35,9 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     @Override
     protected Bet getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
-
-        // TODO add JOIN to SELECT
-        long userId = resultSet.getLong("user_id");
-        User user = MysqlUserDao.getInstance().findById(userId);
-
-        // TODO add JOIN to SELECT
-        int betTypeId = resultSet.getInt("betType_id");
-        BetType betType = BetType.values()[betTypeId];
-
-        // TODO add JOIN to SELECT
-        long horseInRaceId = resultSet.getLong("horse_in_race_id");
-        HorseInRace horseInRace = MysqlHorseInRaceDao.getInstance().findById(horseInRaceId);
-
+        User user = MysqlUserDao.getInstance().getEntityFromResultSet(resultSet);
+        BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_type")));
+        HorseInRace horseInRace = MysqlHorseInRaceDao.getInstance().getEntityFromResultSet(resultSet);
         double sum = resultSet.getDouble("sum");
         return new Bet(id, user, betType, horseInRace, sum);
     }

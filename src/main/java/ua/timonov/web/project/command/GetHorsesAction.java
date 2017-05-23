@@ -1,6 +1,7 @@
 package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.service.HorseService;
+import ua.timonov.web.project.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 public class GetHorsesAction extends Action {
     public static final String HORSES_PAGE = "/WEB-INF/jsp/horses.jsp";
 
-    private HorseService horseService = new HorseService();
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private HorseService horseService = serviceFactory.createHorseService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

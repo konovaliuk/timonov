@@ -1,10 +1,10 @@
 package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
-import ua.timonov.web.project.dao.JdbcDataManager;
+import ua.timonov.web.project.dao.DaoFactory;
+import ua.timonov.web.project.dao.DatabaseType;
 import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
-import ua.timonov.web.project.dao.jdbc.mysql.MysqlDaoFactory;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
@@ -12,11 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HorseInRaceService {
-    private static final Logger LOGGER = Logger.getLogger(HorseInRaceService.class);
-    private static final JdbcDataManager dataManager = JdbcDataManager.getInstance();
 
-    private HorseInRaceDao horseInRaceDao = MysqlDaoFactory.getInstance().createHorseInRaceDao();
-    private OddsDao oddsDao = MysqlDaoFactory.getInstance().createOddsDao();
+    private static final Logger LOGGER = Logger.getLogger(HorseInRaceService.class);
+    private static final HorseInRaceService instance = new HorseInRaceService();
+
+    private DaoFactory daoFactory = DaoFactory.getFactory(DatabaseType.MYSQL);
+    private HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
+    private OddsDao oddsDao = daoFactory.createOddsDao();
+
+    private HorseInRaceService() {
+    }
+
+    public static HorseInRaceService getInstance() {
+        return instance;
+    }
 
     public List<HorseInRace> findAll() {
         return horseInRaceDao.findAll();

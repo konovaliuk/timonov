@@ -30,8 +30,8 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
     }
 
     protected Horse getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("id");
-        String name = resultSet.getString("name");
+        long id = resultSet.getLong("horse_id");
+        String name = resultSet.getString("horse_name");
         int yearOfBirth = resultSet.getInt("year");
         int totalRaces = resultSet.getInt("totalraces");
         int wonRaces = resultSet.getInt("wonraces");

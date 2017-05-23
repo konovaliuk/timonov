@@ -3,8 +3,9 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.UserDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
+import ua.timonov.web.project.model.user.Client;
 import ua.timonov.web.project.model.user.User;
-import ua.timonov.web.project.model.user.UserAccount;
+import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.UserType;
 
 import java.sql.PreparedStatement;
@@ -33,14 +34,19 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
     }
 
     protected User getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("id");
-        UserType userType = UserType.valueOf(transformToConstantView(resultSet.getString("role")));
+        long id = resultSet.getLong("user_id");
+        UserType userType = UserType.valueOf(convertToEnumNameType(resultSet.getString("role")));
         String name = resultSet.getString("name");
         String login = resultSet.getString("login");
         String password = resultSet.getString("password");
-        long accountId = resultSet.getLong("accountId");
-        double balance = resultSet.getDouble("balance");
-        return new User(id, userType, login, password, name, new UserAccount(accountId, balance));
+        if (userType == UserType.CLIENT) {
+            long accountId = resultSet.getLong("account_id");
+            double balance = resultSet.getDouble("balance");
+            Account account = new Account(accountId, balance);
+            return new Client(id, userType, login, password, name, account);
+        } else {
+            return new User(id, userType, login, password, name);
+        }
     }
 
     @Override
@@ -48,10 +54,13 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
             throws SQLException {
 
         statement.setInt(USER_TYPE_INDEX, user.getUserType().ordinal() + 1);
-        statement.setLong(ACCOUNT_ID_INDEX, user.getAccount().getId());
         statement.setString(LOGIN_INDEX, user.getLogin());
         statement.setString(PASSWORD_INDEX, user.getPassword());
         statement.setString(NAME_INDEX, user.getName());
+        if (user instanceof Client) {
+            Client client = (Client) user;
+            statement.setLong(ACCOUNT_ID_INDEX, client.getAccount().getId());
+        }
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, user.getId());
         }

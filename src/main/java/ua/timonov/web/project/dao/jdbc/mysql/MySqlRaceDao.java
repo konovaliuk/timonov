@@ -1,6 +1,7 @@
 package ua.timonov.web.project.dao.jdbc.mysql;
 
 import org.apache.log4j.Logger;
+import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.dao.daointerface.RaceDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.location.Location;
@@ -36,14 +37,13 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
     @Override
     public Race findByHorseInRaceId(long horseInRaceId) {
         String sql = getQuery(FIND_BY_HORSE_IN_RACE_ID);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, horseInRaceId);
-            LOGGER.info(ps.toString());
+            statement.setLong(1, horseInRaceId);
+            LOGGER.info(statement.toString());
             Race result = null;
-            try (ResultSet resultSet = ps.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     result = getEntityFromResultSet(resultSet);
                 }
@@ -52,13 +52,13 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
 //            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while searching in table " + entityName, e);
         }
     }
 
     protected Race getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
-        RaceStatus raceStatus = RaceStatus.valueOf(transformToConstantView(resultSet.getString("status")));
+        RaceStatus raceStatus = RaceStatus.valueOf(convertToEnumNameType(resultSet.getString("status")));
         Location location = getLocationFromResultSet(resultSet);
         Date date = resultSet.getDate("date");
         return new Race(id, raceStatus, location, date);

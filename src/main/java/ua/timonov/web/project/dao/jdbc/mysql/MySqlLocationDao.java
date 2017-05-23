@@ -35,6 +35,11 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
         return new Location(id, location, country);
     }
 
+    private Country getCountryFromResultSet(ResultSet resultSet) throws SQLException {
+        MysqlCountryDao mysqlCountryDao = MysqlCountryDao.getInstance();
+        return mysqlCountryDao.getEntityFromResultSet(resultSet);
+    }
+
     @Override
     protected void setEntityToParameters(Location location, PreparedStatement statement, long... externalId)
             throws SQLException {
@@ -44,11 +49,6 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, location.getId());
         }
-    }
-
-    private Country getCountryFromResultSet(ResultSet resultSet) throws SQLException {
-        MysqlCountryDao mysqlCountryDao = MysqlCountryDao.getInstance();
-        return mysqlCountryDao.getEntityFromResultSet(resultSet);
     }
 }
 

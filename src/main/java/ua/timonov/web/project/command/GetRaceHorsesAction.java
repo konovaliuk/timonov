@@ -1,8 +1,9 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.service.DataServiceException;
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
+import ua.timonov.web.project.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,11 +12,12 @@ public class GetRaceHorsesAction extends Action {
 
     public static final String RACE_PAGE = "/WEB-INF/jsp/race.jsp";
 
-    private RaceService raceService = new RaceService();
-    private HorseInRaceService horseInRaceService = new HorseInRaceService();
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private RaceService raceService = serviceFactory.createRaceService();
+    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         request.setAttribute("race", raceService.getById(raceId));
         request.setAttribute("horsesInRace", horseInRaceService.getByRace(raceId));

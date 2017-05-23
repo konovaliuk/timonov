@@ -1,8 +1,9 @@
 package ua.timonov.web.project.dao.jdbc;
 
 import org.apache.log4j.Logger;
-import ua.timonov.web.project.dao.DataSourceFactory;
 import ua.timonov.web.project.dao.Dao;
+import ua.timonov.web.project.exception.DaoLayerException;
+import ua.timonov.web.project.dao.DataSourceFactory;
 import ua.timonov.web.project.dao.Entity;
 
 import javax.sql.DataSource;
@@ -37,9 +38,9 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     @Override
     public boolean save(T entity, long... externalId) {
         if (entity.getId() == 0) {
-            long id = insert(entity, externalId);
-            entity.setId(id);
-            return id != 0;
+//            long id = insert(entity, externalId);
+//            entity.setId(id);
+            return insert(entity, externalId);
         } else {
             return update(entity, externalId);
         }
@@ -47,52 +48,50 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     private boolean update(T entity, long... externalId) {
         String sql = getQuery(UPDATE);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
+            LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement, externalId);
             statement.execute();
-            return true;
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while updating table " + entityName, e);
         }
     }
 
-    private long insert(T entity, long... externalId) {
+    private boolean insert(T entity, long... externalId) {
         String sql = getQuery(INSERT);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
+            LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement, externalId);
-//            statement.execute();
-//            statement.getUpdateCount();
-            statement.executeUpdate();
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            return statement.executeUpdate() > 0;
+            /*try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 generatedKeys.next();
                 return generatedKeys.getLong(1);
-            }
+            }*/
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while inserting into table " + entityName, e);
         }
     }
 
     @Override
     public boolean delete(long id) {
         String sql = getQuery(DELETE);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setLong(1, id);
+            LOGGER.info(statement.toString());
             statement.execute();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while deleting from table " + entityName, e);
         }
     }
 
@@ -100,13 +99,12 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     @Override
     public List<T> findAll() {
         String sql = getQuery(FIND_ALL);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            LOGGER.info(ps.toString());
+            LOGGER.info(statement.toString());
             List<T> result = new ArrayList<>();
-            try (ResultSet resultSet = ps.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(getEntityFromResultSet(resultSet));
                 }
@@ -116,22 +114,20 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while searching in table " + entityName, e);
         }
     }
 
     @Override
     public T findById(long id) {
         String sql = getQuery(FIND_BY_ID);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, id);
-
-            LOGGER.info(ps.toString());
+            statement.setLong(1, id);
+            LOGGER.info(statement.toString());
             T result = null;
-            try (ResultSet resultSet = ps.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     result = getEntityFromResultSet(resultSet);
                 }
@@ -140,7 +136,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 //            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while searching in table " + entityName, e);
         }
     }
 
@@ -153,7 +149,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     protected abstract void setEntityToParameters(T entity, PreparedStatement statement, long... externalId)
             throws SQLException;
 
-    protected String transformToConstantView(String stringFromDatabase) {
+    protected String convertToEnumNameType(String stringFromDatabase) {
         return stringFromDatabase.toUpperCase().replace(' ', '_');
     }
 }

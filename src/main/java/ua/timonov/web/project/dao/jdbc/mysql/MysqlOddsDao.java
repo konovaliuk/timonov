@@ -3,6 +3,7 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
+import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
 
@@ -34,7 +35,6 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     @Override
     public List<Odds> findByHorseInRace(long horseInRaceId) {
         String sql = getQuery(FIND_BY_HORSE_IN_RACE);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -50,14 +50,14 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while searching in table " + entityName, e);
         }
     }
 
     protected Odds getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
 //        long horseInRaceId = resultSet.getLong("horse_in_race_id");
-        BetType betType = BetType.valueOf(transformToConstantView(resultSet.getString("bet_name")));
+        BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_name")));
         int total = resultSet.getInt("total");
         int chances = resultSet.getInt("chances");
         return new Odds(id, betType, total, chances);

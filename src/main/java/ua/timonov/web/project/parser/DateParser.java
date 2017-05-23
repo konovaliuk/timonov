@@ -1,5 +1,7 @@
 package ua.timonov.web.project.parser;
 
+import ua.timonov.web.project.exception.ParsingException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

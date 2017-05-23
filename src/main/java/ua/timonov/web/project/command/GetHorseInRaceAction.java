@@ -11,8 +11,8 @@ public class GetHorseInRaceAction extends Action {
 
     public static final String HORSE_IN_RACE_PAGE = "/WEB-INF/jsp/horseInRace.jsp";
 
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
+    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
+    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

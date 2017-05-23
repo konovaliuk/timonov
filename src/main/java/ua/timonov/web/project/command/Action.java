@@ -1,13 +1,13 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.parser.ParsingException;
-import ua.timonov.web.project.service.DataServiceException;
+import ua.timonov.web.project.exception.ParsingException;
+import ua.timonov.web.project.exception.ServiceLayerException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 abstract public class Action {
 
-    public abstract String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, DataServiceException;
+    public abstract String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceLayerException;
 //    throws ServletException, IOException
 }

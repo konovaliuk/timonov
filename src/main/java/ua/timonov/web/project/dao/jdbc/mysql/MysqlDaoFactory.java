@@ -66,6 +66,6 @@ public class MysqlDaoFactory extends DaoFactory {
 
     @Override
     public UserAccountDao createUserAccountDao() {
-        return null;
+        return userAccountDao;
     }
 }

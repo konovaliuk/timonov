@@ -3,6 +3,7 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
+import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
@@ -31,17 +32,15 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
         return instance;
     }
 
-    // TODO remove if not used
     public List<HorseInRace> findListByRaceId(long raceId) {
         String sql = getQuery(FIND_LIST_BY_RACE_ID);
-//        LOGGER.info(sql);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, raceId);
-            LOGGER.info(ps.toString());
+            statement.setLong(1, raceId);
+            LOGGER.info(statement.toString());
             List<HorseInRace> result = new ArrayList<>();
-            try (ResultSet resultSet = ps.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(getEntityFromResultSet(resultSet));
                 }
@@ -50,13 +49,12 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
+            throw new DaoLayerException("Database error while searching in table " + entityName, e);
         }
     }
 
     protected HorseInRace getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("id");
-//        long raceId = resultSet.getLong("race_id");
+        long id = resultSet.getLong("horse_in_race_id");
         int finishPlace = resultSet.getInt("place");
         Horse horse = getHorseFromResultSet(resultSet);
         return new HorseInRace(id, horse, finishPlace);

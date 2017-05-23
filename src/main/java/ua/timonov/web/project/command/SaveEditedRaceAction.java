@@ -1,11 +1,12 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.parser.FactoryParser;
 import ua.timonov.web.project.parser.Parser;
-import ua.timonov.web.project.parser.ParsingException;
+import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +18,14 @@ public class SaveEditedRaceAction extends Action {
     public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
     public static final String DATE = "date";
 
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private CountryService countryService = ServiceFactory.getInstance().getCountryService();
-    private LocationService locationService = ServiceFactory.getInstance().getLocationService();
+    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
+    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
+    private CountryService countryService = ServiceFactory.getInstance().createCountryService();
+    private LocationService locationService = ServiceFactory.getInstance().createLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
-            throws ParsingException, DataServiceException {
+            throws ParsingException, ServiceLayerException {
         Race race = createRaceFromRequest(request);
         RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
         race.setRaceStatus(raceStatus);
@@ -41,7 +42,7 @@ public class SaveEditedRaceAction extends Action {
         return RACE_EDIT_PAGE;
     }
 
-    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, DataServiceException {
+    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceLayerException {
         String parameterId = request.getParameter("id");
         long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         long locationId = Long.valueOf(request.getParameter("location"));

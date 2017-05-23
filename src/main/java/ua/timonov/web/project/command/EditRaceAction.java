@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.*;
@@ -11,13 +12,13 @@ public class EditRaceAction extends Action {
 
     public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
 
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private CountryService countryService = ServiceFactory.getInstance().getCountryService();
-    private LocationService locationService = ServiceFactory.getInstance().getLocationService();
+    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
+    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
+    private CountryService countryService = ServiceFactory.getInstance().createCountryService();
+    private LocationService locationService = ServiceFactory.getInstance().createLocationService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.getById(raceId);
         request.setAttribute("race", race);

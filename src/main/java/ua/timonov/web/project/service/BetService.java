@@ -1,24 +1,34 @@
 package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
+import ua.timonov.web.project.dao.DaoFactory;
+import ua.timonov.web.project.dao.DatabaseType;
 import ua.timonov.web.project.dao.daointerface.BetDao;
-import ua.timonov.web.project.dao.jdbc.mysql.MysqlDaoFactory;
+import ua.timonov.web.project.exception.AppException;
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.bet.Bet;
 
 public class BetService {
 
     private static final Logger LOGGER = Logger.getLogger(BetService.class);
+    private static final BetService instance = new BetService();
 
-    private BetDao betDao = MysqlDaoFactory.getInstance().createBetDao();
+    private DaoFactory daoFactory = DaoFactory.getFactory(DatabaseType.MYSQL);
+    private BetDao betDao = daoFactory.createBetDao();
 
-    public void save(Bet bet) throws DataServiceException {
+    private BetService() {
+    }
+
+    public static BetService getInstance() {
+        return instance;
+    }
+
+    public void save(Bet bet) {
         try {
             betDao.save(bet);
-        } catch (Exception e) {
+        } catch (AppException e) {
             LOGGER.error(e.getMessage());
-            // TODO - customize exception!
-            throw new DataServiceException("Bet saving failed!", e);
+            throw new ServiceLayerException("Bet saving failed!", e);
         }
-
     }
 }

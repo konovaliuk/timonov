@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.horse.HorseInRace;
@@ -13,14 +14,15 @@ public class MakeBetAction extends Action {
 
     public static final String BET_SAVED_PAGE = "/WEB-INF/jsp/bet/save.jsp";
 
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
-    private OddsService oddsService = ServiceFactory.getInstance().getOddsService();
-    private UserService userService = ServiceFactory.getInstance().getUserService();
-    private BetService betService = ServiceFactory.getInstance().getBetService();
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
+    private RaceService raceService = serviceFactory.createRaceService();
+    private OddsService oddsService = serviceFactory.createOddsService();
+    private UserService userService = serviceFactory.createUserService();
+    private BetService betService = serviceFactory.createBetService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
         Bet bet = createBetFromRequest(request);
         betService.save(bet);
         request.setAttribute("bet", bet);

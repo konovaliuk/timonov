@@ -18,6 +18,7 @@ public class DataSourceFactory {
     public static final String JDBC_USERNAME = "jdbc.username";
     public static final String JDBC_PASSWORD = "jdbc.password";
     public static final String JDBC_URL = "jdbc.url";
+    public static final String POOL_SIZE = "jdbc.poolSize";
 
     private DataSource dataSource;
 
@@ -46,11 +47,12 @@ public class DataSourceFactory {
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(properties.getProperty(JDBC_DRIVER));
-        dataSource.setUsername(properties.getProperty(JDBC_USERNAME));
-        dataSource.setPassword(properties.getProperty(JDBC_PASSWORD));
-        dataSource.setUrl(properties.getProperty(JDBC_URL));
-        return dataSource;
+        BasicDataSource connectionPool = new BasicDataSource();
+        connectionPool.setDriverClassName(properties.getProperty(JDBC_DRIVER));
+        connectionPool.setUsername(properties.getProperty(JDBC_USERNAME));
+        connectionPool.setPassword(properties.getProperty(JDBC_PASSWORD));
+        connectionPool.setUrl(properties.getProperty(JDBC_URL));
+        connectionPool.setInitialSize(Integer.valueOf(properties.getProperty(POOL_SIZE)));
+        return connectionPool;
     }
 }

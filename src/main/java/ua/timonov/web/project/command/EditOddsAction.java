@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EditOddsAction extends Action {
 
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
-    private OddsService oddsService = ServiceFactory.getInstance().getOddsService();
+    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
+    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
+    private OddsService oddsService = ServiceFactory.getInstance().createOddsService();
 
     public static final String HORSE_IN_RACE_BOOKIE_PAGE = "/WEB-INF/jsp/odds/edit.jsp";
     @Override

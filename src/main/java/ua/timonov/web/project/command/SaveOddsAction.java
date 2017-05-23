@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.service.*;
@@ -11,12 +12,12 @@ public class SaveOddsAction extends Action {
 
     public static final String HORSE_IN_RACE_BOOKIE_PAGE = "/WEB-INF/jsp/horseInRaceBookie.jsp";
 
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().getHorseInRaceService();
-    private RaceService raceService = ServiceFactory.getInstance().getRaceService();
-    private OddsService oddsService = ServiceFactory.getInstance().getOddsService();
+    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
+    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
+    private OddsService oddsService = ServiceFactory.getInstance().createOddsService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DataServiceException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
         Odds odds = createOddsFromRequest(request);
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
         // TODO what if there is such odds in DB
