@@ -1,6 +1,6 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.exception.ServiceLayerException;
+import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.horse.HorseInRace;
@@ -22,7 +22,7 @@ public class MakeBetAction extends Action {
     private BetService betService = serviceFactory.createBetService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         Bet bet = createBetFromRequest(request);
         betService.save(bet);
         request.setAttribute("bet", bet);
@@ -36,11 +36,11 @@ public class MakeBetAction extends Action {
         long horseInRaceId = Long.valueOf(request.getParameter("horse_in_race"));
         double betSum = Double.valueOf(request.getParameter("sum"));
 
-        BetType betType = oddsService.getById(oddsId).getBetType();
-        HorseInRace horseInRace = horseInRaceService.getById(horseInRaceId);
+        BetType betType = oddsService.findById(oddsId).getBetType();
+        HorseInRace horseInRace = horseInRaceService.findById(horseInRaceId);
         // TODO
         long userId = 6; // Long.valueOf(request.getParameter("userId"));
-        User user = userService.getById(userId);
+        User user = userService.findById(userId);
 
         return new Bet(user, betType, horseInRace, betSum);
     }

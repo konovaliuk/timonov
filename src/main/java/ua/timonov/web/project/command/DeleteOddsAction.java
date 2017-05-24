@@ -25,7 +25,7 @@ public class DeleteOddsAction extends Action {
         oddsService.delete(oddsId);
 
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
-        request.setAttribute("horseInRace", horseInRaceService.getById(horseInRaceId));
+        request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
         request.setAttribute("race", raceService.getByHorseInRaceId(horseInRaceId));
         request.setAttribute("betTypes", BetType.values());
         return HORSE_IN_RACE_BOOKIE_PAGE ;

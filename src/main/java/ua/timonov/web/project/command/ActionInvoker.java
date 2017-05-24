@@ -1,7 +1,7 @@
 package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.exception.ParsingException;
-import ua.timonov.web.project.exception.ServiceLayerException;
+import ua.timonov.web.project.exception.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public final class ActionInvoker {
     }
 
     public String invoke(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParsingException, ServiceLayerException {
+            throws ServletException, IOException, ParsingException, ServiceException {
         String actionName = request.getParameter("action");
         Action action = actionMap.get(actionName);
         if (action == null) {

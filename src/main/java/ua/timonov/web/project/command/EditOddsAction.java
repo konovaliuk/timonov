@@ -20,10 +20,10 @@ public class EditOddsAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long oddsId = Long.valueOf(request.getParameter("id"));
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
-        request.setAttribute("horseInRace", horseInRaceService.getById(horseInRaceId));
+        request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
         request.setAttribute("race", raceService.getByHorseInRaceId(horseInRaceId));
         request.setAttribute("betTypes", BetType.values());
-        request.setAttribute("odds", oddsService.getById(oddsId));
+        request.setAttribute("odds", oddsService.findById(oddsId));
         return HORSE_IN_RACE_BOOKIE_PAGE ;
     }
 }

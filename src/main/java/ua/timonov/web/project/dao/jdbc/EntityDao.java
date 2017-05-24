@@ -2,7 +2,6 @@ package ua.timonov.web.project.dao.jdbc;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.Dao;
-import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.dao.DataSourceFactory;
 import ua.timonov.web.project.dao.Entity;
 
@@ -54,10 +53,13 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement, externalId);
             statement.execute();
-            return statement.executeUpdate() > 0;
+            int rowUpdated = statement.getUpdateCount();
+            LOGGER.info(rowUpdated + " row(s) updated");
+            return rowUpdated > 0;
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while updating table " + entityName, e);
+            LOGGER.error("Database error while updating table " + entityName +
+                    ", exception message: " + e.getMessage());
+            return false;
         }
     }
 
@@ -68,14 +70,18 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
             LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement, externalId);
-            return statement.executeUpdate() > 0;
+            statement.executeUpdate();
+            int rowInserted = statement.executeUpdate();
+            LOGGER.info(rowInserted + " row(s) inserted");
+            return rowInserted > 0;
             /*try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 generatedKeys.next();
                 return generatedKeys.getLong(1);
             }*/
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while inserting into table " + entityName, e);
+            LOGGER.error("Database error while inserting into table " + entityName +
+                    ", exception message: " + e.getMessage());
+            return false;
         }
     }
 
@@ -88,10 +94,13 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             statement.setLong(1, id);
             LOGGER.info(statement.toString());
             statement.execute();
+            int rowUpdated = statement.getUpdateCount();
+            LOGGER.info(rowUpdated + " row(s) deleted");
             return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while deleting from table " + entityName, e);
+            LOGGER.error("Database error while deleting from table " + entityName +
+                    ", exception message: " + e.getMessage());
+            return false;
         }
     }
 
@@ -109,12 +118,14 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
+            LOGGER.info(result.size() + " records founded");
             return result;
             // TODO
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while searching in table " + entityName, e);
+            LOGGER.error("Database error while searching in table " + entityName +
+                    ", exception message: " + e.getMessage());
+            return null;
         }
     }
 
@@ -132,11 +143,17 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                     result = getEntityFromResultSet(resultSet);
                 }
             }
+            if (result != null) {
+                LOGGER.info("Item with id = " + id + " founded in table " + entityName);
+            } else {
+                LOGGER.info("Item with id = " + id + " not founded in table " + entityName);
+            }
             return result;
 //            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while searching in table " + entityName, e);
+            LOGGER.error("Database error while searching in table " + entityName + " record with id = " + id +
+                    ", exception message: " + e.getMessage());
+            return null;
         }
     }
 

@@ -1,6 +1,6 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.exception.ServiceLayerException;
+import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -17,10 +17,10 @@ public class GetRaceHorsesAction extends Action {
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceLayerException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
-        request.setAttribute("race", raceService.getById(raceId));
-        request.setAttribute("horsesInRace", horseInRaceService.getByRace(raceId));
+        request.setAttribute("race", raceService.findById(raceId));
+        request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(raceId));
         return RACE_PAGE;
     }
 }

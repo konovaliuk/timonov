@@ -1,7 +1,6 @@
 package ua.timonov.web.project.dao.jdbc.mysql;
 
 import org.apache.log4j.Logger;
-import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.dao.daointerface.RaceDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.location.Location;
@@ -48,11 +47,18 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
                     result = getEntityFromResultSet(resultSet);
                 }
             }
-            return result; // TODO
+            if (result != null) {
+                LOGGER.info("Race founded by horse in race with id = " + horseInRaceId);
+            } else {
+                LOGGER.info("Race not founded by horse in race with id = " + horseInRaceId);
+            }
+            return result;
+            // TODO
 //            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while searching in table " + entityName, e);
+            LOGGER.error("Database error while searching in table " + ENTITY_NAME + " by horseInRace id " +
+                    horseInRaceId + ", exception message: " + e.getMessage());
+            return null;
         }
     }
 

@@ -3,11 +3,13 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
-import ua.timonov.web.project.exception.DaoLayerException;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +48,13 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
+            LOGGER.info(result.size() + " records founded");
             return result;
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DaoLayerException("Database error while searching in table " + entityName, e);
+            LOGGER.error("Database error while searching in table " + ENTITY_NAME +
+                    " by horseInRace id = " + horseInRaceId + ", exception message: " + e.getMessage());
+            return null;
         }
     }
 

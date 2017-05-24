@@ -1,37 +1,34 @@
 package ua.timonov.web.project.service;
 
-import org.apache.log4j.Logger;
-import ua.timonov.web.project.dao.DaoFactory;
-import ua.timonov.web.project.dao.DatabaseType;
+import ua.timonov.web.project.dao.Dao;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
-import ua.timonov.web.project.exception.ServiceLayerException;
 import ua.timonov.web.project.model.bet.Odds;
 
-public class OddsService {
+public class OddsService extends DataService<Odds> {
 
-    private static final Logger LOGGER = Logger.getLogger(BetService.class);
-    private static final OddsService instance = new OddsService();
+    private static OddsDao oddsDao = daoFactory.createOddsDao();
+    private static final OddsService instance = new OddsService(oddsDao);
 
-    private DaoFactory daoFactory = DaoFactory.getFactory(DatabaseType.MYSQL);
-    private OddsDao oddsDao = daoFactory.createOddsDao();
-
-    private OddsService() {
+    private OddsService(Dao<Odds> oddsDao) {
+        super(oddsDao, "Odds");
     }
 
     public static OddsService getInstance() {
         return instance;
     }
+}
 
-    public Odds getById(long oddsId) {
+
+    /*public Odds findById(long oddsId) {
         return oddsDao.findById(oddsId);
     }
 
-    public void save(long horseInRaceId, Odds odds) throws ServiceLayerException {
+    public void save(long horseInRaceId, Odds odds) throws ServiceException {
         try {
             oddsDao.save(odds, horseInRaceId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new ServiceLayerException("Odds saving failed!", e);
+            throw new ServiceException("Odds saving failed!", e);
         }
     }
 
@@ -40,7 +37,6 @@ public class OddsService {
             oddsDao.delete(oddsId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new ServiceLayerException("Odds deleting failed!", e);
+            throw new ServiceException("Odds deleting failed!", e);
         }
-    }
-}
+    }*/

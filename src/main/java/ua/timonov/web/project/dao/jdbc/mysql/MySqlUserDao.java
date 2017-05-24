@@ -3,7 +3,6 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.UserDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
-import ua.timonov.web.project.model.user.Client;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.UserType;
@@ -43,9 +42,9 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
             long accountId = resultSet.getLong("account_id");
             double balance = resultSet.getDouble("balance");
             Account account = new Account(accountId, balance);
-            return new Client(id, userType, login, password, name, account);
+            return new User(id, userType, login, password, name, account);
         } else {
-            return new User(id, userType, login, password, name);
+            return new User(id, userType, login, password, name, null);
         }
     }
 
@@ -57,9 +56,8 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
         statement.setString(LOGIN_INDEX, user.getLogin());
         statement.setString(PASSWORD_INDEX, user.getPassword());
         statement.setString(NAME_INDEX, user.getName());
-        if (user instanceof Client) {
-            Client client = (Client) user;
-            statement.setLong(ACCOUNT_ID_INDEX, client.getAccount().getId());
+        if (user.getUserType() == UserType.CLIENT) {
+            statement.setLong(ACCOUNT_ID_INDEX, user.getAccount().getId());
         }
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, user.getId());

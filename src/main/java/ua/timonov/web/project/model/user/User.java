@@ -11,16 +11,18 @@ public class User implements Entity {
     private String login;
     private String password;
     private String name;
+    private Account account;
 
     public User() {
     }
 
-    public User(long id, UserType userType, String login, String password, String name) {
+    public User(long id, UserType userType, String login, String password, String name, Account account) {
         this.id = id;
         this.userType = userType;
         this.login = login;
         this.password = password;
         this.name = name;
+        this.account = account;
     }
 
     public long getId() {
@@ -63,6 +65,14 @@ public class User implements Entity {
         this.userType = userType;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,7 +83,8 @@ public class User implements Entity {
         if (userType != user.userType) return false;
         if (!login.equals(user.login)) return false;
         if (!password.equals(user.password)) return false;
-        return name.equals(user.name);
+        if (!name.equals(user.name)) return false;
+        return account != null ? account.equals(user.account) : user.account == null;
 
     }
 
@@ -83,6 +94,7 @@ public class User implements Entity {
         result = 31 * result + login.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + name.hashCode();
+        result = 31 * result + (account != null ? account.hashCode() : 0);
         return result;
     }
 
@@ -94,6 +106,7 @@ public class User implements Entity {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", account=" + account +
                 '}';
     }
 }

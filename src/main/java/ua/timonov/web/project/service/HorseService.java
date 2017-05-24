@@ -1,29 +1,19 @@
 package ua.timonov.web.project.service;
 
-import org.apache.log4j.Logger;
-import ua.timonov.web.project.dao.DaoFactory;
-import ua.timonov.web.project.dao.DatabaseType;
+import ua.timonov.web.project.dao.Dao;
 import ua.timonov.web.project.dao.daointerface.HorseDao;
 import ua.timonov.web.project.model.horse.Horse;
 
-import java.util.List;
+public class HorseService extends DataService<Horse> {
 
-public class HorseService {
-    private static final Logger LOGGER = Logger.getLogger(HorseService.class);
-    private static final HorseService instance = new HorseService();
+    private static HorseDao horseDao = daoFactory.createHorseDao();
+    private static final HorseService instance = new HorseService(horseDao);
 
-    private DaoFactory daoFactory = DaoFactory.getFactory(DatabaseType.MYSQL);
-    private HorseDao horseDao = daoFactory.createHorseDao();
-
-    private HorseService() {
+    private HorseService(Dao<Horse> horseDao) {
+        super(horseDao, "Horse");
     }
 
     public static HorseService getInstance() {
         return instance;
-    }
-
-    public List<Horse> findAll() {
-        return horseDao.findAll();
-//        return horseDao.findAll().getResult();
     }
 }

@@ -1,6 +1,6 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.exception.ServiceLayerException;
+import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
@@ -18,14 +18,15 @@ public class SaveEditedRaceAction extends Action {
     public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
     public static final String DATE = "date";
 
-    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
-    private CountryService countryService = ServiceFactory.getInstance().createCountryService();
-    private LocationService locationService = ServiceFactory.getInstance().createLocationService();
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private RaceService raceService = serviceFactory.createRaceService();
+    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
+    private CountryService countryService = serviceFactory.createCountryService();
+    private LocationService locationService = serviceFactory.createLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
-            throws ParsingException, ServiceLayerException {
+            throws ParsingException, ServiceException {
         Race race = createRaceFromRequest(request);
         RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
         race.setRaceStatus(raceStatus);
@@ -35,14 +36,14 @@ public class SaveEditedRaceAction extends Action {
 //        Race race = raceService.findById(raceId);
 
         request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.getByRace(race.getId()));
+        request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());
-        request.setAttribute("countries", countryService.getAll());
-        request.setAttribute("locations", locationService.getAll());
+        request.setAttribute("countries", countryService.findAll());
+        request.setAttribute("locations", locationService.findAll());
         return RACE_EDIT_PAGE;
     }
 
-    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceLayerException {
+    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceException {
         String parameterId = request.getParameter("id");
         long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         long locationId = Long.valueOf(request.getParameter("location"));
