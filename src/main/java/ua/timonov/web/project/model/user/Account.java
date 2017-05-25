@@ -4,14 +4,27 @@ import ua.timonov.web.project.dao.Entity;
 
 public class Account implements Entity {
     private long id;
-    private double balance;
+    private Money balance;
 
     public Account() {
     }
 
     public Account(long id, double balance) {
         this.id = id;
-        this.balance = balance;
+        this.balance = new Money(balance);
+    }
+
+    public Account(long id, long sumIntegerPart, int sumFractalPart) {
+        this.id = id;
+        this.balance = new Money(sumIntegerPart, sumFractalPart);
+    }
+
+    public void addSum(Money addendum) {
+        balance = balance.add(addendum);
+    }
+
+    public void deductSum(Money subtrahend) {
+        balance = balance.subtract(subtrahend);
     }
 
     public long getId() {
@@ -22,41 +35,11 @@ public class Account implements Entity {
         this.id = id;
     }
 
-    public double getBalance() {
+    public Money getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Money balance) {
         this.balance = balance;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
-
-        Account that = (Account) o;
-
-        if (id != that.id) return false;
-        return Double.compare(that.balance, balance) == 0;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (id ^ (id >>> 32));
-        temp = Double.doubleToLongBits(balance);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "id=" + id +
-                ", balance=" + balance +
-                '}';
     }
 }

@@ -35,7 +35,7 @@ public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccou
     protected void setEntityToParameters(Account account, PreparedStatement statement, long... externalId)
             throws SQLException {
 
-        statement.setDouble(BALANCE_INDEX, account.getBalance());
+        statement.setBigDecimal(BALANCE_INDEX, account.getBalance().getValue());
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, account.getId());
         }

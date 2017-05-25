@@ -28,6 +28,7 @@
         <article>
             <h1>ERROR</h1>
             <h3><a href="/horseracing">Back to main page</a></h3>
+            <h4></h4>
         </article>
 
         <footer><%@include file="items/footer.jspf"%></footer>

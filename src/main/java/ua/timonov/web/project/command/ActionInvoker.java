@@ -12,6 +12,8 @@ import java.util.Map;
 
 public final class ActionInvoker {
 
+    private static final ActionInvoker instance = new ActionInvoker();
+
     private Map<String, Action> actionMap = new HashMap<>();
 
     private ActionInvoker() {
@@ -26,6 +28,8 @@ public final class ActionInvoker {
         actionMap.put("racePlacesSave", new SaveRacePlacesAction());
         actionMap.put("horseInRace", new GetHorseInRaceAction());
         actionMap.put("horseInRaceBookie", new GetHorseInRaceBookieAction());
+        actionMap.put("horseInRaceDelete", new DeleteHorseInRaceAction());
+
         actionMap.put("makeBet", new MakeBetAction());
         actionMap.put("oddsSave", new SaveOddsAction());
         actionMap.put("oddsEdit", new EditOddsAction());
@@ -33,12 +37,8 @@ public final class ActionInvoker {
         actionMap.put("error", new ErrorAction());
     }
 
-    private static class Holder {
-        private static final ActionInvoker instance = new ActionInvoker();
-    }
-
     public static ActionInvoker getInstance() {
-        return Holder.instance;
+        return instance;
     }
 
     public String invoke(HttpServletRequest request, HttpServletResponse response)

@@ -8,6 +8,7 @@ import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.user.User;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +16,9 @@ import java.sql.SQLException;
 public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
     public static final int USER_INDEX = 1;
-    public static final int BET_TYPE_INDEX = 2;
-    public static final int HORSE_IN_RACE_INDEX = 3;
-    public static final int SUM_INDEX = 4;
-    public static final int ID_INDEX = 5;
+    public static final int ODDS_INDEX = 2;
+    public static final int SUM_INDEX = 3;
+    public static final int ID_INDEX = 4;
     public static final String ENTITY_NAME = "bet";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
@@ -36,17 +36,17 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     protected Bet getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         User user = MysqlUserDao.getInstance().getEntityFromResultSet(resultSet);
+
         BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_type")));
         HorseInRace horseInRace = MysqlHorseInRaceDao.getInstance().getEntityFromResultSet(resultSet);
-        double sum = resultSet.getDouble("sum");
+        BigDecimal sum = resultSet.getBigDecimal("sum");
         return new Bet(id, user, betType, horseInRace, sum);
     }
 
     protected void setEntityToParameters(Bet bet, PreparedStatement statement, long... externalId) throws SQLException {
         statement.setLong(USER_INDEX, bet.getUser().getId());
-        statement.setLong(BET_TYPE_INDEX, bet.getBetType().ordinal() + 1);
-        statement.setLong(HORSE_IN_RACE_INDEX, bet.getHorseInRace().getId());
-        statement.setDouble(SUM_INDEX, bet.getSum());
+        statement.setLong(ODDS_INDEX, bet.getBetOdds().getId());
+        statement.setBigDecimal(SUM_INDEX, bet.getSum());
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, bet.getId());
         }

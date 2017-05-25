@@ -9,6 +9,7 @@ import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 public class MakeBetAction extends Action {
 
@@ -34,7 +35,8 @@ public class MakeBetAction extends Action {
     private Bet createBetFromRequest(HttpServletRequest request) {
         long oddsId = Long.valueOf(request.getParameter("odds"));
         long horseInRaceId = Long.valueOf(request.getParameter("horse_in_race"));
-        double betSum = Double.valueOf(request.getParameter("sum"));
+        BigDecimal betSum = BigDecimal.valueOf(Double.valueOf(request.getParameter("sum")));
+
 
         BetType betType = oddsService.findById(oddsId).getBetType();
         HorseInRace horseInRace = horseInRaceService.findById(horseInRaceId);

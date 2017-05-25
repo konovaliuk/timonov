@@ -84,7 +84,7 @@ CREATE TABLE `probe`.`user_type` (
 
 CREATE TABLE `probe`.`account` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `balance` DOUBLE NOT NULL,
+  `balance` DECIMAL(20,2) NOT NULL,
   PRIMARY KEY (`id`));
 
 
@@ -122,7 +122,7 @@ CREATE TABLE `probe`.`odds` (
   CONSTRAINT `horseInRaceFK`
   FOREIGN KEY (`horse_in_race_id`)
   REFERENCES `probe`.`horse_in_race` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `betTypeFK`
   FOREIGN KEY (`bet_type_id`)
@@ -137,31 +137,17 @@ CREATE TABLE `probe`.`bet_type` (
   PRIMARY KEY (`id`));
 
 
-CREATE TABLE `probe`.`bet` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `betType_id` INT NOT NULL,
-  `horse_in_race_id` INT NOT NULL,
-  `sum` DOUBLE NOT NULL,
+CREATE TABLE `bet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `odds_id` int(11) NOT NULL,
+  `sum` decimal(20,2) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `userFK_idx` (`user_id` ASC),
-  INDEX `betTypeFK_idx` (`betType_id` ASC),
-  INDEX `horseInRaceFK_idx` (`horse_in_race_id` ASC),
-  CONSTRAINT `betUserFK`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `probe`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `betBetTypeFK`
-  FOREIGN KEY (`betType_id`)
-  REFERENCES `probe`.`bet_type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `betHorseInRaceFK`
-  FOREIGN KEY (`horse_in_race_id`)
-  REFERENCES `probe`.`horse_in_race` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  KEY `userFK_idx` (`user_id`),
+  KEY `betOddsFK_idx` (`odds_id`),
+  CONSTRAINT `betOddsFK` FOREIGN KEY (`odds_id`) REFERENCES `odds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `betUserFK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
 
 INSERT INTO `probe`.`country` (`id`, `name`) VALUES ('1', 'England');
@@ -390,16 +376,12 @@ INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `c
 INSERT INTO `probe`.`odds` (`id`, `horse_in_race_id`, `bet_type_id`, `total`, `chances`) VALUES ('90', '30', '3', '3', '1');
 
 
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('1', '6', '1', '6', '10');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('2', '7', '2', '7', '15');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('3', '8', '3', '8', '20');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('4', '9', '1', '9', '25');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('6', '10', '2', '10', '30');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `betType_id`, `horse_in_race_id`, `sum`) VALUES ('7', '6', '3', '8', '35');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('1', '6', '16', '10');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('2', '7', '20', '15');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('3', '8', '24', '20');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('4', '9', '25', '25');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('6', '10', '29', '30');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '24', '35');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '20', '20');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '25', '15');
 
-
-SELECT RACE.ID AS ID, RACE_STATUS.NAME AS STATUS, LOCATION.NAME AS LOCATION, COUNTRY.NAME AS COUNTRY, DATE
-FROM RACE
-  INNER JOIN RACE_STATUS ON RACE.status_id = RACE_STATUS.ID
-  INNER JOIN LOCATION ON LOCATION_ID = LOCATION.ID
-  INNER JOIN COUNTRY ON LOCATION.COUNTRY_ID = COUNTRY.ID

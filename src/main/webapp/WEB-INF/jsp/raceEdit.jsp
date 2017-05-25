@@ -147,7 +147,8 @@
                             <th>Bet type</th>
                             <th>Odds</th>
                             <th>More bets</th>
-                            <th>Set odds</th>
+                            <th>Edit odds</th>
+                            <th>Delete</th>
                             <th>Place at finish</th>
                         </tr>
                         <c:forEach var="horseInRace" items="${horsesInRace}" varStatus="loop">
@@ -171,6 +172,7 @@
                                 </c:choose>
                                 <td><a href="/races?action=horseInRace&id=${horseInRace.id}">More bets</a></td>
                                 <td><a href="/races?action=horseInRaceBookie&horseInRace=${horseInRace.id}">Set odds</a></td>
+                                <td><a href="/races?action=horseInRaceDelete&horseInRace=${horseInRace.id}">Delete horse</a></td>
                                 <td>
                                     <input class="form-control" name="places${loop.index}"
                                            <c:if test = "${horseInRace.finishPlace > 0}">value="${horseInRace.finishPlace}"</c:if>
@@ -179,6 +181,36 @@
                             </tr>
                         </c:forEach>
                     </table>
+
+                    <form class="form-inline" action="/races" method="POST">
+                        <div class="form-group col-sm-4">
+                            <input class="form-control" name="action" value="oddsSave" type="hidden"/>
+                            <input class="form-control" name="horseInRace" type="hidden" value="${horseInRace.id}"/>
+                            <label class="control-label">Add odds:</label>
+                            <select class="form-control" name="betType">
+                                <option selected disabled hidden>Choose bet type:</option>
+                                <c:forEach var="betType" items="${betTypes}">
+                                    <option value=${betType}>${betType.toString()}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-sm-4">
+                            <label class="control-label">Total odds:</label>
+                            <input class="form-control" type="number" name="total" placeholder="total">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label class="control-label">Odds to win:</label>
+                            <input class="form-control" type="number" name="chances" placeholder="chances">
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary" type="submit">
+                                <span class="glyphicon glyphicon-plus-sign"></span> Add odds</button>
+                        </div>
+                    </form>
+
                     <div>
                         <input class="form-control" name="action" value="racePlacesSave" type="hidden"/>
                         <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>

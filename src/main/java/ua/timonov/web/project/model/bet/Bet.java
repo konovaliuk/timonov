@@ -4,30 +4,40 @@ import ua.timonov.web.project.dao.Entity;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.user.User;
 
+import java.math.BigDecimal;
+
 public class Bet implements Entity {
     private long id;
     private User user;
     private BetType betType;
     private HorseInRace horseInRace;
-    private double sum;
+    private BigDecimal sum;
 
     public Bet() {
     }
 
     // TODO remove if not used
-    public Bet(User user, BetType betType, HorseInRace horseInRace, double sum) {
+    public Bet(User user, BetType betType, HorseInRace horseInRace, BigDecimal sum) {
         this.user = user;
         this.betType = betType;
         this.horseInRace = horseInRace;
         this.sum = sum;
     }
 
-    public Bet(long id, User user, BetType betType, HorseInRace horseInRace, double sum) {
+    public Bet(long id, User user, BetType betType, HorseInRace horseInRace, BigDecimal sum) {
         this.id = id;
         this.user = user;
         this.betType = betType;
         this.horseInRace = horseInRace;
         this.sum = sum;
+    }
+
+    public Odds getBetOdds() {
+        return horseInRace.getOddsValues()
+                .stream()
+                .filter(odds -> betType.equals(odds.getBetType()))
+                .findFirst()
+                .get();
     }
 
     @Override
@@ -64,11 +74,11 @@ public class Bet implements Entity {
         this.horseInRace = horseInRace;
     }
 
-    public double getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
 
@@ -79,22 +89,19 @@ public class Bet implements Entity {
 
         Bet bet = (Bet) o;
 
-        if (Double.compare(bet.sum, sum) != 0) return false;
         if (!user.equals(bet.user)) return false;
         if (betType != bet.betType) return false;
-        return horseInRace.equals(bet.horseInRace);
+        if (!horseInRace.equals(bet.horseInRace)) return false;
+        return sum.equals(bet.sum);
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = user.hashCode();
+        int result = user.hashCode();
         result = 31 * result + betType.hashCode();
         result = 31 * result + horseInRace.hashCode();
-        temp = Double.doubleToLongBits(sum);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + sum.hashCode();
         return result;
     }
 

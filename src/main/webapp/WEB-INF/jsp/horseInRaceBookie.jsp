@@ -20,7 +20,7 @@
     <article>
     <div>
         <%@include file="items/raceAndHorse.jspf"%>
-        <h4>Existing bets</h4>
+        <h4>Existing odds</h4>
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
