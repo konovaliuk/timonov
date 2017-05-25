@@ -4,8 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.bet.Bet;
-import ua.timonov.web.project.model.bet.BetType;
-import ua.timonov.web.project.model.horse.HorseInRace;
+import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.user.User;
 
 import java.math.BigDecimal;
@@ -36,16 +35,14 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     protected Bet getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         User user = MysqlUserDao.getInstance().getEntityFromResultSet(resultSet);
-
-        BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_type")));
-        HorseInRace horseInRace = MysqlHorseInRaceDao.getInstance().getEntityFromResultSet(resultSet);
+        Odds odds = MysqlOddsDao.getInstance().getEntityFromResultSet(resultSet);
         BigDecimal sum = resultSet.getBigDecimal("sum");
-        return new Bet(id, user, betType, horseInRace, sum);
+        return new Bet(id, user, odds, sum);
     }
 
-    protected void setEntityToParameters(Bet bet, PreparedStatement statement, long... externalId) throws SQLException {
+    protected void setEntityToParameters(Bet bet, PreparedStatement statement) throws SQLException {
         statement.setLong(USER_INDEX, bet.getUser().getId());
-        statement.setLong(ODDS_INDEX, bet.getBetOdds().getId());
+        statement.setLong(ODDS_INDEX, bet.getOdds().getId());
         statement.setBigDecimal(SUM_INDEX, bet.getSum());
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, bet.getId());

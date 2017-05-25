@@ -1,7 +1,6 @@
 package ua.timonov.web.project.model.bet;
 
 import ua.timonov.web.project.dao.Entity;
-import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.user.User;
 
 import java.math.BigDecimal;
@@ -9,35 +8,23 @@ import java.math.BigDecimal;
 public class Bet implements Entity {
     private long id;
     private User user;
-    private BetType betType;
-    private HorseInRace horseInRace;
+    private Odds odds;
     private BigDecimal sum;
 
     public Bet() {
     }
 
-    // TODO remove if not used
-    public Bet(User user, BetType betType, HorseInRace horseInRace, BigDecimal sum) {
-        this.user = user;
-        this.betType = betType;
-        this.horseInRace = horseInRace;
-        this.sum = sum;
-    }
-
-    public Bet(long id, User user, BetType betType, HorseInRace horseInRace, BigDecimal sum) {
+    public Bet(long id, User user, Odds odds, BigDecimal sum) {
         this.id = id;
         this.user = user;
-        this.betType = betType;
-        this.horseInRace = horseInRace;
+        this.odds = odds;
         this.sum = sum;
     }
 
-    public Odds getBetOdds() {
-        return horseInRace.getOddsValues()
-                .stream()
-                .filter(odds -> betType.equals(odds.getBetType()))
-                .findFirst()
-                .get();
+    public Bet(User user, Odds odds, BigDecimal sum) {
+        this.user = user;
+        this.odds = odds;
+        this.sum = sum;
     }
 
     @Override
@@ -58,20 +45,12 @@ public class Bet implements Entity {
         this.user = user;
     }
 
-    public BetType getBetType() {
-        return betType;
+    public Odds getOdds() {
+        return odds;
     }
 
-    public void setBetType(BetType betType) {
-        this.betType = betType;
-    }
-
-    public HorseInRace getHorseInRace() {
-        return horseInRace;
-    }
-
-    public void setHorseInRace(HorseInRace horseInRace) {
-        this.horseInRace = horseInRace;
+    public void setOdds(Odds odds) {
+        this.odds = odds;
     }
 
     public BigDecimal getSum() {
@@ -90,8 +69,7 @@ public class Bet implements Entity {
         Bet bet = (Bet) o;
 
         if (!user.equals(bet.user)) return false;
-        if (betType != bet.betType) return false;
-        if (!horseInRace.equals(bet.horseInRace)) return false;
+        if (!odds.equals(bet.odds)) return false;
         return sum.equals(bet.sum);
 
     }
@@ -99,20 +77,8 @@ public class Bet implements Entity {
     @Override
     public int hashCode() {
         int result = user.hashCode();
-        result = 31 * result + betType.hashCode();
-        result = 31 * result + horseInRace.hashCode();
+        result = 31 * result + odds.hashCode();
         result = 31 * result + sum.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Bet{" +
-                "id=" + id +
-                ", user=" + user +
-                ", betType=" + betType +
-                ", horseInRace=" + horseInRace +
-                ", sum=" + sum +
-                '}';
     }
 }

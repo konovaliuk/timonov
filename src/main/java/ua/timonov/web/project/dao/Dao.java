@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Dao<Entity> {
 
-    boolean save(Entity entity, long... externalId);
+    boolean save(Entity entity);
 
     boolean delete(long id);
 

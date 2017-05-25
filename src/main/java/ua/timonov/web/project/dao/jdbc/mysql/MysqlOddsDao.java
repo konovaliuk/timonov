@@ -59,19 +59,18 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     }
 
     protected Odds getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("id");
-//        long horseInRaceId = resultSet.getLong("horse_in_race_id");
+        long id = resultSet.getLong("odds_id");
+        long horseInRaceId = resultSet.getLong("horse_in_race_id");
         BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_name")));
         int total = resultSet.getInt("total");
         int chances = resultSet.getInt("chances");
-        return new Odds(id, betType, total, chances);
+        return new Odds(id, horseInRaceId, betType, total, chances);
     }
 
     @Override
-    protected void setEntityToParameters(Odds odds, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Odds odds, PreparedStatement statement)
             throws SQLException {
-        long horseInRaceId = externalId[0];
-        statement.setLong(HORSE_IN_RACE_ID_INDEX, horseInRaceId);
+        statement.setLong(HORSE_IN_RACE_ID_INDEX, odds.getHorseInRaceId());
         statement.setInt(BET_TYPE_INDEX, odds.getBetType().ordinal() + 1);
         statement.setInt(TOTAL_INDEX, odds.getTotal());
         statement.setInt(CHANCES_INDEX, odds.getChances());

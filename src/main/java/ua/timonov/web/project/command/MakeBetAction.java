@@ -2,8 +2,7 @@ package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
-import ua.timonov.web.project.model.bet.BetType;
-import ua.timonov.web.project.model.horse.HorseInRace;
+import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.service.*;
 
@@ -28,22 +27,20 @@ public class MakeBetAction extends Action {
         betService.save(bet);
         request.setAttribute("bet", bet);
         request.setAttribute("oddsId", request.getParameter("odds"));
-        request.setAttribute("race", raceService.getByHorseInRaceId(bet.getHorseInRace().getId()));
+        request.setAttribute("race", raceService.getByHorseInRaceId(bet.getOdds().getHorseInRaceId()));
         return BET_SAVED_PAGE;
     }
 
     private Bet createBetFromRequest(HttpServletRequest request) {
         long oddsId = Long.valueOf(request.getParameter("odds"));
-        long horseInRaceId = Long.valueOf(request.getParameter("horse_in_race"));
+//        long horseInRaceId = Long.valueOf(request.getParameter("horse_in_race"));
+//        BetType betType = oddsService.findById(oddsId).getBetType();
+        Odds odds = oddsService.findById(oddsId);
         BigDecimal betSum = BigDecimal.valueOf(Double.valueOf(request.getParameter("sum")));
-
-
-        BetType betType = oddsService.findById(oddsId).getBetType();
-        HorseInRace horseInRace = horseInRaceService.findById(horseInRaceId);
         // TODO
         long userId = 6; // Long.valueOf(request.getParameter("userId"));
         User user = userService.findById(userId);
 
-        return new Bet(user, betType, horseInRace, betSum);
+        return new Bet(user, odds, betSum);
     }
 }

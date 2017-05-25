@@ -23,7 +23,7 @@ public abstract class DataService<T extends Entity> {
     }
 
     public void save(T entity, long... externalId) throws ServiceException {
-        if (!dao.save(entity, externalId)) {
+        if (!dao.save(entity)) {
             LOGGER.error("Saving " + serviceName + " failed!");
             throw new ServiceException("Saving " + serviceName + " failed!");
         }

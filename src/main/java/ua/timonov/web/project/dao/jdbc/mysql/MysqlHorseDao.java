@@ -39,7 +39,7 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
     }
 
     @Override
-    protected void setEntityToParameters(Horse horse, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Horse horse, PreparedStatement statement)
             throws SQLException {
 
         statement.setString(NAME_INDEX, horse.getName());

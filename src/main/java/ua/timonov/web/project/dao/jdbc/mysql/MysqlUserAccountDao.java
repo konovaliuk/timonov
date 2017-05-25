@@ -32,7 +32,7 @@ public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccou
     }
 
     @Override
-    protected void setEntityToParameters(Account account, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Account account, PreparedStatement statement)
             throws SQLException {
 
         statement.setBigDecimal(BALANCE_INDEX, account.getBalance().getValue());

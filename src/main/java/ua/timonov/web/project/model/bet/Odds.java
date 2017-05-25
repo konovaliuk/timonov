@@ -4,6 +4,7 @@ import ua.timonov.web.project.dao.Entity;
 
 public class Odds implements Entity {
     private long id;
+    private long horseInRaceId;
     private BetType betType;
     private int total;
     private int chances;
@@ -18,12 +19,12 @@ public class Odds implements Entity {
         this.oddsValue = (double) total / chances;
     }
 
-    public Odds(long id, BetType betType, int total, int chances) {
+    public Odds(long id, long horseInRaceId, BetType betType, int total, int chances) {
         this.id = id;
+        this.horseInRaceId = horseInRaceId;
         this.betType = betType;
         this.total = total;
         this.chances = chances;
-        this.oddsValue = (double) total / chances;
     }
 
     public Odds(double oddsValue) {
@@ -68,6 +69,14 @@ public class Odds implements Entity {
 
     public void setBetType(BetType betType) {
         this.betType = betType;
+    }
+
+    public long getHorseInRaceId() {
+        return horseInRaceId;
+    }
+
+    public void setHorseInRaceId(long horseInRaceId) {
+        this.horseInRaceId = horseInRaceId;
     }
 
     @Override

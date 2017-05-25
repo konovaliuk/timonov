@@ -35,23 +35,23 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     }
 
     @Override
-    public boolean save(T entity, long... externalId) {
+    public boolean save(T entity) {
         if (entity.getId() == 0) {
 //            long id = insert(entity, externalId);
 //            entity.setId(id);
-            return insert(entity, externalId);
+            return insert(entity);
         } else {
-            return update(entity, externalId);
+            return update(entity);
         }
     }
 
-    private boolean update(T entity, long... externalId) {
+    private boolean update(T entity) {
         String sql = getQuery(UPDATE);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             LOGGER.info(statement.toString());
-            setEntityToParameters(entity, statement, externalId);
+            setEntityToParameters(entity, statement);
             statement.execute();
             int rowUpdated = statement.getUpdateCount();
             LOGGER.info(rowUpdated + " row(s) updated");
@@ -63,13 +63,13 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
-    private boolean insert(T entity, long... externalId) {
+    private boolean insert(T entity) {
         String sql = getQuery(INSERT);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             LOGGER.info(statement.toString());
-            setEntityToParameters(entity, statement, externalId);
+            setEntityToParameters(entity, statement);
             statement.executeUpdate();
             int rowInserted = statement.executeUpdate();
             LOGGER.info(rowInserted + " row(s) inserted");
@@ -163,7 +163,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
-    protected abstract void setEntityToParameters(T entity, PreparedStatement statement, long... externalId)
+    protected abstract void setEntityToParameters(T entity, PreparedStatement statementexternalId)
             throws SQLException;
 
     protected String convertToEnumNameType(String stringFromDatabase) {

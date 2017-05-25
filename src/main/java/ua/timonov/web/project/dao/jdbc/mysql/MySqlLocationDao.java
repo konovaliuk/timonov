@@ -41,7 +41,7 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
     }
 
     @Override
-    protected void setEntityToParameters(Location location, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Location location, PreparedStatement statement)
             throws SQLException {
 
         statement.setLong(COUNTRY_ID_INDEX, location.getCountry().getId());

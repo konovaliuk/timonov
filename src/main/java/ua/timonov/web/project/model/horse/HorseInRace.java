@@ -8,7 +8,7 @@ import java.util.List;
 
 public class HorseInRace implements Entity {
     private long id;
-//    private long raceId;
+    private long raceId;
     private Horse horse;
     private int finishPlace;
     private List<Odds> oddsValues = new ArrayList<>();
@@ -53,6 +53,14 @@ public class HorseInRace implements Entity {
 
     public void setOddsValues(List<Odds> oddsValues) {
         this.oddsValues = oddsValues;
+    }
+
+    public long getRaceId() {
+        return raceId;
+    }
+
+    public void setRaceId(long raceId) {
+        this.raceId = raceId;
     }
 
     @Override

@@ -70,11 +70,10 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     }
 
     @Override
-    protected void setEntityToParameters(HorseInRace horseInRace, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(HorseInRace horseInRace, PreparedStatement statement)
             throws SQLException {
 
-        long raceId = externalId[0];
-        statement.setLong(RACE_ID_INDEX, raceId);
+        statement.setLong(RACE_ID_INDEX, horseInRace.getRaceId());
         statement.setLong(HORSE_ID_INDEX, horseInRace.getHorse().getId());
         statement.setInt(FINISH_PLACE_INDEX, horseInRace.getFinishPlace());
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {

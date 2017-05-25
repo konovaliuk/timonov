@@ -33,7 +33,7 @@ public class MysqlCountryDao extends EntityDao<Country> implements CountryDao {
     }
 
     @Override
-    protected void setEntityToParameters(Country country, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(Country country, PreparedStatement statement)
             throws SQLException {
 
         statement.setString(NAME_INDEX, country.getName());
