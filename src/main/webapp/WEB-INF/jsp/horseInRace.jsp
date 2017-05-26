@@ -28,7 +28,7 @@
                 <h3>Available bets</h3>
                 <table class="table table-striped">
                     <tr>
-                        <th>ID</th>
+                        <th></th>
                         <th>Bet type</th>
                         <th>Odds</th>
                         <th>Input bet sum</th>
@@ -36,17 +36,18 @@
                     </tr>
                     <c:forEach var="odds" items="${horseInRace.oddsValues}">
                         <tr>
-                            <form class="form-horizontal" method="POST" action="/races">
+                            <form class="form-horizontal" method="POST" action="races">
                                 <div class="form-group">
                                     <td>
                                         <div>
                                             <input class="form-control" name="action" type="hidden" value="makeBet"/>
-                                            <input class="form-control" name="horse_in_race" type="hidden" value="${horseInRace.id}"/>
-                                            <input class="form-control" name="odds" type="hidden" value="${odds.id}"/>
+                                            <%--<input class="form-control" name="horse_in_race" type="hidden" value="${horseInRace.id}"/>--%>
+                                            <input class="form-control" name="oddsId" type="hidden" value="${odds.id}"/>
+                                            <%--<input class="form-control" name="userId" type="hidden" value="${user.id}"/>--%>
                                         </div>
                                     </td>
                                     <td>${odds.betType.toString()}</td>
-                                    <td>${odds.total} / ${odds.chances}</td>
+                                    <td align="center">${odds.total} / ${odds.chances}</td>
                                     <td>
                                         <div>
                                             <input class="form-control" name="sum" type="number" min="0.01" step="0.01"/>

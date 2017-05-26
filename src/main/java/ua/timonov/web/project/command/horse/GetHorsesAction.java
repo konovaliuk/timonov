@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.horse;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.service.HorseService;
 import ua.timonov.web.project.service.ServiceFactory;
 

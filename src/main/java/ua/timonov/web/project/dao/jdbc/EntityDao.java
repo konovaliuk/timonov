@@ -14,16 +14,18 @@ import java.util.ResourceBundle;
 public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     public static final String FIND_ALL = "findAll";
+    public static final String ORDER_BY = "orderBy";
     public static final String FIND_BY_ID = "findById";
+    public static final String FIND_BY = "findBy";
     public static final String INSERT = "insert";
     public static final String UPDATE = "update";
     public static final String DELETE = "delete";
 
+    protected static final ResourceBundle QUERIES = ResourceBundle.getBundle("queries");
     protected String entityName;
     protected DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
 
     private static final Logger LOGGER = Logger.getLogger(EntityDao.class);
-    private static final ResourceBundle QUERIES = ResourceBundle.getBundle("queries");
     //    private static final JdbcDataManager dataManager = JdbcDataManager.getInstance();
 
     public EntityDao(String entityName) {
@@ -70,9 +72,8 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
             LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement);
-            statement.executeUpdate();
             int rowInserted = statement.executeUpdate();
-            LOGGER.info(rowInserted + " row(s) inserted");
+            LOGGER.info(rowInserted + " row(s) inserted into " + entityName);
             return rowInserted > 0;
             /*try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 generatedKeys.next();
@@ -93,8 +94,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
             statement.setLong(1, id);
             LOGGER.info(statement.toString());
-            statement.execute();
-            int rowUpdated = statement.getUpdateCount();
+            int rowUpdated = statement.executeUpdate();
             LOGGER.info(rowUpdated + " row(s) deleted");
             return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
@@ -104,10 +104,9 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
-
     @Override
     public List<T> findAll() {
-        String sql = getQuery(FIND_ALL);
+        String sql = getQuery(FIND_ALL) + " " + getQuerySuffixOrderBy();
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -131,7 +130,17 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     @Override
     public T findById(long id) {
-        String sql = getQuery(FIND_BY_ID);
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_ID);
+        return executeReadySqlWithFind(id, sql);
+    }
+
+    @Override
+    public T findByForeignId(long id, String foreignKeyEntityName) {
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY + foreignKeyEntityName);
+        return executeReadySqlWithFind(id, sql);
+    }
+
+    private T executeReadySqlWithFind(long id, String sql) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -159,6 +168,10 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     protected String getQuery(String queryName) {
         return QUERIES.getString(entityName + "." + queryName);
+    }
+
+    protected String getQuerySuffixOrderBy() {
+        return "";
     }
 
     protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;

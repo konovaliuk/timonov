@@ -9,38 +9,55 @@ import ua.timonov.web.project.exception.ServiceException;
 
 import java.util.List;
 
-public abstract class DataService<T extends Entity> {
+public abstract class DataService<T extends Entity, F extends Entity> {
 
     private static final Logger LOGGER = Logger.getLogger(DataService.class);
     protected static DaoFactory daoFactory = DaoFactory.getFactory(DatabaseType.MYSQL);
 
-    private String serviceName;
     protected Dao<T> dao;
+    protected Dao<F> daoForeignKey;
 
-    public DataService(Dao<T> dao, String serviceName) {
+    public DataService(Dao<T> dao) {
         this.dao = dao;
-        this.serviceName = serviceName;
     }
 
-    public void save(T entity, long... externalId) throws ServiceException {
+    public DataService(Dao<T> dao, Dao<F> daoForeignKey) {
+        this.dao = dao;
+        this.daoForeignKey = daoForeignKey;
+    }
+
+    public void save(T entity) throws ServiceException {
         if (!dao.save(entity)) {
-            LOGGER.error("Saving " + serviceName + " failed!");
-            throw new ServiceException("Saving " + serviceName + " failed!");
+            LOGGER.error("Saving " + dao.getName() + " failed!");
+            throw new ServiceException("Saving " + dao.getName() + " failed!");
         }
     }
 
     public void delete(long id) throws ServiceException {
+        if (daoForeignKey != null) {
+            findEntityWithForeignKey(id);
+        }
         if (!dao.delete(id)) {
-            LOGGER.error("Deleting " + serviceName + " failed!");
-            throw new ServiceException("Deleting " + serviceName + " failed!");
+            LOGGER.error("Deleting " + dao.getName() + " failed!");
+            throw new ServiceException("Deleting " + dao.getName() + " failed!");
+        }
+    }
+
+    private void findEntityWithForeignKey(long id) {
+        F entity = daoForeignKey.findByForeignId(id, dao.getName());
+        if (entity != null) {
+            LOGGER.warn("Deleting chosen " + dao.getName() + " is impossible! There is a(n) " +
+                    daoForeignKey.getName() + " that holds it.");
+            throw new ServiceException("Deleting chosen " + dao.getName() + " is impossible! There is a(n) " +
+                    daoForeignKey.getName() + " that holds it.");
         }
     }
 
     public T findById(long id) throws ServiceException {
         T value = dao.findById(id);
         if (value == null) {
-            LOGGER.error("Item with id = " + id + " not founded in " + serviceName);
-            throw new ServiceException("Item with id = " + id + " not founded in " + serviceName);
+            LOGGER.error("Item with id = " + id + " not founded in " + dao.getName());
+            throw new ServiceException("Item with id = " + id + " not founded in " + dao.getName());
         }
         return value;
     }
@@ -48,8 +65,8 @@ public abstract class DataService<T extends Entity> {
     public List<T> findAll() {
         List<T> itemList = dao.findAll();
         if (itemList == null) {
-            LOGGER.error("Items not founded in " + serviceName);
-            throw new ServiceException("Items not founded in " + serviceName);
+            LOGGER.error("Items not founded in " + dao.getName());
+            throw new ServiceException("Items not founded in " + dao.getName());
         }
         return itemList;
     }

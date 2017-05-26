@@ -30,8 +30,8 @@
                         <th>Country</th>
                         <th>Date</th>
                         <th>Status</th>
-                        <th>Details</th>
-                        <th>Edit races</th>
+                        <th>Go to race</th>
+                        <th>Edit race</th>
                     </tr>
                     <c:forEach var="race" items="${races}">
                         <tr>
@@ -40,12 +40,12 @@
                             <td>${race.location.country.name}</td>
                             <td>${race.date}</td>
                             <td>${race.raceStatus.toString()}</td>
-                            <td><a href="/races?action=race&raceId=${race.id}">Race details</a></td>
-                            <td><a href="/races?action=raceEdit&raceId=${race.id}">Edit races</a></td>
+                            <td><a href="races?action=race&raceId=${race.id}">To race</a></td>
+                            <td><a href="races?action=raceEdit&raceId=${race.id}">Edit races</a></td>
                         </tr>
                     </c:forEach>
                 </table>
-                <form class="form-horizontal" action="/horseracing" method="GET">
+                <form class="form-horizontal" action="races?action=home" method="GET">
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">
                             <span class="glyphicon glyphicon-triangle-left"></span> Return to home page</button>

@@ -18,7 +18,7 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     public static final int ODDS_INDEX = 2;
     public static final int SUM_INDEX = 3;
     public static final int ID_INDEX = 4;
-    public static final String ENTITY_NAME = "bet";
+    public static final String ENTITY_NAME = "Bet";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
     private static final MysqlBetDao instance = new MysqlBetDao();

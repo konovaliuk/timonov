@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command.raceedit;
+package ua.timonov.web.project.command.race;
 
 import ua.timonov.web.project.model.race.RaceStatus;
 

@@ -15,7 +15,7 @@ public class MySqlLocationDao extends EntityDao<Location> implements LocationDao
     public static final int COUNTRY_ID_INDEX = 1;
     public static final int NAME_INDEX = 2;
     public static final int ID_INDEX = 3;
-    public static final String ENTITY_NAME = "location";
+    public static final String ENTITY_NAME = "Location";
 
     private static final Logger LOGGER = Logger.getLogger(MySqlLocationDao.class);
     private static final MySqlLocationDao instance = new MySqlLocationDao();

@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.odds;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.OddsService;
@@ -11,24 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteOddsAction extends Action {
 
+    public static final String HORSE_IN_RACE_BOOKIE = "horseInRaceBookie";
+
     private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
     private RaceService raceService = ServiceFactory.getInstance().createRaceService();
     private OddsService oddsService = ServiceFactory.getInstance().createOddsService();
 
-    public static final String HORSE_IN_RACE_BOOKIE_PAGE = "/WEB-INF/jsp/horseInRaceBookie.jsp";
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-//        Odds odds = createOddsFromRequest(request);
-        // TODO what if there is such odds in DB
-        long oddsId = Long.valueOf(request.getParameter("id"));
+        long oddsId = Long.valueOf(request.getParameter("oddsId"));
+        long horseInRaceId = Long.valueOf(request.getParameter("horseInRaceId"));
         oddsService.delete(oddsId);
-
-        long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
         request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
-        request.setAttribute("race", raceService.getByHorseInRaceId(horseInRaceId));
+        request.setAttribute("race", raceService.findByHorseInRaceId(horseInRaceId));
         request.setAttribute("betTypes", BetType.values());
-        return HORSE_IN_RACE_BOOKIE_PAGE ;
+        return CONFIG.getString(HORSE_IN_RACE_BOOKIE);
     }
-
 }

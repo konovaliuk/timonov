@@ -4,10 +4,10 @@
             <a class="navbar-brand" href="/horseracing">Horse Racing</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="/horseracing">Home</a></li>
-            <li><a href="/races?action=races">Races</a></li>
-            <li><a href="/races?action=horses">Horses</a></li>
-            <li><a href="/races?action=bets">Bets</a></li>
+            <li><a href="races?action=home">Home</a></li>
+            <li><a href="races?action=races">Races</a></li>
+            <li><a href="races?action=horses">Horses</a></li>
+            <li><a href="races?action=bets">Bets</a></li>
         </ul>
     </div>
 </nav>

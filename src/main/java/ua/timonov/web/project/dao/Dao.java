@@ -10,6 +10,8 @@ public interface Dao<Entity> {
 
     Entity findById(long id);
 
+    Entity findByForeignId(long id, String foreignKeyEntityName);
+
     List<Entity> findAll();
 
     String getName();

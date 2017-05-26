@@ -48,7 +48,7 @@
                         <th>Year of birth</th>
                         <th>Total races</th>
                         <th>Won races</th>
-                        <th>Bet type</th>
+                        <th>Best Bet</th>
                         <th>Odds</th>
                         <th>More bets</th>
                         <th>Set odds</th>
@@ -59,27 +59,27 @@
                             <c:set var="oddsValues" value="${horseInRace.oddsValues}"/>
 
                             <td>${horseInRace.horse.id}</td>
-                            <td><a href="/races?action=horse&id=${horse.id}">${horseInRace.horse.name}</a></td>
+                            <td><a href="races?action=horse&horseId=${horse.id}">${horseInRace.horse.name}</a></td>
                             <td>${horseInRace.horse.yearOfBirth}</td>
                             <td>${horseInRace.horse.totalRaces}</td>
                             <td>${horseInRace.horse.wonRaces}</td>
                             <c:choose>
                                 <c:when test="${oddsValues.size() > 0}">
                                     <td>${oddsValues[0].betType.toString()}</td>
-                                    <td>${oddsValues[0].total} / ${oddsValues[0].chances}</td>
+                                    <td align="center">${oddsValues[0].total} / ${oddsValues[0].chances}</td>
                                 </c:when>
                                 <c:otherwise>
                                     <td></td>
                                     <td></td>
                                 </c:otherwise>
                             </c:choose>
-                            <td><a href="/races?action=horseInRace&id=${horseInRace.id}">More bets</a></td>
-                            <td><a href="/races?action=horseInRaceBookie&horseInRace=${horseInRace.id}">Set odds</a></td>
+                            <td><a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">Make bet</a></td>
+                            <td><a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">Set odds</a></td>
                             <td><c:if test = "${horseInRace.finishPlace > 0}">${horseInRace.finishPlace}</c:if></td>
                         </tr>
                     </c:forEach>
                 </table>
-                <form class="form-horizontal" action="/races" method="GET">
+                <form class="form-horizontal" action="races" method="GET">
                     <div>
                         <input class="form-control" name="action" value="races" type="hidden"/>
                     </div>

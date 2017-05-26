@@ -21,17 +21,17 @@
         <div>
             <%@include file="../items/raceAndHorse.jspf"%>
             <h4>Edit existing odds:</h4>
-            <form class="form-horizontal" action="/races" method="POST">
+            <form class="form-horizontal" action="races" method="POST">
                 <div>
                     <input class="form-control" name="action" value="oddsSave" type="hidden"/>
-                    <input class="form-control" name="horseInRace" type="hidden" value="${horseInRace.id}"/>
+                    <input class="form-control" name="horseInRaceId" type="hidden" value="${odds.horseInRaceId}"/>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
                         <label class="control-label" for="id">ID:</label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="id" value="${odds.id}" readonly name="id"/>
+                        <input class="form-control" id="id" name="oddsId" value="${odds.id}" readonly />
                     </div>
                 </div>
                 <div class="form-group">
@@ -54,7 +54,8 @@
                         <label class="control-label" for="total">Total odds:</label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="total" name="total" value="${odds.total}" type="number" min="1" step="1"/>
+                        <input class="form-control" id="total" name="total" value="${odds.total}" type="number"
+                               min="1" step="1"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -62,7 +63,8 @@
                         <label class="control-label" for="chances">Odds to win:</label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="chances" name="chances" value="${odds.chances}" type="number" min="1" step="1"/>
+                        <input class="form-control" id="chances" name="chances" value="${odds.chances}" type="number"
+                               min="1" step="1"/>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -71,10 +73,10 @@
                 </div>
             </form>
 
-            <form class="form-horizontal" action="/races" method="GET">
+            <form class="form-horizontal" action="races" method="GET">
                 <div>
                     <input class="form-control" name="action" value="horseInRaceBookie" type="hidden"/>
-                    <input class="form-control" name="horseInRace" type="hidden" value="${horseInRace.id}"/>
+                    <input class="form-control" name="horseInRaceId" type="hidden" value="${horseInRace.id}"/>
                 </div>
                 <div class="col-sm-1">
                     <button class="btn btn-primary" type="submit">

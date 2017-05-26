@@ -13,7 +13,7 @@ public class MysqlCountryDao extends EntityDao<Country> implements CountryDao {
 
     public static final int NAME_INDEX = 1;
     public static final int ID_INDEX = 2;
-    public static final String ENTITY_NAME = "country";
+    public static final String ENTITY_NAME = "Country";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlCountryDao.class);
     private static final MysqlCountryDao instance = new MysqlCountryDao();

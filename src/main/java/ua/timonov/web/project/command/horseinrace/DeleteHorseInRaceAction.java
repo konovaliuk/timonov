@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.horseinrace;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.race.Race;
@@ -24,7 +25,7 @@ public class DeleteHorseInRaceAction extends Action {
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRace"));
         horseInRaceService.delete(horseInRaceId);
 
-        Race race = raceService.getByHorseInRaceId(horseInRaceId);
+        Race race = raceService.findByHorseInRaceId(horseInRaceId);
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());

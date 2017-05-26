@@ -20,7 +20,7 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public static final int FINISH_PLACE_INDEX = 3;
     public static final int ID_INDEX = 4;
     public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
-    public static final String ENTITY_NAME = "horseInRace";
+    public static final String ENTITY_NAME = "HorseInRace";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlHorseInRaceDao.class);
     private static final MysqlHorseInRaceDao instance = new MysqlHorseInRaceDao();
@@ -58,7 +58,7 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     }
 
     protected HorseInRace getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("horse_in_race_id");
+        long id = resultSet.getLong("horseInRace_id");
         int finishPlace = resultSet.getInt("place");
         Horse horse = getHorseFromResultSet(resultSet);
         return new HorseInRace(id, horse, finishPlace);
@@ -79,6 +79,11 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, horseInRace.getId());
         }
+    }
+
+    @Override
+    protected String getQuerySuffixOrderBy() {
+        return QUERIES.getString(entityName + "." + ORDER_BY);
     }
 }
 

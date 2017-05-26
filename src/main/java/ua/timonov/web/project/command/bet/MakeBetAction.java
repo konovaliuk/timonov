@@ -1,8 +1,11 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.bet;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.Odds;
+import ua.timonov.web.project.model.horse.Horse;
+import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.service.*;
 
@@ -12,10 +15,10 @@ import java.math.BigDecimal;
 
 public class MakeBetAction extends Action {
 
-    public static final String BET_SAVED_PAGE = "/WEB-INF/jsp/bet/save.jsp";
+    public static final String BET_SAVED = "betSaved";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
+    private HorseService horseService = serviceFactory.createHorseService();
     private RaceService raceService = serviceFactory.createRaceService();
     private OddsService oddsService = serviceFactory.createOddsService();
     private UserService userService = serviceFactory.createUserService();
@@ -25,16 +28,19 @@ public class MakeBetAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         Bet bet = createBetFromRequest(request);
         betService.save(bet);
+
+        long horseInRaceId = bet.getOdds().getHorseInRaceId();
+        Race race = raceService.findByHorseInRaceId(horseInRaceId);
+        Horse horse = horseService.findByHorseIbRaceId(horseInRaceId);
+
         request.setAttribute("bet", bet);
-        request.setAttribute("oddsId", request.getParameter("odds"));
-        request.setAttribute("race", raceService.getByHorseInRaceId(bet.getOdds().getHorseInRaceId()));
-        return BET_SAVED_PAGE;
+        request.setAttribute("race", race);
+        request.setAttribute("horse", horse);
+        return CONFIG.getString(BET_SAVED);
     }
 
     private Bet createBetFromRequest(HttpServletRequest request) {
-        long oddsId = Long.valueOf(request.getParameter("odds"));
-//        long horseInRaceId = Long.valueOf(request.getParameter("horse_in_race"));
-//        BetType betType = oddsService.findById(oddsId).getBetType();
+        long oddsId = Long.valueOf(request.getParameter("oddsId"));
         Odds odds = oddsService.findById(oddsId);
         BigDecimal betSum = BigDecimal.valueOf(Double.valueOf(request.getParameter("sum")));
         // TODO

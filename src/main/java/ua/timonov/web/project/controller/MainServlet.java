@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class MainServlet extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(MainServlet.class);
-    public static final String ERROR_PAGE = "/WEB-INF/jsp/error.jsp";
+    public static final ResourceBundle CONFIG = ResourceBundle.getBundle("config");
+    public static final String ERROR_PAGE = "error";
 
     private static final ActionInvoker actionInvoker = ActionInvoker.getInstance();
 
@@ -38,9 +40,9 @@ public class MainServlet extends HttpServlet {
             LOGGER.info("page: " + page);
         } catch (ServletException | IOException | AppException e) {
             LOGGER.error(e.getMessage());
-            LOGGER.error(e.getCause());
-            // TODO send exception message to error page
-            page = ERROR_PAGE;
+            request.setAttribute("errorMessage", "Sorry! An error occurred");
+            request.setAttribute("errorDetails", e.getMessage());
+            page = CONFIG.getString(ERROR_PAGE);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);

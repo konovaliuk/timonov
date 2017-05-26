@@ -35,17 +35,21 @@
                         <td>${odds.id}</td>
                         <td>${odds.betType.toString()}</td>
                         <td>${odds.total} / ${odds.chances}</td>
-                        <td><a href="/races?action=oddsEdit&id=${odds.id}&horseInRace=${horseInRace.id}">Edit</a></td>
-                        <td><a href="/races?action=oddsDelete&id=${odds.id}&horseInRace=${horseInRace.id}">Delete</a></td>
+                        <td><a href="races?action=oddsEdit&oddsId=${odds.id}&horseInRaceId=${horseInRace.id}">
+                            Edit</a>
+                        </td>
+                        <td><a href="races?action=oddsDelete&oddsId=${odds.id}&horseInRaceId=${horseInRace.id}">
+                            Delete</a>
+                        </td>
                     </div>
                 </tr>
             </c:forEach>
             <tr>
         </table>
-        <form class="form-inline" action="/races" method="POST">
+        <form class="form-inline" action="races" method="POST">
             <div class="form-group col-sm-4">
                 <input class="form-control" name="action" value="oddsSave" type="hidden"/>
-                <input class="form-control" name="horseInRace" type="hidden" value="${horseInRace.id}"/>
+                <input class="form-control" name="horseInRaceId" type="hidden" value="${horseInRace.id}"/>
                 <label class="control-label">Add odds:</label>
                 <select class="form-control" name="betType">
                     <option selected disabled hidden>Choose bet type:</option>
@@ -72,7 +76,7 @@
         </form>
         <br>
         <br>
-        <form class="form-horizontal" action="/races" method="GET">
+        <form class="form-horizontal" action="races" method="GET">
             <div>
                 <input class="form-control" name="action" value="race" type="hidden"/>
                 <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>

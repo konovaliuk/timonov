@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
@@ -15,7 +16,7 @@ import java.util.Date;
 
 public class SaveEditedRaceAction extends Action {
 
-    public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
+    public static final String RACE_EDIT = "/WEB-INF/jsp/raceEdit.jsp";
     public static final String DATE = "date";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -40,7 +41,7 @@ public class SaveEditedRaceAction extends Action {
         request.setAttribute("raceStatuses", RaceStatus.values());
         request.setAttribute("countries", countryService.findAll());
         request.setAttribute("locations", locationService.findAll());
-        return RACE_EDIT_PAGE;
+        return CONFIG.getString(RACE_EDIT);
     }
 
     private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceException {

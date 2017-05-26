@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EditRaceAction extends Action {
 
-    public static final String RACE_EDIT_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
+    public static final String RACE_EDIT = "raceEdit";
 
     private RaceService raceService = ServiceFactory.getInstance().createRaceService();
     private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
@@ -27,9 +28,10 @@ public class EditRaceAction extends Action {
         request.setAttribute("countries", countryService.findAll());
         request.setAttribute("locations", locationService.findAll());
 //        return choosePage(raceStatus);
-        return RACE_EDIT_PAGE;
+        return CONFIG.getString(RACE_EDIT);
     }
 
+    @Deprecated
     private String choosePage(RaceStatus raceStatus) {
         return "/WEB-INF/jsp/race/edit" + raceStatus.nameForJspFile() + ".jsp";
     }

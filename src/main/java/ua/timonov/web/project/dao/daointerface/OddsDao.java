@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OddsDao extends Dao<Odds> {
 
-    List<Odds> findByHorseInRace(long horseInRaceId);
+    List<Odds> findListByHorseInRace(long horseInRaceId);
 }

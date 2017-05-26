@@ -25,6 +25,7 @@ public class Odds implements Entity {
         this.betType = betType;
         this.total = total;
         this.chances = chances;
+        this.oddsValue = (double) total / chances;
     }
 
     public Odds(double oddsValue) {
@@ -102,11 +103,19 @@ public class Odds implements Entity {
         return result;
     }
 
+    public String getValue() {
+        return String.format("% 3d/% 3d", total, chances);
+    }
+
     @Override
     public String toString() {
-        if (oddsValue == 0) {
-            return String.format("%d / %d", total, chances);
-        }
-        return String.format("%6.3f", oddsValue);
+        return "Odds{" +
+                "id=" + id +
+                ", horseInRaceId=" + horseInRaceId +
+                ", betType=" + betType +
+                ", total=" + total +
+                ", chances=" + chances +
+                ", oddsValue=" + oddsValue +
+                '}';
     }
 }

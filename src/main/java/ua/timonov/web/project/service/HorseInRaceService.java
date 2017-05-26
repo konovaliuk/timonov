@@ -1,7 +1,6 @@
 package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
-import ua.timonov.web.project.dao.Dao;
 import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.exception.ServiceException;
@@ -10,16 +9,16 @@ import ua.timonov.web.project.model.horse.HorseInRace;
 
 import java.util.List;
 
-public class HorseInRaceService extends DataService<HorseInRace> {
+public class HorseInRaceService extends DataService<HorseInRace, Odds> {
 
     private static final Logger LOGGER = Logger.getLogger(HorseInRaceService.class);
 
     private static HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
     private static OddsDao oddsDao = daoFactory.createOddsDao();
-    private static final HorseInRaceService instance = new HorseInRaceService(horseInRaceDao);
+    private static final HorseInRaceService instance = new HorseInRaceService();
 
-    private HorseInRaceService(Dao<HorseInRace> horseInRaceDao) {
-        super(horseInRaceDao, "Horse in Race");
+    private HorseInRaceService() {
+        super(horseInRaceDao, oddsDao);
     }
 
     public static HorseInRaceService getInstance() {
@@ -29,7 +28,7 @@ public class HorseInRaceService extends DataService<HorseInRace> {
     @Override
     public HorseInRace findById(long id) {
         HorseInRace horseInRace = super.findById(id);
-        List<Odds> oddsByHorseInRace = oddsDao.findByHorseInRace(horseInRace.getId());
+        List<Odds> oddsByHorseInRace = oddsDao.findListByHorseInRace(horseInRace.getId());
         if (oddsByHorseInRace == null) {
             LOGGER.error("Items not founded in Odds");
             throw new ServiceException("Items not founded in Odds");
@@ -39,11 +38,11 @@ public class HorseInRaceService extends DataService<HorseInRace> {
     }
 
     public List<HorseInRace> findByRaceId(long raceId) {
-        List<HorseInRace> listFromDatabase = horseInRaceDao.findListByRaceId(raceId);
-        for (HorseInRace horseInRace : listFromDatabase) {
-            horseInRace.setOddsValues(oddsDao.findByHorseInRace(horseInRace.getId()));
+        List<HorseInRace> horsesInRace = horseInRaceDao.findListByRaceId(raceId);
+        for (HorseInRace horseInRace : horsesInRace) {
+            horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
         }
-        return listFromDatabase;
+        return horsesInRace;
     }
 }
 

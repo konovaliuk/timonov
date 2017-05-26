@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class SaveRacePlacesAction extends Action {
 
-    public static final String RACE_ADMIN_PAGE = "/WEB-INF/jsp/raceEdit.jsp";
+    public static final String RACE_EDIT = "raceEdit";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -38,7 +39,7 @@ public class SaveRacePlacesAction extends Action {
             for (int i = 0; i < nHorsesInRace; i++) {
                 HorseInRace horseInRace = listOfHorsesInRace.get(i);
                 horseInRace.setFinishPlace(places.get(i));
-                horseInRaceService.save(horseInRace, raceId);
+                horseInRaceService.save(horseInRace);
             }
             raceService.save(race);
         } else {
@@ -47,7 +48,7 @@ public class SaveRacePlacesAction extends Action {
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", listOfHorsesInRace);
         request.setAttribute("raceStatuses", RaceStatus.values());
-        return RACE_ADMIN_PAGE;
+        return CONFIG.getString(RACE_EDIT);
     }
 
     private boolean validateInputtedPlaces(List<Integer> places) {

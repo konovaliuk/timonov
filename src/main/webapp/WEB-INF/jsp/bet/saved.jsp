@@ -16,18 +16,12 @@
             </div>
         </header>
 
-        <nav>
-            <ul>
-                <li><a href="/races?action=races">Races</a></li>
-                <li><a href="/error">ERROR</a></li>
-            </ul>
-        </nav>
+        <%@include file="../items/nav.jspf"%>
 
         <article>
             <div class="form-horizontal">
                 <h2>You have made a bet:</h2>
 
-                <c:set var="horse" value="${bet.horseInRace.horse}"/>
                 <div class="form-group">
                     <div class="col-sm-4">
                         <label class="control-label">Race location:</label>
@@ -69,17 +63,21 @@
                         <label class="control-label">Bet type & sum: </label>
                     </div>
                     <div class="col-sm-8">
-                        <label class="control-label">${bet.betType}, ${bet.sum}</label>
+                        <label class="control-label">${bet.odds.betType}, ${bet.sum}</label>
                     </div>
                 </div>
 
-                <p><a href="/races?action=horse_in_race&id=${bet.horseInRace.id}">More bets</a></p>
-                <form class="form-inline" action="/races?action=horse_in_race&id=${bet.horseInRace.id}" method="GET">
+                <form class="form-inline" action="races" method="GET">
+                    <input class="form-control" name="action" value="horseInRace" type="hidden"/>
+                    <input class="form-control" name="horseInRaceId" value="${bet.odds.horseInRaceId}" type="hidden"/>
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-triangle-left"></span> Return to bets</button>
+                        <span class="glyphicon glyphicon-triangle-right"></span> One more bet
+                    </button>
                 </form>
 
-                <form class="form-inline" action="/races?action=race&id=${race.id}" method="GET">
+                <form class="form-inline" action="races" method="GET">
+                    <input class="form-control" name="action" value="race" type="hidden"/>
+                    <input class="form-control" name="raceId" value="${race.id}" type="hidden"/>
                     <button class="btn btn-primary" type="submit">
                         <span class="glyphicon glyphicon-triangle-left"></span> Return to race</button>
                 </form>

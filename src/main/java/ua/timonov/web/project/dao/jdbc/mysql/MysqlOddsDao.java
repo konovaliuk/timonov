@@ -20,8 +20,8 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     public static final int TOTAL_INDEX = 3;
     public static final int CHANCES_INDEX = 4;
     public static final int ID_INDEX = 5;
-    public static final String FIND_BY_HORSE_IN_RACE = "findByHorseInRace";
-    public static final String ENTITY_NAME = "odds";
+    public static final String FIND_BY_HORSE_IN_RACE = "findListByHorseInRace";
+    public static final String ENTITY_NAME = "Odds";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlOddsDao.class);
     private static final MysqlOddsDao instance = new MysqlOddsDao();
@@ -35,7 +35,7 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     }
 
     @Override
-    public List<Odds> findByHorseInRace(long horseInRaceId) {
+    public List<Odds> findListByHorseInRace(long horseInRaceId) {
         String sql = getQuery(FIND_BY_HORSE_IN_RACE);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -60,8 +60,8 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
 
     protected Odds getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("odds_id");
-        long horseInRaceId = resultSet.getLong("horse_in_race_id");
-        BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("bet_name")));
+        long horseInRaceId = resultSet.getLong("horseInRace_id");
+        BetType betType = BetType.valueOf(convertToEnumNameType(resultSet.getString("betName")));
         int total = resultSet.getInt("total");
         int chances = resultSet.getInt("chances");
         return new Odds(id, horseInRaceId, betType, total, chances);
