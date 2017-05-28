@@ -12,7 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
-                <h2>Races</h2>
+                <h3>All races</h3>
             </div>
         </header>
 
@@ -22,8 +22,9 @@
 
         <article>
             <div>
-                <h2>Races</h2>
-                <table class="table table-striped">
+                <%@include file="items/statusMessage.jspf"%>
+                <h3>Races</h3>
+                <table class="table table-striped table-condensed">
                     <tr>
                         <th>ID</th>
                         <th>Location</th>
@@ -32,6 +33,7 @@
                         <th>Status</th>
                         <th>Go to race</th>
                         <th>Edit race</th>
+                        <th>Delete race</th>
                     </tr>
                     <c:forEach var="race" items="${races}">
                         <tr>
@@ -41,10 +43,36 @@
                             <td>${race.date}</td>
                             <td>${race.raceStatus.toString()}</td>
                             <td><a href="races?action=race&raceId=${race.id}">To race</a></td>
-                            <td><a href="races?action=raceEdit&raceId=${race.id}">Edit races</a></td>
+                            <td><a href="races?action=raceEdit&raceId=${race.id}">Edit race</a></td>
+                            <td><a href="races?action=raceDelete&raceId=${race.id}">Delete race</a></td>
                         </tr>
                     </c:forEach>
                 </table>
+
+                <form class="form-inline" action="races" method="POST">
+                    <div class="form-group col-sm-6">
+                        <input class="form-control" name="action" value="raceAdd" type="hidden"/>
+                        <label class="control-label" for="location">Add race, Location:</label>
+                        <select class="form-control" id="location" name="locationId">
+                            <option selected disabled>Choose location:</option>
+                            <c:forEach var="location" items="${locations}">
+                                <option value=${location.id}>${location.name}, ${location.country.name}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="control-label" for="date">Date:</label>
+                        <input class="form-control" id="date" name="date" type="date"/>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-plus-sign"></span> Add race</button>
+                    </div>
+                </form>
+                <br>
+                <br>
+                <br>
                 <form class="form-horizontal" action="races?action=home" method="GET">
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">

@@ -8,14 +8,14 @@
     <div class="container">
         <header>
             <div class="container">
-                <h3>${errorMessage}</h3>
-                <h4>${errorDetails}</h4>
+                <h2>Error page</h2>
             </div>
         </header>
 
         <%@include file="items/nav.jspf"%>
 
         <article>
+            <%@include file="items/statusMessage.jspf"%>
             <h3>Horse Racing at William Hill</h3>
             <p>For the last word in horse racing, look no further
                 than William Hill - the Home of Betting. Covering

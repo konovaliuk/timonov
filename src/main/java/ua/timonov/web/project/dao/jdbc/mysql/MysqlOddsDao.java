@@ -6,11 +6,9 @@ import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
@@ -36,26 +34,8 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
 
     @Override
     public List<Odds> findListByHorseInRace(long horseInRaceId) {
-        String sql = getQuery(FIND_BY_HORSE_IN_RACE);
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setLong(1, horseInRaceId);
-            LOGGER.info(ps.toString());
-            List<Odds> result = new ArrayList<>();
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-            LOGGER.info(result.size() + " records founded");
-            return result;
-//            return new QueryResult<>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + ENTITY_NAME +
-                    " by horseInRace id = " + horseInRaceId + ", exception message: " + e.getMessage());
-            return null;
-        }
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_HORSE_IN_RACE);
+        return findListWithSql(sql);
     }
 
     protected Odds getEntityFromResultSet(ResultSet resultSet) throws SQLException {
@@ -79,6 +59,27 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
         }
     }
 }
+
+
+/*try (Connection connection = dataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+
+        ps.setLong(1, horseInRaceId);
+        LOGGER.info(ps.toString());
+        List<Odds> result = new ArrayList<>();
+        try (ResultSet resultSet = ps.executeQuery()) {
+        while (resultSet.next()) {
+        result.add(getEntityFromResultSet(resultSet));
+        }
+        }
+        LOGGER.info(result.size() + " records founded");
+        return result;
+//            return new QueryResult<>(result, result.size());
+        } catch (SQLException e) {
+        LOGGER.error("Database error while searching in table " + ENTITY_NAME +
+        " by horseInRace id = " + horseInRaceId + ", exception message: " + e.getMessage());
+        return null;
+        }*/
 
 
 /*@Override

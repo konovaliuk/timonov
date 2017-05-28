@@ -20,6 +20,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     public static final String INSERT = "insert";
     public static final String UPDATE = "update";
     public static final String DELETE = "delete";
+    public static final String SPACE = " ";
 
     protected static final ResourceBundle QUERIES = ResourceBundle.getBundle("queries");
     protected String entityName;
@@ -107,6 +108,10 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     @Override
     public List<T> findAll() {
         String sql = getQuery(FIND_ALL) + " " + getQuerySuffixOrderBy();
+        return findListWithSql(sql);
+    }
+
+    protected List<T> findListWithSql(String sql) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -117,7 +122,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-            LOGGER.info(result.size() + " records founded");
+            LOGGER.info(result.size() + " items founded");
             return result;
             // TODO
 //            return new QueryResult<>(result, result.size());
@@ -131,16 +136,16 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     @Override
     public T findById(long id) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_ID);
-        return executeReadySqlWithFind(id, sql);
+        return findByIdWithSql(id, sql);
     }
 
     @Override
     public T findByForeignId(long id, String foreignKeyEntityName) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY + foreignKeyEntityName);
-        return executeReadySqlWithFind(id, sql);
+        return findByIdWithSql(id, sql, foreignKeyEntityName);
     }
 
-    private T executeReadySqlWithFind(long id, String sql) {
+    protected T findByIdWithSql(long id, String sql, String... otherEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -153,7 +158,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                 }
             }
             if (result != null) {
-                LOGGER.info("Item with id = " + id + " founded in table " + entityName);
+                LOGGER.info("Item " + otherEntity[0] + " with id = " + id + " founded in table " + entityName);
             } else {
                 LOGGER.info("Item with id = " + id + " not founded in table " + entityName);
             }

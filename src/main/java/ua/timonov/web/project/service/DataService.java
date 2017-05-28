@@ -35,7 +35,7 @@ public abstract class DataService<T extends Entity, F extends Entity> {
 
     public void delete(long id) throws ServiceException {
         if (daoForeignKey != null) {
-            findEntityWithForeignKey(id);
+            checkEntityWithForeignKey(id);
         }
         if (!dao.delete(id)) {
             LOGGER.error("Deleting " + dao.getName() + " failed!");
@@ -43,7 +43,7 @@ public abstract class DataService<T extends Entity, F extends Entity> {
         }
     }
 
-    private void findEntityWithForeignKey(long id) {
+    private void checkEntityWithForeignKey(long id) {
         F entity = daoForeignKey.findByForeignId(id, dao.getName());
         if (entity != null) {
             LOGGER.warn("Deleting chosen " + dao.getName() + " is impossible! There is a(n) " +

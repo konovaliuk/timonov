@@ -21,7 +21,8 @@ public class HorseService extends DataService<Horse, HorseInRace> {
     }
 
     public Horse findByHorseIbRaceId(long horseInRaceId) {
-        Horse horse = horseDao.findByHorseInRaceId(horseInRaceId);
+        Horse horse = horseDao.findByForeignId(horseInRaceId, "HorseInRace");
+//        Horse horse = horseDao.findByHorseInRaceId(horseInRaceId);
         if (horse == null) {
             throw new ServiceException("Horse in race " + horseInRaceId + " does not exist in table Horse");
         }

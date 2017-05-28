@@ -37,7 +37,7 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         return horseInRace;
     }
 
-    public List<HorseInRace> findByRaceId(long raceId) {
+    public List<HorseInRace> findListByRaceId(long raceId) {
         List<HorseInRace> horsesInRace = horseInRaceDao.findListByRaceId(raceId);
         for (HorseInRace horseInRace : horsesInRace) {
             horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));

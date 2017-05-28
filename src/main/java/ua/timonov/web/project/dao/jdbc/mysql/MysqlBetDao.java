@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
@@ -22,6 +23,7 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
     private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
     private static final MysqlBetDao instance = new MysqlBetDao();
+    public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
 
     private MysqlBetDao() {
         super(ENTITY_NAME);
@@ -38,6 +40,12 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
         Odds odds = MysqlOddsDao.getInstance().getEntityFromResultSet(resultSet);
         BigDecimal sum = resultSet.getBigDecimal("sum");
         return new Bet(id, user, odds, sum);
+    }
+
+    @Override
+    public List<Bet> findListByRaceId(long raceId) {
+        String sql = getQuery(FIND_ALL) + getQuery(FIND_LIST_BY_RACE_ID);
+        return findListWithSql(sql);
     }
 
     protected void setEntityToParameters(Bet bet, PreparedStatement statement) throws SQLException {

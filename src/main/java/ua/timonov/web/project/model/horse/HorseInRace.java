@@ -6,7 +6,7 @@ import ua.timonov.web.project.model.bet.Odds;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorseInRace implements Entity {
+public class HorseInRace implements Entity, Comparable<HorseInRace> {
     private long id;
     private long raceId;
     private Horse horse;
@@ -20,6 +20,11 @@ public class HorseInRace implements Entity {
         this.id = id;
         this.horse = horse;
         this.finishPlace = finishPlace;
+    }
+
+    public HorseInRace(long raceId, Horse horse) {
+        this.raceId = raceId;
+        this.horse = horse;
     }
 
     public long getId() {
@@ -94,5 +99,10 @@ public class HorseInRace implements Entity {
                 ", finishPlace=" + finishPlace +
                 ", oddsValues=" + oddsValues +
                 '}';
+    }
+
+    @Override
+    public int compareTo(HorseInRace thatHorseInRace) {
+        return finishPlace - thatHorseInRace.finishPlace;
     }
 }

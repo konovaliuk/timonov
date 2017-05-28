@@ -37,6 +37,12 @@ public class Race implements Entity {
         this.date = date;
     }
 
+    public Race(Location location, Date date) {
+        this.location = location;
+        this.date = date;
+        this.raceStatus = RaceStatus.BEING_FORMED;
+    }
+
     public long getId() {
         return id;
     }

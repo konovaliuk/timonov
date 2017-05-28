@@ -8,4 +8,6 @@ import java.util.List;
 public interface HorseInRaceDao extends Dao<HorseInRace> {
 
     List<HorseInRace> findListByRaceId(long raceId);
+
+    HorseInRace findHorseInRaceWithoutOdds(long id);
 }

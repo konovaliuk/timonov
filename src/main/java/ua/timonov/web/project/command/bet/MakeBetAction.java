@@ -27,12 +27,11 @@ public class MakeBetAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         Bet bet = createBetFromRequest(request);
-        betService.save(bet);
+        betService.tryToMakeBet(bet);
 
         long horseInRaceId = bet.getOdds().getHorseInRaceId();
         Race race = raceService.findByHorseInRaceId(horseInRaceId);
         Horse horse = horseService.findByHorseIbRaceId(horseInRaceId);
-
         request.setAttribute("bet", bet);
         request.setAttribute("race", race);
         request.setAttribute("horse", horse);

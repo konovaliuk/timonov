@@ -19,7 +19,7 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
     public static final int PASSWORD_INDEX = 4;
     public static final int NAME_INDEX = 5;
     public static final int ID_INDEX = 6;
-    public static final String ENTITY_NAME = "user";
+    public static final String ENTITY_NAME = "User";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlUserDao.class);
     private static final MysqlUserDao instance = new MysqlUserDao();
@@ -49,7 +49,7 @@ public class MysqlUserDao extends EntityDao<User> implements UserDao {
     }
 
     @Override
-    protected void setEntityToParameters(User user, PreparedStatement statement, long... externalId)
+    protected void setEntityToParameters(User user, PreparedStatement statement)
             throws SQLException {
 
         statement.setInt(USER_TYPE_INDEX, user.getUserType().ordinal() + 1);

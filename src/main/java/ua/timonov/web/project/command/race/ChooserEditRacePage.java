@@ -14,7 +14,7 @@ public final class ChooserEditRacePage {
 
     public static String choosePage(RaceStatus raceStatus) {
         switch (raceStatus) {
-            case NOT_ARRANGED:
+            case BEING_FORMED:
                 return EDIT_NOT_ARRANGED_RACE;
             case OPEN_TO_BET:
                 return EDIT_OPEN_TO_BET_RACE;

@@ -21,7 +21,7 @@ public class GetRaceAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         request.setAttribute(RACE, raceService.findById(raceId));
-        request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(raceId));
+        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(raceId));
         return CONFIG.getString(RACE);
     }
 }

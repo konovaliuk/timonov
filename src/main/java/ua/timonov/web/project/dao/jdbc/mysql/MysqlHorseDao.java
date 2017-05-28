@@ -5,7 +5,6 @@ import ua.timonov.web.project.dao.daointerface.HorseDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.horse.Horse;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,9 +30,34 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
         return instance;
     }
 
+    protected Horse getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        long id = resultSet.getLong("horse_id");
+        String name = resultSet.getString("horse_name");
+        int yearOfBirth = resultSet.getInt("year");
+        int totalRaces = resultSet.getInt("totalRaces");
+        int wonRaces = resultSet.getInt("wonRaces");
+        return new Horse(id, name, yearOfBirth, totalRaces, wonRaces);
+    }
+
     @Override
+    protected void setEntityToParameters(Horse horse, PreparedStatement statement)
+            throws SQLException {
+
+        statement.setString(NAME_INDEX, horse.getName());
+        statement.setLong(YEAR_INDEX, horse.getYearOfBirth());
+        statement.setInt(TOTAL_RACES_INDEX, horse.getTotalRaces());
+        statement.setInt(WON_RACES_INDEX, horse.getWonRaces());
+        if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
+            statement.setLong(ID_INDEX, horse.getId());
+        }
+    }
+}
+
+/*@Override
+    @Deprecated
     public Horse findByHorseInRaceId(long horseInRaceId) {
-        String sql = getQuery(FIND_BY_HORSE_IN_RACE_ID);
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_HORSE_IN_RACE_ID);
+        return findByForeignId(horseInRaceId, )
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -58,30 +82,7 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
                     horseInRaceId + ", exception message: " + e.getMessage());
             return null;
         }
-    }
-
-    protected Horse getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("horse_id");
-        String name = resultSet.getString("horse_name");
-        int yearOfBirth = resultSet.getInt("year");
-        int totalRaces = resultSet.getInt("totalRaces");
-        int wonRaces = resultSet.getInt("wonRaces");
-        return new Horse(id, name, yearOfBirth, totalRaces, wonRaces);
-    }
-
-    @Override
-    protected void setEntityToParameters(Horse horse, PreparedStatement statement)
-            throws SQLException {
-
-        statement.setString(NAME_INDEX, horse.getName());
-        statement.setLong(YEAR_INDEX, horse.getYearOfBirth());
-        statement.setInt(TOTAL_RACES_INDEX, horse.getTotalRaces());
-        statement.setInt(WON_RACES_INDEX, horse.getWonRaces());
-        if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
-            statement.setLong(ID_INDEX, horse.getId());
-        }
-    }
-}
+    }*/
 
 /*@Override
     public boolean save(Horse horse) {

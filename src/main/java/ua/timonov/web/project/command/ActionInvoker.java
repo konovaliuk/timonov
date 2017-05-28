@@ -33,12 +33,18 @@ public final class ActionInvoker {
         actionMap.put("horse", new GetHorseAction());
         actionMap.put("races", new GetRacesAction());
         actionMap.put("race", new GetRaceAction());
+        actionMap.put("raceAdd", new AddRaceAction());
         actionMap.put("raceEdit", new EditRaceAction());
-        actionMap.put("raceSaveEdited", new SaveEditedRaceAction());
+        actionMap.put("raceDelete", new DeleteRaceAction());
+
+        actionMap.put("raceSaveEditedAttributes", new SaveEditedRaceAttributesAction());
         actionMap.put("racePlacesSave", new SaveRacePlacesAction());
         actionMap.put("horseInRace", new GetHorseInRaceAction());
         actionMap.put("horseInRaceBookie", new GetHorseInRaceBookieAction());
         actionMap.put("horseInRaceDelete", new DeleteHorseInRaceAction());
+        actionMap.put("horseInRaceAdd", new AddHorseInRaceAction());
+        actionMap.put("cancelRace", new CancelRaceAction());
+        actionMap.put("changeRaceStatus", new ChangeRaceStatus());
 
         actionMap.put("makeBet", new MakeBetAction());
         actionMap.put("oddsSave", new SaveOddsAction());

@@ -7,7 +7,6 @@ import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +18,7 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
     public static final int LOCATION_INDEX = 2;
     public static final int DATE_INDEX = 3;
     public static final int ID_INDEX = 4;
-    public static final String ENTITY_NAME = "race";
+    public static final String ENTITY_NAME = "Race";
     public static final String FIND_BY_HORSE_IN_RACE_ID = "findByHorseInRaceId";
 
     private static final MysqlRaceDao instance = new MysqlRaceDao();
@@ -34,9 +33,42 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
     }
 
     @Override
+    @Deprecated
     public Race findByHorseInRaceId(long horseInRaceId) {
         String sql = getQuery(FIND_BY_HORSE_IN_RACE_ID);
-        try (Connection connection = dataSource.getConnection();
+        return findByForeignId(horseInRaceId, "HorseInRace");
+    }
+
+    protected Race getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        long id = resultSet.getLong("id");
+        RaceStatus raceStatus = RaceStatus.valueOf(convertToEnumNameType(resultSet.getString("status")));
+        Location location = getLocationFromResultSet(resultSet);
+        Date date = resultSet.getDate("date");
+        return new Race(id, raceStatus, location, date);
+    }
+
+    private Location getLocationFromResultSet(ResultSet resultSet) throws SQLException {
+        MySqlLocationDao mySqlLocationDao = MySqlLocationDao.getInstance();
+        return mySqlLocationDao.getEntityFromResultSet(resultSet);
+    }
+
+    protected void setEntityToParameters(Race race, PreparedStatement statement) throws SQLException {
+        statement.setLong(RACE_STATUS_INDEX, race.getRaceStatus().ordinal() + 1);
+        statement.setLong(LOCATION_INDEX, race.getLocation().getId());
+        // TODO consider Date problem
+        statement.setDate(DATE_INDEX, new java.sql.Date(race.getDate().getTime()))   ;
+        if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
+            statement.setLong(ID_INDEX, race.getId());
+        }
+    }
+
+    protected String getQuerySuffixOrderBy() {
+        return QUERIES.getString(entityName + "." + ORDER_BY);
+    }
+}
+
+
+/*try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, horseInRaceId);
@@ -59,32 +91,7 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
             LOGGER.error("Database error while searching in table " + ENTITY_NAME + " by horseInRace id " +
                     horseInRaceId + ", exception message: " + e.getMessage());
             return null;
-        }
-    }
-
-    protected Race getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong("id");
-        RaceStatus raceStatus = RaceStatus.valueOf(convertToEnumNameType(resultSet.getString("status")));
-        Location location = getLocationFromResultSet(resultSet);
-        Date date = resultSet.getDate("date");
-        return new Race(id, raceStatus, location, date);
-    }
-
-    private Location getLocationFromResultSet(ResultSet resultSet) throws SQLException {
-        MySqlLocationDao mySqlLocationDao = MySqlLocationDao.getInstance();
-        return mySqlLocationDao.getEntityFromResultSet(resultSet);
-    }
-
-    protected void setEntityToParameters(Race race, PreparedStatement statement, long... externalId) throws SQLException {
-        statement.setLong(RACE_STATUS_INDEX, race.getRaceStatus().ordinal() + 1);
-        statement.setLong(LOCATION_INDEX, race.getLocation().getId());
-        // TODO consider Date problem
-        statement.setDate(DATE_INDEX, new java.sql.Date(race.getDate().getTime()))   ;
-        if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
-            statement.setLong(ID_INDEX, race.getId());
-        }
-    }
-}
+        }*/
 
 
 /*public List<Race> findAll() {

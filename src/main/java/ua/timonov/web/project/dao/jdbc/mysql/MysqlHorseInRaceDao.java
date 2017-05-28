@@ -6,11 +6,9 @@ import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements HorseInRaceDao {
@@ -20,11 +18,11 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public static final int FINISH_PLACE_INDEX = 3;
     public static final int ID_INDEX = 4;
     public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
+    public static final String FIND_WITHOUT_ODDS = "findHorseInRaceWithoutOdds";
     public static final String ENTITY_NAME = "HorseInRace";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlHorseInRaceDao.class);
     private static final MysqlHorseInRaceDao instance = new MysqlHorseInRaceDao();
-
 
     private MysqlHorseInRaceDao() {
         super(ENTITY_NAME);
@@ -35,26 +33,14 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     }
 
     public List<HorseInRace> findListByRaceId(long raceId) {
-        String sql = getQuery(FIND_LIST_BY_RACE_ID);
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_LIST_BY_RACE_ID);
+        return findListWithSql(sql);
+    }
 
-            statement.setLong(1, raceId);
-            LOGGER.info(statement.toString());
-            List<HorseInRace> result = new ArrayList<>();
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-            LOGGER.info(result.size() + " records founded");
-            return result;
-//            return new QueryResult<>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + ENTITY_NAME +
-                    " by race id = " + raceId + ", exception message: " + e.getMessage());
-            return null;
-        }
+    @Override
+    public HorseInRace findHorseInRaceWithoutOdds(long id) {
+        String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_WITHOUT_ODDS);
+        return findByIdWithSql(id, sql, "Race");
     }
 
     protected HorseInRace getEntityFromResultSet(ResultSet resultSet) throws SQLException {
@@ -86,6 +72,26 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
         return QUERIES.getString(entityName + "." + ORDER_BY);
     }
 }
+
+/*try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
+
+        statement.setLong(1, raceId);
+        LOGGER.info(statement.toString());
+        List<HorseInRace> result = new ArrayList<>();
+        try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+        result.add(getEntityFromResultSet(resultSet));
+        }
+        }
+        LOGGER.info(result.size() + " records founded");
+        return result;
+//            return new QueryResult<>(result, result.size());
+        } catch (SQLException e) {
+        LOGGER.error("Database error while searching in table " + ENTITY_NAME +
+        " by race id = " + raceId + ", exception message: " + e.getMessage());
+        return null;
+        }*/
 
     /*@Override
     public boolean save(HorseInRace horseInRace) {

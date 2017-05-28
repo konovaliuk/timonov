@@ -13,21 +13,21 @@ public class EditRaceAction extends Action {
 
     public static final String RACE_EDIT = "raceEdit";
 
-    private RaceService raceService = ServiceFactory.getInstance().createRaceService();
-    private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
-    private CountryService countryService = ServiceFactory.getInstance().createCountryService();
-    private LocationService locationService = ServiceFactory.getInstance().createLocationService();
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private RaceService raceService = serviceFactory.createRaceService();
+    private HorseService horseService = serviceFactory.createHorseService();
+    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
+    private LocationService locationService = serviceFactory.createLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.findById(raceId);
         request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(raceId));
+        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(raceId));
         request.setAttribute("raceStatuses", RaceStatus.values());
-        request.setAttribute("countries", countryService.findAll());
         request.setAttribute("locations", locationService.findAll());
-//        return choosePage(raceStatus);
+        request.setAttribute("horses", horseService.findAll());
         return CONFIG.getString(RACE_EDIT);
     }
 

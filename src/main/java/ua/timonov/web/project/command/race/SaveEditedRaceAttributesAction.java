@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-public class SaveEditedRaceAction extends Action {
+public class SaveEditedRaceAttributesAction extends Action {
 
     public static final String RACE_EDIT = "/WEB-INF/jsp/raceEdit.jsp";
     public static final String DATE = "date";
@@ -37,7 +37,7 @@ public class SaveEditedRaceAction extends Action {
 //        Race race = raceService.findById(raceId);
 
         request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.findByRaceId(race.getId()));
+        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());
         request.setAttribute("countries", countryService.findAll());
         request.setAttribute("locations", locationService.findAll());
@@ -45,7 +45,7 @@ public class SaveEditedRaceAction extends Action {
     }
 
     private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceException {
-        String parameterId = request.getParameter("id");
+        String parameterId = request.getParameter("raceId");
         long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         long locationId = Long.valueOf(request.getParameter("location"));
         Parser<Date> dateParser = FactoryParser.createDateParser();
