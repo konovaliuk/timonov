@@ -2,9 +2,9 @@ package ua.timonov.web.project.service;
 
 public class ServiceFactory {
 
-    private static final ServiceFactory instance = new ServiceFactory();
+    private static ServiceFactory instance;
 
-    private static BetService betService = BetService.getInstance();
+    private BetService betService = BetService.getInstance();
     private HorseInRaceService horseInRaceService = HorseInRaceService.getInstance();
     private HorseService horseService = HorseService.getInstance();
     private RaceService raceService = RaceService.getInstance();
@@ -17,6 +17,9 @@ public class ServiceFactory {
     }
 
     public static ServiceFactory getInstance() {
+        if (instance == null) {
+            instance = new ServiceFactory();
+        }
         return instance;
     }
 

@@ -18,6 +18,7 @@ import java.util.List;
 public class RaceService extends DataService<Race, HorseInRace> {
 
     private static final Logger LOGGER = Logger.getLogger(RaceService.class);
+    public static final int FINISH_PLACES_SET_CORRECTLY = 0;
     private static RaceDao raceDao = daoFactory.createRaceDao();
     private static HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
     private static BetDao betDao = daoFactory.createBetDao();
@@ -54,6 +55,10 @@ public class RaceService extends DataService<Race, HorseInRace> {
         if (race.getRaceStatus().compareTo(RaceStatus.FINISHED) < 0) {
             race.setRaceStatus(RaceStatus.CANCELLED);
             raceDao.save(race);
+            List<Bet> bets = betDao.findListByRaceId(race.getId());
+            for (Bet bet : bets) {
+                userService.returnMoney(bet);
+            }
             LOGGER.info("Race status is set to \"Cancelled\"");
         } else {
             LOGGER.error("Race status can't be set to \"Cancelled\"");
@@ -89,8 +94,8 @@ public class RaceService extends DataService<Race, HorseInRace> {
 
     private void checkIfRaceReadyToBeOpen(Race race) {
         if (race.getHorsesInRace().size() <= 1) {
-            LOGGER.warn("Should be at least 2 horses in the race to open betting");
-            throw new ServiceException("Should be at least 2 horses in the race to open betting");
+            LOGGER.warn("Should be at least two horses in the race to open betting");
+            throw new ServiceException("Should be at least two horses in the race to open betting");
         }
         HorseInRace horseInRaceWithoutOdds = findHorseInRaceWithoutOdds(race);
         if (horseInRaceWithoutOdds != null) {
@@ -103,15 +108,15 @@ public class RaceService extends DataService<Race, HorseInRace> {
 
     private void setNextStatus(Race race) {
         RaceStatus currentStatus = race.getRaceStatus();
-        race.setRaceStatus(currentStatus.nextStatus());
-        save(race);
+        race.setRaceStatus(currentStatus.nextPossibleStatus());
+        super.save(race);
     }
 
     private void checkIfPlacesAreSet(Race race) {
         List<HorseInRace> listOfHorsesInRace = horseInRaceDao.findListByRaceId(race.getId());
         if (!allPlacesAreSet(listOfHorsesInRace)) {
-            LOGGER.warn("One or more horse places are not set");
-            throw new ServiceException("One or more horse places are not set");
+            LOGGER.warn("One or more horse places are not set or wrong");
+            throw new ServiceException("One or more horse places are not set or wrong");
         }
     }
 
@@ -168,25 +173,30 @@ public class RaceService extends DataService<Race, HorseInRace> {
     }
 
     public void saveInputtedPlaces(List<HorseInRace> listOfHorsesInRace, List<Integer> inputtedPlaces) {
-        if (validateInputtedPlaces(new ArrayList<>(inputtedPlaces))) {
+        int wrongPlace = findWrongInputtedPlace(new ArrayList<>(inputtedPlaces));
+        if (wrongPlace == FINISH_PLACES_SET_CORRECTLY) {
             for (int i = 0; i < listOfHorsesInRace.size(); i++) {
                 HorseInRace horseInRace = listOfHorsesInRace.get(i);
                 horseInRace.setFinishPlace(inputtedPlaces.get(i));
                 horseInRaceDao.save(horseInRace);
             }
         } else {
-            LOGGER.error("Error while fixating results");
-            throw new ServiceException("Error while fixating results");
+            LOGGER.error("Error while setting finish place: " + wrongPlace);
+            throw new ServiceException("Error while setting finish place: " + wrongPlace);
         }
     }
 
-    private boolean validateInputtedPlaces(List<Integer> places) {
+    private int findWrongInputtedPlace(List<Integer> places) {
         Collections.sort(places);
         for (int i = 0; i < places.size(); i++) {
             if (places.get(i) != i + 1) {
-                return false;
+                if (places.get(i) == i) {
+                    return i;
+                } else {
+                    return i + 1;
+                }
             }
         }
-        return true;
+        return FINISH_PLACES_SET_CORRECTLY;
     }
 }

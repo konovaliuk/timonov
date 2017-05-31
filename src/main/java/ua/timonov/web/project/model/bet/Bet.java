@@ -10,6 +10,7 @@ public class Bet implements Entity {
     private User user;
     private Odds odds;
     private BigDecimal sum;
+    private boolean wasPayed;
 
     public Bet() {
     }

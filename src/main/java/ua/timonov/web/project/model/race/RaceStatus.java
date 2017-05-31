@@ -11,12 +11,11 @@ public enum RaceStatus {
         return name().toLowerCase().replace(UNDERSCORE, SPACE);
     }
 
-    public RaceStatus nextStatus() {
-        if (this != CANCELLED) {
-            return RaceStatus.values()[this.ordinal() + 1];
-        } else {
-            return CANCELLED;
+    public RaceStatus nextPossibleStatus() {
+        if (this.ordinal() < WINNINGS_PAID.ordinal()) {
+            return values()[ordinal() + 1];
         }
+        return this;
     }
 
     @Deprecated

@@ -19,6 +19,7 @@
         <%@include file="../items/nav.jspf"%>
 
         <article>
+            <%@include file="../items/statusMessage.jspf"%>
             <div class="form-horizontal">
                 <h2>You have made a bet:</h2>
 

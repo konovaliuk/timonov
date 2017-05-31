@@ -108,10 +108,6 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     @Override
     public List<T> findAll() {
         String sql = getQuery(FIND_ALL) + " " + getQuerySuffixOrderBy();
-        return findListWithSql(sql);
-    }
-
-    protected List<T> findListWithSql(String sql) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -133,10 +129,33 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
+    protected List<T> findListWithSql(String sql, long foreignId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, foreignId);
+            LOGGER.info(statement.toString());
+            List<T> result = new ArrayList<>();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    result.add(getEntityFromResultSet(resultSet));
+                }
+            }
+            LOGGER.info(result.size() + " items founded");
+            return result;
+            // TODO
+//            return new QueryResult<>(result, result.size());
+        } catch (SQLException e) {
+            LOGGER.error("Database error while searching in table " + entityName +
+                    ", exception message: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public T findById(long id) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_ID);
-        return findByIdWithSql(id, sql);
+        return findByIdWithSql(id, sql, "");
     }
 
     @Override
@@ -145,7 +164,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         return findByIdWithSql(id, sql, foreignKeyEntityName);
     }
 
-    protected T findByIdWithSql(long id, String sql, String... otherEntity) {
+    protected T findByIdWithSql(long id, String sql, String otherEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -158,7 +177,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                 }
             }
             if (result != null) {
-                LOGGER.info("Item " + otherEntity[0] + " with id = " + id + " founded in table " + entityName);
+                LOGGER.info("Item " + otherEntity + " with id = " + id + " founded in table " + entityName);
             } else {
                 LOGGER.info("Item with id = " + id + " not founded in table " + entityName);
             }

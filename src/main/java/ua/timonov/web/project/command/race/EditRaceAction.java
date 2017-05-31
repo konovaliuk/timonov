@@ -23,16 +23,24 @@ public class EditRaceAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
         Race race = raceService.findById(raceId);
+        return prepareEditRacePage(request, race);
+    }
+
+    protected String prepareEditRacePage(HttpServletRequest request, Race race) {
+//        Race race = raceService.findById(raceId);
         request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(raceId));
+        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());
+        request.setAttribute("raceStatusBeingFormed", RaceStatus.BEING_FORMED);
+        request.setAttribute("raceStatusFinished", RaceStatus.FINISHED);
+        request.setAttribute("raceStatusWinsPaid", RaceStatus.WINNINGS_PAID);
         request.setAttribute("locations", locationService.findAll());
         request.setAttribute("horses", horseService.findAll());
         return CONFIG.getString(RACE_EDIT);
     }
+}
 
-    @Deprecated
+    /*@Deprecated
     private String choosePage(RaceStatus raceStatus) {
         return "/WEB-INF/jsp/race/edit" + raceStatus.nameForJspFile() + ".jsp";
-    }
-}
+    }*/

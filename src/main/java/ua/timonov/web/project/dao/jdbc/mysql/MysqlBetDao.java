@@ -44,8 +44,8 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
     @Override
     public List<Bet> findListByRaceId(long raceId) {
-        String sql = getQuery(FIND_ALL) + getQuery(FIND_LIST_BY_RACE_ID);
-        return findListWithSql(sql);
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_LIST_BY_RACE_ID);
+        return findListWithSql(sql, raceId);
     }
 
     protected void setEntityToParameters(Bet bet, PreparedStatement statement) throws SQLException {

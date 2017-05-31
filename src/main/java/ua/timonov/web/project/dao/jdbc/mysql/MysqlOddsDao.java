@@ -35,7 +35,7 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     @Override
     public List<Odds> findListByHorseInRace(long horseInRaceId) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_HORSE_IN_RACE);
-        return findListWithSql(sql);
+        return findListWithSql(sql, horseInRaceId);
     }
 
     protected Odds getEntityFromResultSet(ResultSet resultSet) throws SQLException {

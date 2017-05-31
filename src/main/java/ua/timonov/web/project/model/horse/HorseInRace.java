@@ -16,8 +16,9 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
     public HorseInRace() {
     }
 
-    public HorseInRace(Long id, Horse horse, int finishPlace) {
+    public HorseInRace(long id, long raceId, Horse horse, int finishPlace) {
         this.id = id;
+        this.raceId = raceId;
         this.horse = horse;
         this.finishPlace = finishPlace;
     }
@@ -75,7 +76,7 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
 
         HorseInRace that = (HorseInRace) o;
 
-        if (id != that.id) return false;
+        if (raceId != that.raceId) return false;
         if (finishPlace != that.finishPlace) return false;
         if (!horse.equals(that.horse)) return false;
         return oddsValues.equals(that.oddsValues);
@@ -84,7 +85,7 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (raceId ^ (raceId >>> 32));
         result = 31 * result + horse.hashCode();
         result = 31 * result + finishPlace;
         result = 31 * result + oddsValues.hashCode();

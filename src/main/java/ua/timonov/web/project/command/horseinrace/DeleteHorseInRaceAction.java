@@ -1,16 +1,15 @@
 package ua.timonov.web.project.command.horseinrace;
 
-import ua.timonov.web.project.command.Action;
+import ua.timonov.web.project.command.race.EditRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.race.Race;
-import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteHorseInRaceAction extends Action {
+public class DeleteHorseInRaceAction extends EditRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 
@@ -31,11 +30,6 @@ public class DeleteHorseInRaceAction extends Action {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
         }
-        request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
-        request.setAttribute("raceStatuses", RaceStatus.values());
-        request.setAttribute("locations", locationService.findAll());
-        request.setAttribute("horses", horseService.findAll());
-        return CONFIG.getString(RACE_EDIT);
+        return prepareEditRacePage(request, race);
     }
 }

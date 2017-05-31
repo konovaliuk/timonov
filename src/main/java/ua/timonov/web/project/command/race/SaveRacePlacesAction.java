@@ -1,10 +1,8 @@
 package ua.timonov.web.project.command.race;
 
-import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
-import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveRacePlacesAction extends Action {
+public class SaveRacePlacesAction extends EditRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 
@@ -31,19 +29,15 @@ public class SaveRacePlacesAction extends Action {
         for (int i = 0; i < listOfHorsesInRace.size(); i++) {
             inputtedPlaces.add(Integer.valueOf(request.getParameter("places" + i)));
         }
-
         try {
             raceService.saveInputtedPlaces(listOfHorsesInRace, inputtedPlaces);
             request.setAttribute("messageSuccess", true);
         } catch (ServiceException e) {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
+            request.setAttribute("inputtedPlaces", inputtedPlaces);
         }
-
-        request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", listOfHorsesInRace);
-        request.setAttribute("raceStatuses", RaceStatus.values());
-        return CONFIG.getString(RACE_EDIT);
+        return prepareEditRacePage(request, race);
     }
 
 

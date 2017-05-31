@@ -49,4 +49,14 @@ public class UserService extends DataService<User, Bet> {
         account.setBalance(balanceAfterPay);
         accountDao.save(account);
     }
+
+    public void returnMoney(Bet bet) {
+        Account account = bet.getUser().getAccount();
+        Money betSum = new Money(bet.getSum());
+        Money balanceBeforeReturn = account.getBalance();
+        Money balanceAfterReturn = balanceBeforeReturn.add(betSum);
+        account.setBalance(balanceAfterReturn);
+        betDao.delete(bet.getId());
+        accountDao.save(account);
+    }
 }

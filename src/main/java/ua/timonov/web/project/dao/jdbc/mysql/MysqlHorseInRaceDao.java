@@ -34,7 +34,7 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
 
     public List<HorseInRace> findListByRaceId(long raceId) {
         String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_LIST_BY_RACE_ID);
-        return findListWithSql(sql);
+        return findListWithSql(sql, raceId);
     }
 
     @Override
@@ -45,9 +45,10 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
 
     protected HorseInRace getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("horseInRace_id");
+        long raceId = resultSet.getLong("race_id");
         int finishPlace = resultSet.getInt("place");
         Horse horse = getHorseFromResultSet(resultSet);
-        return new HorseInRace(id, horse, finishPlace);
+        return new HorseInRace(id, raceId, horse, finishPlace);
     }
 
     private Horse getHorseFromResultSet(ResultSet resultSet) throws SQLException {

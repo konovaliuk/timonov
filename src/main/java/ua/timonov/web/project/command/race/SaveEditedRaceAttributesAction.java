@@ -16,31 +16,33 @@ import java.util.Date;
 
 public class SaveEditedRaceAttributesAction extends Action {
 
-    public static final String RACE_EDIT = "/WEB-INF/jsp/raceEdit.jsp";
+    public static final String RACE_EDIT = "raceEdit";
     public static final String DATE = "date";
+    public static final String SPACE = " ";
+    public static final String UNDERSCORE = "_";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
-    private CountryService countryService = serviceFactory.createCountryService();
+    private HorseService horseService = serviceFactory.createHorseService();
     private LocationService locationService = serviceFactory.createLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws ParsingException, ServiceException {
         Race race = createRaceFromRequest(request);
-        RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
-        race.setRaceStatus(raceStatus);
-        raceService.save(race);
-
-//        long raceId = Long.valueOf(request.getParameter("raceId"));
-//        Race race = raceService.findById(raceId);
-
+        try {
+            raceService.save(race);
+            request.setAttribute("messageSuccess", true);
+        } catch (ServiceException e) {
+            request.setAttribute("messageError", e.getMessage());
+            request.setAttribute("errorDetails", e.getCause());
+        }
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());
-        request.setAttribute("countries", countryService.findAll());
         request.setAttribute("locations", locationService.findAll());
+        request.setAttribute("horses", horseService.findAll());
         return CONFIG.getString(RACE_EDIT);
     }
 
@@ -48,11 +50,16 @@ public class SaveEditedRaceAttributesAction extends Action {
         String parameterId = request.getParameter("raceId");
         long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         long locationId = Long.valueOf(request.getParameter("location"));
+        // TODO with Date
         Parser<Date> dateParser = FactoryParser.createDateParser();
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);
-        RaceStatus raceStatus = RaceStatus.valueOf(request.getParameter("raceStatus"));
+        RaceStatus raceStatus = RaceStatus.valueOf(stringToEnumView(request.getParameter("raceStatus")));
         Location location = locationService.findById(locationId);
         return new Race(id, raceStatus, location, date);
+    }
+
+    private String stringToEnumView(String raceStatus) {
+        return raceStatus.toUpperCase().replace(SPACE, UNDERSCORE);
     }
 }

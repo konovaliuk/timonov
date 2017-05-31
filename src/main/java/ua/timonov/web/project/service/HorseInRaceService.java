@@ -44,6 +44,17 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         }
         return horsesInRace;
     }
+
+    public void save(HorseInRace horseInRace) throws ServiceException {
+        List<HorseInRace> listStoredHorsesInRace = horseInRaceDao.findListByRaceId(horseInRace.getRaceId());
+        for (HorseInRace storedHorseInRace : listStoredHorsesInRace) {
+            if (storedHorseInRace.equals(horseInRace)) {
+                LOGGER.warn("Chosen horse is already in the race!");
+                throw new ServiceException("Chosen horse is already in the race!");
+            }
+        }
+        super.save(horseInRace);
+    }
 }
 
 

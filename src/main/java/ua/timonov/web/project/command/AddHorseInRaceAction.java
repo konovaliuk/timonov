@@ -1,17 +1,17 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.command.race.EditRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
-import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddHorseInRaceAction extends Action {
+public class AddHorseInRaceAction extends EditRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 
@@ -32,12 +32,7 @@ public class AddHorseInRaceAction extends Action {
             request.setAttribute("errorDetails", e.getCause());
         }
         Race race = raceService.findById(horseInRace.getRaceId());
-        request.setAttribute("race", race);
-        request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
-        request.setAttribute("raceStatuses", RaceStatus.values());
-        request.setAttribute("locations", locationService.findAll());
-        request.setAttribute("horses", horseService.findAll());
-        return CONFIG.getString(RACE_EDIT);
+        return prepareEditRacePage(request, race);
     }
 
     private HorseInRace createHorseFromRequest(HttpServletRequest request) {
