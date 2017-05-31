@@ -11,7 +11,7 @@ public class MysqlDaoFactory extends DaoFactory {
     private CountryDao countryDao = MysqlCountryDao.getInstance();
     private HorseDao horseDao = MysqlHorseDao.getInstance();
     private HorseInRaceDao horseInRaceDao = MysqlHorseInRaceDao.getInstance();
-    private LocationDao locationDao = MySqlLocationDao.getInstance();
+    private LocationDao locationDao = MysqlLocationDao.getInstance();
     private OddsDao oddsDao = MysqlOddsDao.getInstance();
     private RaceDao raceDao = MysqlRaceDao.getInstance();
     private UserDao userDao = MysqlUserDao.getInstance();

@@ -19,8 +19,9 @@
 
     <article>
     <div>
+        <%@include file="items/statusMessage.jspf"%>
         <%@include file="items/raceAndHorse.jspf"%>
-        <h4>Existing odds</h4>
+        <h3>Existing odds</h3>
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
@@ -35,10 +36,10 @@
                         <td>${odds.id}</td>
                         <td>${odds.betType.toString()}</td>
                         <td>${odds.total} / ${odds.chances}</td>
-                        <td><a href="races?action=oddsEdit&oddsId=${odds.id}&horseInRaceId=${horseInRace.id}">
+                        <td><a href="races?action=oddsEdit&oddsId=${odds.id}">
                             Edit</a>
                         </td>
-                        <td><a href="races?action=oddsDelete&oddsId=${odds.id}&horseInRaceId=${horseInRace.id}">
+                        <td><a href="races?action=oddsDelete&oddsId=${odds.id}">
                             Delete</a>
                         </td>
                     </div>
@@ -48,24 +49,31 @@
         </table>
         <form class="form-inline" action="races" method="POST">
             <div class="form-group col-sm-4">
-                <input class="form-control" name="action" value="oddsSave" type="hidden"/>
+                <input class="form-control" name="action" value="oddsAdd" type="hidden"/>
                 <input class="form-control" name="horseInRaceId" type="hidden" value="${horseInRace.id}"/>
                 <label class="control-label">Add odds:</label>
                 <select class="form-control" name="betType">
                     <option selected disabled hidden>Choose bet type:</option>
                     <c:forEach var="betType" items="${betTypes}">
-                        <option value=${betType}>${betType.toString()}</option>
+                        <option value="${betType}"
+                            <c:if test="${oddsWithInputError.betType == betType}">
+                                selected
+                            </c:if>
+                        >${betType.toString()}
+                        </option>
                     </c:forEach>
                 </select>
             </div>
 
             <div class="form-group col-sm-4">
                 <label class="control-label">Total odds:</label>
-                <input class="form-control" type="number" name="total" placeholder="total">
+                <input class="form-control" type="number" name="total" placeholder="total" required
+                       value="${oddsWithInputError.total}">
             </div>
             <div class="form-group col-sm-4">
                 <label class="control-label">Odds to win:</label>
-                <input class="form-control" type="number" name="chances" placeholder="chances">
+                <input class="form-control" type="number" name="chances" placeholder="chances" required
+                       value="${oddsWithInputError.chances}">
             </div>
             <br>
             <br>

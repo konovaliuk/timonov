@@ -22,11 +22,14 @@ public class EditOddsAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long oddsId = Long.valueOf(request.getParameter("oddsId"));
-        long horseInRaceId = Long.valueOf(request.getParameter("horseInRaceId"));
         Odds odds = oddsService.findById(oddsId);
+        return prepareOddsEditPage(request, odds);
+    }
+
+    protected String prepareOddsEditPage(HttpServletRequest request, Odds odds) {
         request.setAttribute("odds", odds);
-        request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
-        request.setAttribute("race", raceService.findByHorseInRaceId(horseInRaceId));
+        request.setAttribute("horseInRace", horseInRaceService.findById(odds.getHorseInRaceId()));
+        request.setAttribute("race", raceService.findByHorseInRaceId(odds.getHorseInRaceId()));
         request.setAttribute("betTypes", BetType.values());
         return CONFIG.getString(ODDS_EDIT);
     }

@@ -1,14 +1,14 @@
 package ua.timonov.web.project.command;
 
 import ua.timonov.web.project.command.bet.MakeBetAction;
-import ua.timonov.web.project.command.horse.GetHorseAction;
-import ua.timonov.web.project.command.horse.GetHorsesAction;
+import ua.timonov.web.project.command.horse.*;
 import ua.timonov.web.project.command.horseinrace.DeleteHorseInRaceAction;
 import ua.timonov.web.project.command.horseinrace.GetHorseInRaceAction;
 import ua.timonov.web.project.command.horseinrace.GetHorseInRaceBookieAction;
+import ua.timonov.web.project.command.odds.AddOddsAction;
 import ua.timonov.web.project.command.odds.DeleteOddsAction;
 import ua.timonov.web.project.command.odds.EditOddsAction;
-import ua.timonov.web.project.command.odds.SaveOddsAction;
+import ua.timonov.web.project.command.odds.SaveEditedOddsAction;
 import ua.timonov.web.project.command.race.*;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
@@ -29,11 +29,18 @@ public final class ActionInvoker {
     private ActionInvoker() {
         actionMap.put("home", new DefaultAction());
         actionMap.put("login", new LoginAction());
+
         actionMap.put("horses", new GetHorsesAction());
         actionMap.put("horse", new GetHorseAction());
+        actionMap.put("horseEdit", new EditHorseAction());
+        actionMap.put("horseDelete", new DeleteHorseAction());
+        actionMap.put("horseAdd", new AddHorseAction());
+        actionMap.put("horseSaveEdited", new SaveEditedHorseAction());
+        actionMap.put("racesByHorse", new GetRacesByHorseAction());
+
         actionMap.put("races", new GetRacesAction());
         actionMap.put("race", new GetRaceAction());
-        actionMap.put("raceAdd", new AddRaceAction());
+        actionMap.put("raceAdd", new SaveRaceAction());
         actionMap.put("raceEdit", new EditRaceAction());
         actionMap.put("raceDelete", new DeleteRaceAction());
 
@@ -47,7 +54,8 @@ public final class ActionInvoker {
         actionMap.put("changeRaceStatus", new ChangeRaceStatus());
 
         actionMap.put("makeBet", new MakeBetAction());
-        actionMap.put("oddsSave", new SaveOddsAction());
+        actionMap.put("oddsSaveEdited", new SaveEditedOddsAction());
+        actionMap.put("oddsAdd", new AddOddsAction());
         actionMap.put("oddsEdit", new EditOddsAction());
         actionMap.put("oddsDelete", new DeleteOddsAction());
         actionMap.put("error", new ErrorAction());

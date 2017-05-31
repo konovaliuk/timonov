@@ -23,6 +23,13 @@ public class Horse implements Entity {
         this.wonRaces = wonRaces;
     }
 
+    public Horse(String name, int yearOfBirth, int totalRaces, int wonRaces) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.totalRaces = totalRaces;
+        this.wonRaces = wonRaces;
+    }
+
     public long getId() {
         return id;
     }

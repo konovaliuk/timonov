@@ -10,21 +10,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySqlLocationDao extends EntityDao<Location> implements LocationDao {
+public class MysqlLocationDao extends EntityDao<Location> implements LocationDao {
 
     public static final int COUNTRY_ID_INDEX = 1;
     public static final int NAME_INDEX = 2;
     public static final int ID_INDEX = 3;
     public static final String ENTITY_NAME = "Location";
 
-    private static final Logger LOGGER = Logger.getLogger(MySqlLocationDao.class);
-    private static final MySqlLocationDao instance = new MySqlLocationDao();
+    private static final Logger LOGGER = Logger.getLogger(MysqlLocationDao.class);
+    private static final MysqlLocationDao instance = new MysqlLocationDao();
 
-    private MySqlLocationDao() {
+    private MysqlLocationDao() {
         super(ENTITY_NAME);
     }
 
-    public static MySqlLocationDao getInstance() {
+    public static MysqlLocationDao getInstance() {
         return instance;
     }
 

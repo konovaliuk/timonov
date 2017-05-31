@@ -1,31 +1,40 @@
 package ua.timonov.web.project.command.odds;
 
-import ua.timonov.web.project.command.Action;
+import ua.timonov.web.project.command.horseinrace.GetHorseInRaceBookieAction;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.bet.Odds;
-import ua.timonov.web.project.service.*;
+import ua.timonov.web.project.service.OddsService;
+import ua.timonov.web.project.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SaveOddsAction extends Action {
-
-    public static final String HORSE_IN_RACE_BOOKIE = "horseInRaceBookie";
+public class AddOddsAction extends GetHorseInRaceBookieAction {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
-    private RaceService raceService = serviceFactory.createRaceService();
     private OddsService oddsService = serviceFactory.createOddsService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         Odds odds = createOddsFromRequest(request);
-        oddsService.save(odds);
-        request.setAttribute("horseInRace", horseInRaceService.findById(odds.getHorseInRaceId()));
-        request.setAttribute("race", raceService.findByHorseInRaceId(odds.getHorseInRaceId()));
-        request.setAttribute("betTypes", BetType.values());
-        return CONFIG.getString(HORSE_IN_RACE_BOOKIE);
+
+        try {
+            oddsService.validateOddsRates(odds);
+            oddsService.save(odds);
+            request.setAttribute("messageSuccess", true);
+        } catch (ServiceException e) {
+            request.setAttribute("messageError", e.getMessage());
+            request.setAttribute("errorDetails", e.getCause());
+            request.setAttribute("oddsWithInputError", odds);
+        }
+
+        return prepareHorseInRacePage(request, odds.getHorseInRaceId());
+
+//        request.setAttribute("horseInRace", horseInRaceService.findById(odds.getHorseInRaceId()));
+//        request.setAttribute("race", raceService.findByHorseInRaceId(odds.getHorseInRaceId()));
+//        request.setAttribute("betTypes", BetType.values());
+//        return CONFIG.getString(HORSE_IN_RACE_BOOKIE);
     }
 
     private Odds createOddsFromRequest(HttpServletRequest request) {

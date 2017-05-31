@@ -53,7 +53,7 @@
                     <div class="form-group col-sm-6">
                         <input class="form-control" name="action" value="raceAdd" type="hidden"/>
                         <label class="control-label" for="location">Add race, Location:</label>
-                        <select class="form-control" id="location" name="locationId">
+                        <select class="form-control" id="location" name="locationId" required>
                             <option selected disabled>Choose location:</option>
                             <c:forEach var="location" items="${locations}">
                                 <option value=${location.id}>${location.name}, ${location.country.name}
@@ -63,16 +63,15 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label class="control-label" for="date">Date:</label>
-                        <input class="form-control" id="date" name="date" type="date"/>
+                        <input class="form-control" id="date" name="date" type="date" required/>
                     </div>
                     <div class="form-group col-sm-2">
                         <button class="btn btn-primary" type="submit">
                             <span class="glyphicon glyphicon-plus-sign"></span> Add race</button>
                     </div>
                 </form>
-                <br>
-                <br>
-                <br>
+                <hr>
+                <hr>
                 <form class="form-horizontal" action="races?action=home" method="GET">
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">

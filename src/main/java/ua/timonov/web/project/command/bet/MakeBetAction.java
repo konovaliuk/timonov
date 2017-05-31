@@ -38,7 +38,7 @@ public class MakeBetAction extends Action {
 
         long horseInRaceId = bet.getOdds().getHorseInRaceId();
         Race race = raceService.findByHorseInRaceId(horseInRaceId);
-        Horse horse = horseService.findByHorseIbRaceId(horseInRaceId);
+        Horse horse = horseService.findByHorseInRaceId(horseInRaceId);
         request.setAttribute("bet", bet);
         request.setAttribute("race", race);
         request.setAttribute("horse", horse);

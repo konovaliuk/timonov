@@ -48,7 +48,7 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
     }
 
     private Location getLocationFromResultSet(ResultSet resultSet) throws SQLException {
-        MySqlLocationDao mySqlLocationDao = MySqlLocationDao.getInstance();
+        MysqlLocationDao mySqlLocationDao = MysqlLocationDao.getInstance();
         return mySqlLocationDao.getEntityFromResultSet(resultSet);
     }
 

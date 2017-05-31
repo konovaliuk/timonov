@@ -19,11 +19,12 @@
 
     <article>
         <div>
+            <%@include file="../items/statusMessage.jspf"%>
             <%@include file="../items/raceAndHorse.jspf"%>
             <h4>Edit existing odds:</h4>
             <form class="form-horizontal" action="races" method="POST">
                 <div>
-                    <input class="form-control" name="action" value="oddsSave" type="hidden"/>
+                    <input class="form-control" name="action" value="oddsSaveEdited" type="hidden"/>
                     <input class="form-control" name="horseInRaceId" type="hidden" value="${odds.horseInRaceId}"/>
                 </div>
                 <div class="form-group">
@@ -76,11 +77,11 @@
             <form class="form-horizontal" action="races" method="GET">
                 <div>
                     <input class="form-control" name="action" value="horseInRaceBookie" type="hidden"/>
-                    <input class="form-control" name="horseInRaceId" type="hidden" value="${horseInRace.id}"/>
+                    <input class="form-control" name="horseInRaceId" type="hidden" value="${odds.horseInRaceId}"/>
                 </div>
                 <div class="col-sm-1">
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-triangle-left"></span> Return without saving</button>
+                        <span class="glyphicon glyphicon-triangle-left"></span> Return to odds</button>
                 </div>
             </form>
         </div>

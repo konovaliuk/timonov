@@ -1,5 +1,6 @@
 package ua.timonov.web.project.service;
 
+import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.exception.ServiceException;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class OddsService extends DataService<Odds, Bet> {
 
+    private static final Logger LOGGER = Logger.getLogger(HorseService.class);
     private static OddsDao oddsDao = daoFactory.createOddsDao();
     private static BetDao betDao = daoFactory.createBetDao();
     private static final OddsService instance = new OddsService();
@@ -30,6 +32,13 @@ public class OddsService extends DataService<Odds, Bet> {
             }
         }
         super.save(odds);
+    }
+
+    public void validateOddsRates(Odds odds) {
+        if (odds.getTotal() <= odds.getChances()) {
+            LOGGER.error("Value of total chances should be more than wining chances in odds");
+            throw new ServiceException("Value of total chances should be more than wining chances in odds");
+        }
     }
 }
 

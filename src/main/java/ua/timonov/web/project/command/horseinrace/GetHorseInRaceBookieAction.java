@@ -19,6 +19,10 @@ public class GetHorseInRaceBookieAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long horseInRaceId = Long.valueOf(request.getParameter("horseInRaceId"));
+        return prepareHorseInRacePage(request, horseInRaceId);
+    }
+
+    protected String prepareHorseInRacePage(HttpServletRequest request, long horseInRaceId) {
         request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
         request.setAttribute("race", raceService.findByHorseInRaceId(horseInRaceId));
         request.setAttribute("betTypes", BetType.values());

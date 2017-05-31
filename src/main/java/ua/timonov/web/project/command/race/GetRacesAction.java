@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GetRacesAction extends Action {
 
     public static final String RACES = "races";
+    public static final String LOCATIONS = "locations";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -18,8 +19,12 @@ public class GetRacesAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        return prepareRacesPage(request);
+    }
+
+    protected String prepareRacesPage(HttpServletRequest request) {
         request.setAttribute(RACES, raceService.findAll());
-        request.setAttribute("locations", locationService.findAll());
+        request.setAttribute(LOCATIONS, locationService.findAll());
         return CONFIG.getString(RACES);
     }
 }

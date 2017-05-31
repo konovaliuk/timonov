@@ -27,7 +27,6 @@ public class EditRaceAction extends Action {
     }
 
     protected String prepareEditRacePage(HttpServletRequest request, Race race) {
-//        Race race = raceService.findById(raceId);
         request.setAttribute("race", race);
         request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(race.getId()));
         request.setAttribute("raceStatuses", RaceStatus.values());

@@ -1,24 +1,24 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.horse;
 
-import ua.timonov.web.project.command.race.GetRacesAction;
+import ua.timonov.web.project.command.horse.GetHorsesAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
-import ua.timonov.web.project.service.RaceService;
+import ua.timonov.web.project.service.HorseService;
 import ua.timonov.web.project.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteRaceAction extends GetRacesAction {
+public class DeleteHorseAction extends GetHorsesAction {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private RaceService raceService = serviceFactory.createRaceService();
+    private HorseService horseService = serviceFactory.createHorseService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long raceId = Long.valueOf(request.getParameter("raceId"));
+        long horseId = Long.valueOf(request.getParameter("horseId"));
         try {
-            raceService.delete(raceId);
+            horseService.delete(horseId);
             request.setAttribute("messageSuccess", true);
         } catch (ServiceException e) {
             request.setAttribute("messageError", e.getMessage());

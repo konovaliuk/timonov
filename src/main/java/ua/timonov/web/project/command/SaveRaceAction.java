@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.command.race.GetRacesAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-public class AddRaceAction extends Action {
+public class SaveRaceAction extends GetRacesAction {
 
     public static final String RACES = "races";
     public static final String DATE = "date";
@@ -34,13 +35,11 @@ public class AddRaceAction extends Action {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
         }
-        request.setAttribute(RACES, raceService.findAll());
-        request.setAttribute("locations", locationService.findAll());
-        return CONFIG.getString(RACES);
+        return prepareRacesPage(request);
     }
 
     private Race createRaceFromRequest(HttpServletRequest request) {
-        Long locationId = Long.valueOf(request.getParameter("locationId"));
+        long locationId = Long.valueOf(request.getParameter("locationId"));
         Location location = locationService.findById(locationId);
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);
