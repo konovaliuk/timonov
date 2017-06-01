@@ -16,14 +16,29 @@ public class User implements Entity {
     public User() {
     }
 
-    public User(long id, UserType userType, String login, String password, String name, Account account) {
-        this.id = id;
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public User(UserType userType, String login, String password, String name) {
         this.userType = userType;
         this.login = login;
         this.password = password;
         this.name = name;
+    }
+
+    public User(UserType userType, String login, String password, String name, Account account) {
+        this(userType, login, password, name);
         this.account = account;
     }
+
+    public User(long id, UserType userType, String login, String password, String name, Account account) {
+        this(userType, login, password, name, account);
+        this.id = id;
+    }
+
+
 
     public long getId() {
         return id;

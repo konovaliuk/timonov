@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
 import ua.timonov.web.project.dao.daointerface.UserAccountDao;
 import ua.timonov.web.project.dao.daointerface.UserDao;
+import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.Money;
@@ -58,5 +59,33 @@ public class UserService extends DataService<User, Bet> {
         account.setBalance(balanceAfterReturn);
         betDao.delete(bet.getId());
         accountDao.save(account);
+    }
+
+    public void findUserWithSameLogin(User user) {
+        User existingUser = userDao.findByLogin(user.getLogin());
+        if (existingUser != null) {
+            LOGGER.warn("There is user with the same login");
+            throw new ServiceException("There is user with the same login");
+        }
+    }
+
+    public User authorize(User userFromRequest) {
+        User user = userDao.findByLogin(userFromRequest.getLogin());
+        if (user == null) {
+            LOGGER.warn("User inputted wrong login");
+            throw new ServiceException("You've inputted wrong login");
+        }
+        if (!user.getPassword().equals(userFromRequest.getPassword())) {
+            LOGGER.warn("User inputted wrong password");
+            throw new ServiceException("You've inputted wrong password");
+        }
+        return user;
+    }
+
+    public void checkIdenticalPasswords(User user, String passwordConfirm) {
+        if (!passwordConfirm.equals(user.getPassword())) {
+            LOGGER.warn("User inputted different passwords");
+            throw new ServiceException("You've inputted different passwords");
+        }
     }
 }

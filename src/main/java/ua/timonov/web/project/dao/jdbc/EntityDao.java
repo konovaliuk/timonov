@@ -27,7 +27,6 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     protected DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
 
     private static final Logger LOGGER = Logger.getLogger(EntityDao.class);
-    //    private static final JdbcDataManager dataManager = JdbcDataManager.getInstance();
 
     public EntityDao(String entityName) {
         this.entityName = entityName;
@@ -39,12 +38,15 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     @Override
     public boolean save(T entity) {
-        if (entity.getId() == 0) {
-//            long id = insert(entity, externalId);
-//            entity.setId(id);
-            return insert(entity);
-        } else {
+        if (entity.getId() > 0) {
             return update(entity);
+        } else {
+            long id = insert(entity);
+            if (id > 0) {
+                entity.setId(id);
+                return true;
+            }
+            else return false;
         }
     }
 
@@ -66,7 +68,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
-    private boolean insert(T entity) {
+    private long insert(T entity) {
         String sql = getQuery(INSERT);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -75,15 +77,14 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             setEntityToParameters(entity, statement);
             int rowInserted = statement.executeUpdate();
             LOGGER.info(rowInserted + " row(s) inserted into " + entityName);
-            return rowInserted > 0;
-            /*try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 generatedKeys.next();
                 return generatedKeys.getLong(1);
-            }*/
+            }
         } catch (SQLException e) {
             LOGGER.error("Database error while inserting into table " + entityName +
                     ", exception message: " + e.getMessage());
-            return false;
+            return 0;
         }
     }
 
@@ -91,7 +92,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     public boolean delete(long id) {
         String sql = getQuery(DELETE);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, id);
             LOGGER.info(statement.toString());
@@ -177,9 +178,9 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                 }
             }
             if (result != null) {
-                LOGGER.info("Item " + otherEntity + " with id = " + id + " founded in table " + entityName);
+                LOGGER.info("Item " + otherEntity + " with id = " + id + " found in table " + entityName);
             } else {
-                LOGGER.info("Item with id = " + id + " not founded in table " + entityName);
+                LOGGER.info("Item with id = " + id + " not found in table " + entityName);
             }
             return result;
 //            return new QueryResult<T>(result, result.size());

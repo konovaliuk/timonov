@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DefaultAction extends Action {
 
-    public static final String MAIN_PAGE = "/WEB-INF/jsp/index.jsp";
+    public static final String MAIN_PAGE = "home";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return MAIN_PAGE;
+        return CONFIG.getString(MAIN_PAGE);
     }
 }

@@ -10,6 +10,7 @@ import ua.timonov.web.project.command.odds.DeleteOddsAction;
 import ua.timonov.web.project.command.odds.EditOddsAction;
 import ua.timonov.web.project.command.odds.SaveEditedOddsAction;
 import ua.timonov.web.project.command.race.*;
+import ua.timonov.web.project.command.user.*;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 
@@ -28,7 +29,10 @@ public final class ActionInvoker {
 
     private ActionInvoker() {
         actionMap.put("home", new DefaultAction());
-        actionMap.put("login", new LoginAction());
+        actionMap.put("signIn", new SignInAction());
+        actionMap.put("getSignUpForm", new GetSignUpAction());
+        actionMap.put("signUp", new SignUpAction());
+        actionMap.put("logout", new LogoutAction());
 
         actionMap.put("horses", new GetHorsesAction());
         actionMap.put("horse", new GetHorseAction());
@@ -37,6 +41,13 @@ public final class ActionInvoker {
         actionMap.put("horseAdd", new AddHorseAction());
         actionMap.put("horseSaveEdited", new SaveEditedHorseAction());
         actionMap.put("racesByHorse", new GetRacesByHorseAction());
+
+        actionMap.put("users", new GetUsersAction());
+        actionMap.put("user", new GetUserAction());
+        actionMap.put("userEdit", new EditUserAction());
+        actionMap.put("userDelete", new DeleteUserAction());
+        actionMap.put("userAdd", new AddUserAction());
+        actionMap.put("userSaveEdited", new SaveEditedUserAction());
 
         actionMap.put("races", new GetRacesAction());
         actionMap.put("race", new GetRaceAction());

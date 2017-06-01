@@ -8,7 +8,8 @@
     <div class="container">
         <header>
             <div class="container">
-                <h2>Main page</h2>
+                <%@include file="items/greeting.jspf"%>
+                <h2>World Horse Racing tour</h2>
             </div>
         </header>
 

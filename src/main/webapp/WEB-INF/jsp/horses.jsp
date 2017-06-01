@@ -12,6 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
+                <%@include file="items/greeting.jspf"%>
                 <h3>Horses in World Horse Racing tour</h3>
             </div>
         </header>

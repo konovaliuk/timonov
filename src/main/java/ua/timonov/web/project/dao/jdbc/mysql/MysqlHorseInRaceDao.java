@@ -18,9 +18,10 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public static final int FINISH_PLACE_INDEX = 3;
     public static final int ID_INDEX = 4;
     public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
+    public static final String FIND_LIST_BY_HORSE_ID = "findListByRaceId";
     public static final String FIND_WITHOUT_ODDS = "findHorseInRaceWithoutOdds";
-    public static final String ENTITY_NAME = "HorseInRace";
 
+    public static final String ENTITY_NAME = "HorseInRace";
     private static final Logger LOGGER = Logger.getLogger(MysqlHorseInRaceDao.class);
     private static final MysqlHorseInRaceDao instance = new MysqlHorseInRaceDao();
 
@@ -41,6 +42,12 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public HorseInRace findHorseInRaceWithoutOdds(long id) {
         String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_WITHOUT_ODDS);
         return findByIdWithSql(id, sql, "Race");
+    }
+
+    @Override
+    public List<HorseInRace> findListByHorseId(long horseId) {
+        String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_LIST_BY_HORSE_ID);
+        return findListWithSql(sql, horseId);
     }
 
     protected HorseInRace getEntityFromResultSet(ResultSet resultSet) throws SQLException {

@@ -25,5 +25,24 @@
         <url-pattern>*.png</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>ua.timonov.web.project.controller.filter.EncodingFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>SignedInFilter</filter-name>
+        <filter-class>ua.timonov.web.project.controller.filter.SignedInFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SignedInFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

@@ -9,14 +9,13 @@ public class Account implements Entity {
     public Account() {
     }
 
-    public Account(long id, double balance) {
-        this.id = id;
-        this.balance = new Money(balance);
+    public Account(Money balance) {
+        this.balance = balance;
     }
 
-    public Account(long id, long sumIntegerPart, int sumFractalPart) {
+    public Account(long id, Money balance) {
         this.id = id;
-        this.balance = new Money(sumIntegerPart, sumFractalPart);
+        this.balance = balance;
     }
 
     public void addSum(Money addendum) {

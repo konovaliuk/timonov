@@ -10,6 +10,7 @@ public class ServiceFactory {
     private RaceService raceService = RaceService.getInstance();
     private OddsService oddsService = OddsService.getInstance();
     private UserService userService = UserService.getInstance();
+    private UserAccountService userAccountService = UserAccountService.getInstance();
     private LocationService locationService = LocationService.getInstance();
     private CountryService countryService = CountryService.getInstance();
 
@@ -53,5 +54,9 @@ public class ServiceFactory {
 
     public CountryService createCountryService() {
         return countryService;
+    }
+
+    public UserAccountService createUserAccountService() {
+        return userAccountService;
     }
 }

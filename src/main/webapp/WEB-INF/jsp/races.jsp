@@ -12,7 +12,8 @@
     <div class="container">
         <header>
             <div class="container">
-                <h3>All races</h3>
+                <%@include file="items/greeting.jspf"%>
+                <h3>Races in World Horse Racing tour</h3>
             </div>
         </header>
 

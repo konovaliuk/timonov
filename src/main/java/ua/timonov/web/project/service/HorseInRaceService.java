@@ -38,11 +38,11 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
     }
 
     public List<HorseInRace> findListByRaceId(long raceId) {
-        List<HorseInRace> horsesInRace = horseInRaceDao.findListByRaceId(raceId);
-        for (HorseInRace horseInRace : horsesInRace) {
+        List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(raceId);
+        for (HorseInRace horseInRace : listHorsesInRace) {
             horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
         }
-        return horsesInRace;
+        return listHorsesInRace;
     }
 
     public void save(HorseInRace horseInRace) throws ServiceException {
@@ -54,6 +54,14 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
             }
         }
         super.save(horseInRace);
+    }
+
+    public List<HorseInRace> findListByHorseId(long horseId) {
+        List<HorseInRace> horsesInRace = horseInRaceDao.findListByHorseId(horseId);
+        for (HorseInRace horseInRace : horsesInRace) {
+            horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
+        }
+        return horsesInRace;
     }
 }
 

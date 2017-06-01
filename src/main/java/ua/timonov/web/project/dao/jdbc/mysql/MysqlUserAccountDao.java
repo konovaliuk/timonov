@@ -3,6 +3,7 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import ua.timonov.web.project.dao.daointerface.UserAccountDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.user.Account;
+import ua.timonov.web.project.model.user.Money;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +29,7 @@ public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccou
     protected Account getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         double balance = resultSet.getDouble("balance");
-        return new Account(id, balance);
+        return new Account(id, new Money(balance));
     }
 
     @Override

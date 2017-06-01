@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GetHorsesAction extends Action {
+
     public static final String HORSES_PAGE = "horses";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
