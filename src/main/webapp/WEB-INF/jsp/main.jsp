@@ -2,18 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
-    <%@include file="items/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 <body>
 <div>
     <div class="container">
         <header>
             <div class="container">
-                <%@include file="items/greeting.jspf"%>
+                <%@include file="reusable/greeting.jspf"%>
                 <h2>World Horse Racing tour</h2>
             </div>
         </header>
 
-        <%@include file="items/nav.jspf"%>
+        <%@include file="reusable/nav.jspf"%>
 
         <article>
             <h3>Horse Racing at William Hill</h3>
@@ -30,7 +30,7 @@
                 betting.</p>
         </article>
 
-        <footer><%@include file="items/footer.jspf"%></footer>
+        <footer><%@include file="reusable/footer.jspf"%></footer>
     </div>
 </div>
 </body>

@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <%@include file="items/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -15,12 +15,12 @@
         </div>
     </header>
 
-    <nav><%@include file="items/nav.jspf"%></nav>
+    <nav><%@include file="reusable/nav.jspf"%></nav>
 
     <article>
     <div>
-        <%@include file="items/statusMessage.jspf"%>
-        <%@include file="items/raceAndHorse.jspf"%>
+        <%@include file="reusable/statusMessage.jspf"%>
+        <%@include file="reusable/raceAndHorse.jspf"%>
         <h3>Existing odds</h3>
         <table class="table table-striped">
             <tr>
@@ -97,7 +97,7 @@
     </div>
     </article>
 
-    <footer><%@include file="items/footer.jspf"%></footer>
+    <footer><%@include file="reusable/footer.jspf"%></footer>
 </div>
 </body>
 </html>

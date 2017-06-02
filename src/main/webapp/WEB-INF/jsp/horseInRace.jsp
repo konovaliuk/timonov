@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <%@include file="items/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
         </header>
 
         <nav>
-            <%@include file="items/nav.jspf"%>
+            <%@include file="reusable/nav.jspf"%>
         </nav>
 
         <article>
@@ -75,7 +75,7 @@
             </div>
         </article>
 
-        <footer><%@include file="items/footer.jspf"%></footer>
+        <footer><%@include file="reusable/footer.jspf"%></footer>
     </div>
 </div>
 </body>

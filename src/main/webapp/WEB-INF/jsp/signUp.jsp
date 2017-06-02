@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
-<%@include file="items/header.jspf"%>
+<%@include file="reusable/header.jspf"%>
 <body>
 <div>
     <div class="container">
@@ -14,7 +14,7 @@
         </header>
 
         <article>
-            <%@include file="/WEB-INF/jsp/items/statusMessage.jspf"%>
+            <%@include file="/WEB-INF/jsp/reusable/statusMessage.jspf"%>
             <h3>Horse Racing at William Hill</h3>
             <p>For the last word in horse racing, look no further
                 than William Hill - the Home of Betting. Covering
@@ -88,7 +88,7 @@
             </form>
         </article>
 
-        <footer><%@include file="items/footer.jspf"%></footer>
+        <footer><%@include file="reusable/footer.jspf"%></footer>
     </div>
 </div>
 </body>

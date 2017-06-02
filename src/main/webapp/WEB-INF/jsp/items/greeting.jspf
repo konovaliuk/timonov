@@ -1,4 +1,0 @@
-<div class="arrows-on-left-horizontal">
-    <h5>Welcome, ${user.name}!</h5>
-    <h5><a href="races?action=logout">Logout</a></h5>
-</div>

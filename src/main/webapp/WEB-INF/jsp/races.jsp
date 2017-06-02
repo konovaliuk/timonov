@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <%@include file="items/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -12,18 +12,18 @@
     <div class="container">
         <header>
             <div class="container">
-                <%@include file="items/greeting.jspf"%>
+                <%@include file="reusable/greeting.jspf"%>
                 <h3>Races in World Horse Racing tour</h3>
             </div>
         </header>
 
         <nav>
-            <%@include file="items/nav.jspf"%>
+            <%@include file="reusable/nav.jspf"%>
         </nav>
 
         <article>
             <div>
-                <%@include file="items/statusMessage.jspf"%>
+                <%@include file="reusable/statusMessage.jspf"%>
                 <h3>Races</h3>
                 <table class="table table-striped table-condensed">
                     <tr>
@@ -82,7 +82,7 @@
             </div>
         </article>
 
-        <footer><%@include file="items/footer.jspf"%></footer>
+        <footer><%@include file="reusable/footer.jspf"%></footer>
     </div>
 
 

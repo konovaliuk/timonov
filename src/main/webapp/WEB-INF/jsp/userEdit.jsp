@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <%@include file="items/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -15,11 +15,11 @@
         </div>
     </header>
 
-    <nav><%@include file="items/nav.jspf"%></nav>
+    <nav><%@include file="reusable/nav.jspf"%></nav>
 
     <article>
         <div>
-            <%@include file="items/statusMessage.jspf"%>
+            <%@include file="reusable/statusMessage.jspf"%>
             <h4>Edit existing user:</h4>
             <form class="form-horizontal" action="races" method="POST">
                 <div>
@@ -107,7 +107,7 @@
         </div>
     </article>
 
-    <footer><%@include file="items/footer.jspf"%></footer>
+    <footer><%@include file="reusable/footer.jspf"%></footer>
 </div>
 </body>
 </html>
