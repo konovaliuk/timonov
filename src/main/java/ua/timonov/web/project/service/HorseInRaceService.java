@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.exception.ServiceException;
+import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.horse.HorseInRace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HorseInRaceService extends DataService<HorseInRace, Odds> {
@@ -62,6 +64,16 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
             horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
         }
         return horsesInRace;
+    }
+
+    public List<HorseInRace> findBetHorsesInRace(List<Bet> wonBets) {
+        List<HorseInRace> listBetHorses = new ArrayList<>();
+        for (Bet wonBet : wonBets) {
+            long horseInRaceId = wonBet.getOdds().getHorseInRaceId();
+            HorseInRace horseInRace = findById(horseInRaceId);
+            listBetHorses.add(horseInRace);
+        }
+        return listBetHorses;
     }
 }
 

@@ -40,7 +40,7 @@ public class UserService extends DataService<User, Bet> {
         accountDao.save(account);
     }
 
-    public void payWin(Bet bet) {
+    public Money getWin(Bet bet) {
         Account account = bet.getUser().getAccount();
         bet.getOdds().getOddsValue();
         Money betSum = bet.getSum();
@@ -49,6 +49,7 @@ public class UserService extends DataService<User, Bet> {
         Money balanceAfterPay = balanceBeforePay.add(wonSum);
         account.setBalance(balanceAfterPay);
         accountDao.save(account);
+        return wonSum;
     }
 
     public void returnMoney(Bet bet) {

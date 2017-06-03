@@ -12,6 +12,7 @@ import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.model.user.Money;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +89,6 @@ public class RaceService extends DataService<Race, HorseInRace> {
             case RESULTS_FIXATED:
                     payWins(race);
                     setNextStatus(race);
-
                 break;
             default:
                 break;
@@ -137,10 +137,19 @@ public class RaceService extends DataService<Race, HorseInRace> {
     }
 
     private void payWins(Race race) {
+        Money racePaidSum = new Money(BigDecimal.ZERO);
         List<Bet> wonBets = findWonBetsByRaceId(race.getId());
         for (Bet wonBet : wonBets) {
-            betService.payWin(wonBet, race);
+            Money paidBetSum = betService.payWin(wonBet);
+            racePaidSum.add(paidBetSum);
         }
+        increaseRacePaidSum(race, racePaidSum);
+    }
+
+    private void increaseRacePaidSum(Race race, Money paidSum) {
+        Money newPaidSum = race.getPaidSum().add(paidSum);
+        race.setPaidSum(newPaidSum);
+        save(race);
     }
 
     public List<Bet> findWonBetsByRaceId(long raceId) {
@@ -222,12 +231,6 @@ public class RaceService extends DataService<Race, HorseInRace> {
     public void decreaseBetSum(Race race, Money subtrahendSum) {
         Money newBetRaceSum = race.getBetSum().subtract(subtrahendSum);
         race.setBetSum(newBetRaceSum);
-        save(race);
-    }
-
-    public void increasePaidSum(Race race, Money paidSum) {
-        Money newPaidSum = race.getPaidSum().add(paidSum);
-        race.setPaidSum(newPaidSum);
         save(race);
     }
 }

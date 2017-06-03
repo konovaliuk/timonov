@@ -58,9 +58,8 @@
                         <th>Bet sum</th>
                         <th>Won sum</th>
                     </tr>
-                    <c:forEach var="horseInRace" items="${horsesInRace}" varStatus="loop">
+                    <c:forEach var="bet" items="${wonBets}" varStatus="loop">
                         <tr>
-                            <c:set var="bet" value="${wonbets}"/>
                             <td>${bet.user.name}</td>
                             <td>${bet.user.login}</td>
                             <td>${bet.odds.betType.toString()}</td>
@@ -68,48 +67,10 @@
                             <td>${listBetHorses.get(loop.index).horse.name}</td>
                             <td>${bet.sum.toString()}</td>
                             <%--TODO with custom tag--%>
-                            <td>${bet.sum.toString} * ${bet.odds.oddsValue}</td>
+                            <td>${bet.sum.toString()} * ${bet.odds.oddsValue}</td>
                         </tr>
                     </c:forEach>
                 </table>
-
-                <c:if test="${race.raceStatus.ordinal() == raceStatusBeingFormed.ordinal()}">
-                    <form class="form-horizontal" action="races" method="POST">
-                        <div class="form-group col-sm-2">
-                            <input class="form-control" name="action" value="horseInRaceAdd" type="hidden"/>
-                            <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
-                        </div>
-
-                        <div class="form-group col-sm-2">
-                            <label class="control-label" for="horse">Add horse:</label>
-                        </div>
-
-                        <div class="form-group col-sm-4">
-                            <select class="form-control" id="horse" name="horseId">
-                                <option selected disabled hidden>Choose horse:</option>
-                                <c:forEach var="horse" items="${horses}">
-                                    <option value=${horse.id}>${horse.name}, ${horse.yearOfBirth}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <button class="btn btn-primary" type="submit">
-                                <span class="glyphicon glyphicon-plus-sign"></span> Add chosen horse</button>
-                        </div>
-                    </form>
-                    <hr>
-                </c:if>
-
-                <form action="races" method="POST">
-                    <div>
-                        <input class="form-control" name="action" value="raceEdit" type="hidden"/>
-                        <input class="form-control" name="raceId" value="${race.id}" type="hidden"/>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-right"></span> Edit race</button>
-                    </div>
-                </form>
 
                 <form action="races" method="POST">
                     <div>
@@ -121,6 +82,16 @@
                     </div>
                 </form>
 
+                <form action="races" method="POST">
+                    <div>
+                        <input class="form-control" name="action" value="raceEdit" type="hidden"/>
+                        <input class="form-control" name="raceId" value="${race.id}" type="hidden"/>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-triangle-right"></span> Edit race</button>
+                    </div>
+                </form>
             </div>
         </article>
 

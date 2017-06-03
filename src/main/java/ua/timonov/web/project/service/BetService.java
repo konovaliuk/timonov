@@ -7,6 +7,7 @@ import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
+import ua.timonov.web.project.model.user.Money;
 
 public class BetService extends DataService<Bet, Bet> {
 
@@ -48,10 +49,10 @@ public class BetService extends DataService<Bet, Bet> {
         save(bet);
     }
 
-    public void payWin(Bet bet, Race race) {
-        userService.payWin(bet);
-        raceService.increasePaidSum(race, bet.getSum());
+    public Money payWin(Bet bet) {
+        Money paidSum = userService.getWin(bet);
         bet.setBetStatus(BetStatus.PAID);
         save(bet);
+        return paidSum;
     }
 }

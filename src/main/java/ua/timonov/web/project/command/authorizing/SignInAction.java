@@ -21,7 +21,7 @@ public class SignInAction extends Action {
         try {
             User userFromRequest = createUserFromRequest(request);
             User user = userService.authorize(userFromRequest);
-            request.getSession().setMaxInactiveInterval(30);
+            request.getSession().setMaxInactiveInterval(60);
             request.getSession().setAttribute("user", user);
             return CONFIG.getString(HOME_PAGE);
         } catch (ServiceException e) {

@@ -214,20 +214,19 @@
                     </div>
                 </form>
 
-                <form action="races" method="POST">
-                    <div>
-                        <input class="form-control" name="action" value="wonBets" type="hidden"/>
-                        <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <button class="btn btn-primary" type="submit"
-                                <c:if test="${race.raceStatus.ordinal() != raceStatusWinsPaid.ordinal()}"> hidden
-                                </c:if>
-                        >
-                            <span class="glyphicon glyphicon glyphicon-euro"></span> Won bets
-                        </button>
-                    </div>
-                </form>
+                <c:if test="${race.raceStatus.ordinal() == raceStatusWinsPaid.ordinal()}">
+                    <form action="races" method="POST">
+                        <div>
+                            <input class="form-control" name="action" value="wonBets" type="hidden"/>
+                            <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <button class="btn btn-primary" type="submit">
+                                <span class="glyphicon glyphicon glyphicon-euro"></span> Won bets
+                            </button>
+                        </div>
+                    </form>
+                </c:if>
             </div>
         </article>
 

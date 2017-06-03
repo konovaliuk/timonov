@@ -13,13 +13,9 @@ import java.util.List;
 
 public class ChangeRaceStatus extends EditRaceAction {
 
-    public static final String RACE_EDIT = "raceEdit";
-
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
-    private LocationService locationService = serviceFactory.createLocationService();
-    private HorseService horseService = serviceFactory.createHorseService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
