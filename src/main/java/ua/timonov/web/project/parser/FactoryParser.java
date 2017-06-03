@@ -5,6 +5,7 @@ import java.util.Date;
 public class FactoryParser {
     private static final FactoryParser instance = new FactoryParser();
     private static final DateParser dateParser = new DateParser();
+    private static final IdParser IdParser = new IdParser();
 
     private FactoryParser() {
     }
@@ -15,5 +16,9 @@ public class FactoryParser {
 
     public static Parser<Date> createDateParser() {
         return dateParser;
+    }
+
+    public static Parser<Long> createIdParser() {
+        return IdParser;
     }
 }

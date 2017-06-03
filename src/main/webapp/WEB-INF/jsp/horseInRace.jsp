@@ -12,6 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
+                <%@include file="reusable/greeting.jspf"%>
                 <h3>Make bet on horse ${horseInRace.horse.name}, race at ${race.location.name},
                 ${race.location.country.name}</h3>
             </div>
@@ -23,7 +24,7 @@
 
         <article>
             <div>
-                <%@include file="items/raceAndHorse.jspf"%>
+                <%@include file="reusable/raceAndHorse.jspf"%>
                 <br>
                 <h3>Available bets</h3>
                 <table class="table table-striped">

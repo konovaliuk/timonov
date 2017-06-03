@@ -10,6 +10,7 @@ import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
+import ua.timonov.web.project.model.user.Money;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
     private static HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
     private static BetDao betDao = daoFactory.createBetDao();
     private static UserService userService = ServiceFactory.getInstance().createUserService();
+    private static BetService betService = ServiceFactory.getInstance().createBetService();
     private static final RaceService instance = new RaceService();
 
     private RaceService() {
@@ -57,7 +59,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
             raceDao.save(race);
             List<Bet> bets = betDao.findListByRaceId(race.getId());
             for (Bet bet : bets) {
-                userService.returnMoney(bet);
+                betService.cancelBet(bet, race);
             }
             LOGGER.info("Race status is set to \"Cancelled\"");
         } else {
@@ -86,6 +88,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
             case RESULTS_FIXATED:
                     payWins(race);
                     setNextStatus(race);
+
                 break;
             default:
                 break;
@@ -134,14 +137,24 @@ public class RaceService extends DataService<Race, HorseInRace> {
     }
 
     private void payWins(Race race) {
-        List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(race.getId());
-        List<Bet> bets = betDao.findListByRaceId(race.getId());
-        for (Bet bet : bets) {
-            if (isWinningBet(bet, listHorsesInRace)) {
-                userService.payWin(bet);
-            }
+        List<Bet> wonBets = findWonBetsByRaceId(race.getId());
+        for (Bet wonBet : wonBets) {
+            betService.payWin(wonBet, race);
         }
     }
+
+    public List<Bet> findWonBetsByRaceId(long raceId) {
+        List<Bet> bets = betDao.findListByRaceId(raceId);
+        List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(raceId);
+        List<Bet> wonBets = new ArrayList<>();
+        for (Bet bet : bets) {
+            if (isWinningBet(bet, listHorsesInRace)) {
+                wonBets.add(bet);
+            }
+        }
+        return wonBets;
+    }
+
 
     private boolean isWinningBet(Bet bet, List<HorseInRace> listHorsesInRace) {
         Collections.sort(listHorsesInRace);
@@ -198,5 +211,23 @@ public class RaceService extends DataService<Race, HorseInRace> {
             }
         }
         return FINISH_PLACES_SET_CORRECTLY;
+    }
+
+    public void increaseBetSum(Race race, Money addedSum) {
+        Money newBetRaceSum = race.getBetSum().add(addedSum);
+        race.setBetSum(newBetRaceSum);
+        save(race);
+    }
+
+    public void decreaseBetSum(Race race, Money subtrahendSum) {
+        Money newBetRaceSum = race.getBetSum().subtract(subtrahendSum);
+        race.setBetSum(newBetRaceSum);
+        save(race);
+    }
+
+    public void increasePaidSum(Race race, Money paidSum) {
+        Money newPaidSum = race.getPaidSum().add(paidSum);
+        race.setPaidSum(newPaidSum);
+        save(race);
     }
 }

@@ -32,7 +32,7 @@ public class EditRaceAction extends Action {
         request.setAttribute("raceStatuses", RaceStatus.values());
         request.setAttribute("raceStatusBeingFormed", RaceStatus.BEING_FORMED);
         request.setAttribute("raceStatusFinished", RaceStatus.FINISHED);
-        request.setAttribute("raceStatusWinsPaid", RaceStatus.WINNINGS_PAID);
+        request.setAttribute("raceStatusWinsPaid", RaceStatus.WINS_PAID);
         request.setAttribute("locations", locationService.findAll());
         request.setAttribute("horses", horseService.findAll());
         return CONFIG.getString(RACE_EDIT);

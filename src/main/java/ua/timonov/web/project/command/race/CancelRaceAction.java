@@ -1,6 +1,5 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
-import ua.timonov.web.project.command.race.EditRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.race.Race;
@@ -15,9 +14,6 @@ public class CancelRaceAction extends EditRaceAction {
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
-    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
-    private LocationService locationService = serviceFactory.createLocationService();
-    private HorseService horseService = serviceFactory.createHorseService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {

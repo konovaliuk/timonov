@@ -1,7 +1,7 @@
 package ua.timonov.web.project.model.race;
 
 public enum RaceStatus {
-    BEING_FORMED, OPEN_TO_BET, CLOSED_TO_BET, FINISHED, RESULTS_FIXATED, WINNINGS_PAID, CANCELLED;
+    BEING_FORMED, OPEN_TO_BET, CLOSED_TO_BET, FINISHED, RESULTS_FIXATED, WINS_PAID, CANCELLED;
 
     public static final String SPACE = " ";
     public static final String UNDERSCORE = "_";
@@ -12,7 +12,7 @@ public enum RaceStatus {
     }
 
     public RaceStatus nextPossibleStatus() {
-        if (this.ordinal() < WINNINGS_PAID.ordinal()) {
+        if (this.ordinal() < WINS_PAID.ordinal()) {
             return values()[ordinal() + 1];
         }
         return this;

@@ -1,6 +1,7 @@
 package ua.timonov.web.project.model.bet;
 
 import ua.timonov.web.project.dao.Entity;
+import ua.timonov.web.project.model.user.Money;
 import ua.timonov.web.project.model.user.User;
 
 import java.math.BigDecimal;
@@ -9,23 +10,58 @@ public class Bet implements Entity {
     private long id;
     private User user;
     private Odds odds;
-    private BigDecimal sum;
-    private boolean wasPayed;
+    private Money sum;
+    private BetStatus betStatus;
 
     public Bet() {
     }
 
-    public Bet(long id, User user, Odds odds, BigDecimal sum) {
-        this.id = id;
-        this.user = user;
-        this.odds = odds;
-        this.sum = sum;
+    public static class Builder {
+        /* requirement parameters */
+        private final User user;
+        private final Odds odds;
+
+        /* optional parameters */
+        private long id = 0L;
+        private Money sum = new Money(BigDecimal.ZERO);
+        private BetStatus betStatus = BetStatus.MADE;
+
+        public Builder(User user, Odds odds) {
+            this.user = user;
+            this.odds = odds;
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder betStatus(BetStatus betStatus) {
+            this.betStatus = betStatus;
+            return this;
+        }
+
+        public Builder money(BigDecimal sum) {
+            this.sum = new Money(sum);
+            return this;
+        }
+
+        public Builder money(double sum) {
+            this.sum = new Money(sum);
+            return this;
+        }
+
+        public Bet build() {
+            return new Bet(this);
+        }
     }
 
-    public Bet(User user, Odds odds, BigDecimal sum) {
-        this.user = user;
-        this.odds = odds;
-        this.sum = sum;
+    public Bet(Builder builder) {
+        this.user = builder.user;
+        this.odds = builder.odds;
+        this.id = builder.id;
+        this.sum = builder.sum;
+        this.betStatus = builder.betStatus;
     }
 
     @Override
@@ -54,12 +90,20 @@ public class Bet implements Entity {
         this.odds = odds;
     }
 
-    public BigDecimal getSum() {
+    public Money getSum() {
         return sum;
     }
 
-    public void setSum(BigDecimal sum) {
+    public void setSum(Money sum) {
         this.sum = sum;
+    }
+
+    public BetStatus getBetStatus() {
+        return betStatus;
+    }
+
+    public void setBetStatus(BetStatus betStatus) {
+        this.betStatus = betStatus;
     }
 
     @Override

@@ -12,6 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
+                <%@include file="reusable/greeting.jspf"%>
                 <h3>Race admin page</h3>
             </div>
         </header>
@@ -22,7 +23,7 @@
 
         <article>
             <div class="container">
-                <%@include file="items/statusMessage.jspf"%>
+                <%@include file="reusable/statusMessage.jspf"%>
                 <h3>Edit race</h3>
                 <form class="form-horizontal" action="races" method="POST">
                     <div>
@@ -209,6 +210,21 @@
                                 </c:if>
                         >
                             <span class="glyphicon glyphicon-triangle-right"></span> Cancel race
+                        </button>
+                    </div>
+                </form>
+
+                <form action="races" method="POST">
+                    <div>
+                        <input class="form-control" name="action" value="wonBets" type="hidden"/>
+                        <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button class="btn btn-primary" type="submit"
+                                <c:if test="${race.raceStatus.ordinal() != raceStatusWinsPaid.ordinal()}"> hidden
+                                </c:if>
+                        >
+                            <span class="glyphicon glyphicon glyphicon-euro"></span> Won bets
                         </button>
                     </div>
                 </form>

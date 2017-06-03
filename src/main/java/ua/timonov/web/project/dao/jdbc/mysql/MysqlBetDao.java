@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.bet.Bet;
+import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.user.User;
 
@@ -18,7 +19,8 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     public static final int USER_INDEX = 1;
     public static final int ODDS_INDEX = 2;
     public static final int SUM_INDEX = 3;
-    public static final int ID_INDEX = 4;
+    public static final int STATUS_INDEX = 4;
+    public static final int ID_INDEX = 5;
     public static final String ENTITY_NAME = "Bet";
 
     private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
@@ -39,7 +41,12 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
         User user = MysqlUserDao.getInstance().getEntityFromResultSet(resultSet);
         Odds odds = MysqlOddsDao.getInstance().getEntityFromResultSet(resultSet);
         BigDecimal sum = resultSet.getBigDecimal("sum");
-        return new Bet(id, user, odds, sum);
+        BetStatus betStatus = BetStatus.valueOf(convertToEnumNameType(resultSet.getString("betStatus")));
+        return new Bet.Builder(user, odds)
+                .id(id)
+                .money(sum)
+                .betStatus(betStatus)
+                .build();
     }
 
     @Override
@@ -51,7 +58,8 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     protected void setEntityToParameters(Bet bet, PreparedStatement statement) throws SQLException {
         statement.setLong(USER_INDEX, bet.getUser().getId());
         statement.setLong(ODDS_INDEX, bet.getOdds().getId());
-        statement.setBigDecimal(SUM_INDEX, bet.getSum());
+        statement.setBigDecimal(SUM_INDEX, bet.getSum().getValue());
+        statement.setLong(STATUS_INDEX, bet.getBetStatus().ordinal() + 1);
         if (statement.getParameterMetaData().getParameterCount() == ID_INDEX) {
             statement.setLong(ID_INDEX, bet.getId());
         }

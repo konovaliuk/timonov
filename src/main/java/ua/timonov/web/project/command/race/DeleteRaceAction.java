@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
 import ua.timonov.web.project.command.race.GetRacesAction;
 import ua.timonov.web.project.exception.ParsingException;

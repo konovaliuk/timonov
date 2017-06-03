@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.authorizing;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.Account;

@@ -12,6 +12,7 @@
     <div class="container">
         <header>
             <div class="container">
+                <%@include file="reusable/greeting.jspf"%>
                 <h3>Race results</h3>
             </div>
         </header>

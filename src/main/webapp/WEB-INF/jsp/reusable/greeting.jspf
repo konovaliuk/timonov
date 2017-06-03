@@ -1,6 +1,6 @@
 <%@ taglib prefix="custom" uri="/WEB-INF/custom.tld"%>
 <c:set var="userName" value="${user.name}"/>
 <div class="text-left">
-    <h5><custom:greeting name="${userName}"/></h5>
-    <h5><a href="races?action=logout">Logout</a></h5>
+    <h5><custom:greeting name="${userName}"/> <a href="races?action=logout">Logout</a></h5>
+    <h5><a href="races?action=changeLang?lang=en">EN</a> <a href="races?action=changeLang?lang=ua">UA</a></h5>
 </div>

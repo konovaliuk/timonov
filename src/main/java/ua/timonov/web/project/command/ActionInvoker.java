@@ -1,14 +1,10 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.command.bet.MakeBetAction;
+import ua.timonov.web.project.command.authorizing.*;
+import ua.timonov.web.project.command.bet.*;
 import ua.timonov.web.project.command.horse.*;
-import ua.timonov.web.project.command.horseinrace.DeleteHorseInRaceAction;
-import ua.timonov.web.project.command.horseinrace.GetHorseInRaceAction;
-import ua.timonov.web.project.command.horseinrace.GetHorseInRaceBookieAction;
-import ua.timonov.web.project.command.odds.AddOddsAction;
-import ua.timonov.web.project.command.odds.DeleteOddsAction;
-import ua.timonov.web.project.command.odds.EditOddsAction;
-import ua.timonov.web.project.command.odds.SaveEditedOddsAction;
+import ua.timonov.web.project.command.horseinrace.*;
+import ua.timonov.web.project.command.odds.*;
 import ua.timonov.web.project.command.race.*;
 import ua.timonov.web.project.command.user.*;
 import ua.timonov.web.project.exception.ParsingException;
@@ -53,6 +49,7 @@ public final class ActionInvoker {
         actionMap.put("race", new GetRaceAction());
         actionMap.put("raceAdd", new SaveRaceAction());
         actionMap.put("raceEdit", new EditRaceAction());
+        actionMap.put("wonBets", new GetWonBets());
         actionMap.put("raceDelete", new DeleteRaceAction());
 
         actionMap.put("raceSaveEditedAttributes", new SaveEditedRaceAttributesAction());

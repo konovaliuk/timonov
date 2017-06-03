@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
+import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 
@@ -27,15 +28,30 @@ public class BetService extends DataService<Bet, Bet> {
         return instance;
     }
 
-    public void tryToMakeBet(Bet bet) {
+    public void makeBet(Bet bet) {
         Race race = raceService.findByHorseInRaceId(bet.getOdds().getHorseInRaceId());
-        if (race.getRaceStatus().equals(RaceStatus.OPEN_TO_BET)) {
+        if (race.getRaceStatus() == RaceStatus.OPEN_TO_BET) {
             userService.deductUserBalance(bet.getUser(), bet.getSum());
+            raceService.increaseBetSum(race, bet.getSum());
+            bet.setBetStatus(BetStatus.MADE);
             save(bet);
         } else {
             LOGGER.warn("Race is not open for bet. You can not make bet on it");
             throw new ServiceException("Race is not open for bet. You can not make bet on it");
         }
+    }
 
+    public void cancelBet(Bet bet, Race race) {
+        userService.returnMoney(bet);
+        raceService.decreaseBetSum(race, bet.getSum());
+        bet.setBetStatus(BetStatus.CANCELLED);
+        save(bet);
+    }
+
+    public void payWin(Bet bet, Race race) {
+        userService.payWin(bet);
+        raceService.increasePaidSum(race, bet.getSum());
+        bet.setBetStatus(BetStatus.PAID);
+        save(bet);
     }
 }

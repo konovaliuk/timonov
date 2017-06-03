@@ -41,6 +41,8 @@ CREATE TABLE `probe`.`race` (
   `status_id` INT NOT NULL,
   `location_id` INT NOT NULL,
   `date` DATETIME NOT NULL,
+  `betSum` DECIMAL(20,2) NOT NULL,
+  `paidSum` DECIMAL(20,2) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `statusFK_idx` (`status_id` ASC),
   INDEX `locationFK_idx` (`location_id` ASC),
@@ -137,16 +139,24 @@ CREATE TABLE `probe`.`betType` (
   PRIMARY KEY (`id`));
 
 
+CREATE TABLE `probe`.`betstatus` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
 CREATE TABLE `bet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `odds_id` int(11) NOT NULL,
   `sum` decimal(20,2) NOT NULL,
+  `betstatus_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userFK_idx` (`user_id`),
   KEY `betOddsFK_idx` (`odds_id`),
   CONSTRAINT `betOddsFK` FOREIGN KEY (`odds_id`) REFERENCES `odds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `betUserFK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `betUserFK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `betStatusFK` FOREIGN KEY (`betstatus_id`) REFERENCES `betstatus` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 
@@ -195,21 +205,22 @@ INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('2', 'open to bet');
 INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('3', 'closed to bet');
 INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('4', 'finished');
 INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('5', 'results fixated');
-INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('6', 'winnings paid');
+INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('6', 'wins paid');
 INSERT INTO `probe`.`raceStatus` (`id`, `name`) VALUES ('7', 'cancelled');
 
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '7', '7', '2017-05-03');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('1', '6', '2', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('2', '6', '3', '2017-05-01');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('3', '5', '4', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('4', '4', '5', '2017-05-02');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('5', '3', '6', '2017-05-03');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('6', '2', '7', '2017-05-03');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('7', '2', '8', '2017-05-04');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('8', '2', '9', '2017-05-05');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('9', '1', '1', '2017-05-06');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('10', '1', '3', '2017-05-06');
-INSERT INTO `probe`.`race` (`id`, `status_id`, `location_id`, `date`) VALUES ('11', '1', '5', '2017-05-07');
+
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (1, 6, 2, '2017-05-01 00:00:00', 10.00, 40.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (2, 6, 3, '2017-05-01 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (3, 5, 4, '2017-05-02 00:00:00', 120.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (4, 5, 9, '2017-05-02 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (5, 7, 6, '2017-05-03 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (6, 3, 7, '2017-05-03 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (7, 5, 8, '2017-05-04 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (8, 1, 9, '2017-05-05 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (9, 1, 1, '2017-05-06 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (10, 6, 3, '2017-05-06 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (17, 1, 8, '2017-05-24 00:00:00', 0.00, 0.00);
+INSERT INTO probe.race (id, status_id, location_id, date, betSum, paidSum) VALUES (18, 1, 1, '2017-05-29 00:00:00', 0.00, 0.00);
 
 
 INSERT INTO `probe`.`userType` (`id`, `name`) VALUES ('1', 'admin');
@@ -377,12 +388,23 @@ INSERT INTO `probe`.`odds` (`id`, `horseInRace_id`, `betType_id`, `total`, `chan
 INSERT INTO `probe`.`odds` (`id`, `horseInRace_id`, `betType_id`, `total`, `chances`) VALUES ('90', '30', '3', '3', '1');
 
 
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('1', '6', '16', '10');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('2', '7', '20', '15');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('3', '8', '24', '20');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('4', '9', '25', '25');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('6', '10', '29', '30');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '24', '35');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '20', '20');
-INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`) VALUES ('7', '6', '25', '15');
+INSERT INTO `probe`.`betstatus` (`id`, `name`) VALUES ('1', 'made');
+INSERT INTO `probe`.`betstatus` (`id`, `name`) VALUES ('2', 'cancelled');
+INSERT INTO `probe`.`betstatus` (`id`, `name`) VALUES ('3', 'paid');
 
+
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('1', '6', '16', '10', '1');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('2', '7', '20', '15', '1');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('3', '8', '24', '20', '1');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('4', '9', '25', '25', '1');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('6', '10', '29', '30', '1');
+INSERT INTO `probe`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('7', '6', '24', '35', '2');
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (15, 8, 26, 12.00, 1);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (16, 9, 27, 12.00, 1);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (18, 6, 22, 1.23, 1);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (24, 10, 22, 2.25, 3);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (27, 11, 24, 3.25, 2);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (37, 9, 149, 5.00, 1);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (38, 8, 146, 5.00, 2);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (39, 6, 149, 5.00, 1);
+INSERT INTO probe.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (40, 7, 156, 10.00, 3);

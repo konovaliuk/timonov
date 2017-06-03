@@ -7,11 +7,11 @@ import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.user.User;
+import ua.timonov.web.project.parser.FactoryParser;
 import ua.timonov.web.project.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 
 public class MakeBetAction extends Action {
 
@@ -28,7 +28,7 @@ public class MakeBetAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         Bet bet = createBetFromRequest(request);
         try {
-            betService.tryToMakeBet(bet);
+            betService.makeBet(bet);
             request.setAttribute("messageSuccess", true);
         }
         catch (ServiceException e) {
@@ -46,13 +46,14 @@ public class MakeBetAction extends Action {
     }
 
     private Bet createBetFromRequest(HttpServletRequest request) {
+        // TODO here or not?
+        long userId =  FactoryParser.createIdParser().parse(request.getParameter("user"), "ID");
         long oddsId = Long.valueOf(request.getParameter("oddsId"));
         Odds odds = oddsService.findById(oddsId);
-        BigDecimal betSum = BigDecimal.valueOf(Double.valueOf(request.getParameter("sum")));
-        // TODO
-        long userId = 6; // Long.valueOf(request.getParameter("userId"));
+        Double betSum = Double.valueOf(request.getParameter("sum"));
         User user = userService.findById(userId);
-
-        return new Bet(user, odds, betSum);
+        return new Bet.Builder(user, odds)
+                .money(betSum)
+                .build();
     }
 }

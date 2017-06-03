@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.authorizing;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -20,9 +21,8 @@ public class SignInAction extends Action {
         try {
             User userFromRequest = createUserFromRequest(request);
             User user = userService.authorize(userFromRequest);
+            request.getSession().setMaxInactiveInterval(30);
             request.getSession().setAttribute("user", user);
-            request.getSession().setMaxInactiveInterval(60);
-            request.setAttribute("messageSuccess", true);
             return CONFIG.getString(HOME_PAGE);
         } catch (ServiceException e) {
             request.setAttribute("messageError", e.getMessage());

@@ -11,6 +11,7 @@
 <div class="container">
     <header>
         <div class="container">
+            <%@include file="reusable/greeting.jspf"%>
             <h3>Edit user</h3>
         </div>
     </header>

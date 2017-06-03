@@ -3,7 +3,10 @@ package ua.timonov.web.project.model.race;
 import ua.timonov.web.project.dao.Entity;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.location.Location;
+import ua.timonov.web.project.model.user.Money;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,28 +16,78 @@ public class Race implements Entity {
     private Location location;
     private Date date;
     private List<HorseInRace> horsesInRace;
+    private Money betSum;
+    private Money paidSum;
 
     public Race() {
     }
 
-    public Race(long id, Location location, Date date, List<HorseInRace> horsesInRace) {
-        this.id = id;
-        this.location = location;
-        this.date = date;
-        this.horsesInRace = horsesInRace;
+    public static class Builder {
+        /* requirement parameters */
+        private final Location location;
+        private final Date date;
+
+        /* optional parameters */
+        private long id = 0L;
+        private RaceStatus raceStatus = RaceStatus.BEING_FORMED;
+        private List<HorseInRace> horsesInRace = new ArrayList<>();
+        private Money betSum = new Money(BigDecimal.ZERO);
+        private Money paidSum = new Money(BigDecimal.ZERO);
+
+        public Builder(Location location, Date date) {
+            this.location = location;
+            this.date = date;
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder raceStatus(RaceStatus raceStatus) {
+            this.raceStatus = raceStatus;
+            return this;
+        }
+
+        public Builder horsesInRace(List<HorseInRace> horsesInRace) {
+            // TODO copy!
+            this.horsesInRace = horsesInRace;
+            return this;
+        }
+
+        public Builder betSum(double sum) {
+            this.betSum = new Money(sum);
+            return this;
+        }
+
+        public Builder betSum(BigDecimal sum) {
+            this.betSum = new Money(sum);
+            return this;
+        }
+
+        public Builder paidSum(double sum) {
+            this.paidSum = new Money(sum);
+            return this;
+        }
+
+        public Builder paidSum(BigDecimal sum) {
+            this.paidSum = new Money(sum);
+            return this;
+        }
+
+        public Race build() {
+            return new Race(this);
+        }
     }
 
-    public Race(long id, Location location, Date date) {
-        this.id = id;
-        this.location = location;
-        this.date = date;
-    }
-
-    public Race(long id, RaceStatus raceStatus, Location location, Date date) {
-        this.id = id;
-        this.raceStatus = raceStatus;
-        this.location = location;
-        this.date = date;
+    public Race(Builder builder) {
+        this.id = builder.id;
+        this.raceStatus = builder.raceStatus;
+        this.location = builder.location;
+        this.date = builder.date;
+        this.horsesInRace = builder.horsesInRace;
+        this.betSum = builder.betSum;
+        this.paidSum = builder.paidSum;
     }
 
     public Race(Location location, Date date) {
@@ -65,6 +118,22 @@ public class Race implements Entity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Money getBetSum() {
+        return betSum;
+    }
+
+    public void setBetSum(Money betSum) {
+        this.betSum = betSum;
+    }
+
+    public Money getPaidSum() {
+        return paidSum;
+    }
+
+    public void setPaidSum(Money paidSum) {
+        this.paidSum = paidSum;
     }
 
     // TODO make copies

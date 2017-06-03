@@ -28,10 +28,10 @@ public class UserService extends DataService<User, Bet> {
         return instance;
     }
 
-    public void deductUserBalance(User user, BigDecimal betSum) {
+    public void deductUserBalance(User user, Money betSum) {
         Account account = user.getAccount();
         Money balanceBeforePay = account.getBalance();
-        Money balanceAfterPay = balanceBeforePay.subtract(new Money(betSum));
+        Money balanceAfterPay = balanceBeforePay.subtract(betSum);
         if (balanceAfterPay.getValue().compareTo(BigDecimal.ZERO) < 0) {
             LOGGER.error("There is not enough money on your account");
             throw new SecurityException("There is not enough money on your account");
@@ -43,7 +43,7 @@ public class UserService extends DataService<User, Bet> {
     public void payWin(Bet bet) {
         Account account = bet.getUser().getAccount();
         bet.getOdds().getOddsValue();
-        Money betSum = new Money(bet.getSum());
+        Money betSum = bet.getSum();
         Money wonSum = betSum.multiply(bet.getOdds().getOddsValue());
         Money balanceBeforePay = account.getBalance();
         Money balanceAfterPay = balanceBeforePay.add(wonSum);
@@ -53,11 +53,9 @@ public class UserService extends DataService<User, Bet> {
 
     public void returnMoney(Bet bet) {
         Account account = bet.getUser().getAccount();
-        Money betSum = new Money(bet.getSum());
         Money balanceBeforeReturn = account.getBalance();
-        Money balanceAfterReturn = balanceBeforeReturn.add(betSum);
+        Money balanceAfterReturn = balanceBeforeReturn.add(bet.getSum());
         account.setBalance(balanceAfterReturn);
-        betDao.delete(bet.getId());
         accountDao.save(account);
     }
 

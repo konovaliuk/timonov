@@ -2,11 +2,11 @@ package ua.timonov.web.project.model.user;
 
 import java.math.BigDecimal;
 
-public class Money {
+public final class Money {
     private static final int ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
     private static final int DECIMALS = 2;
 
-    private BigDecimal value;
+    private final BigDecimal value;
 
     public Money(BigDecimal value) {
         this.value = value;
@@ -16,9 +16,9 @@ public class Money {
         this.value = rounded(BigDecimal.valueOf(value));
     }
 
-    public Money(long integerPart, int fractionalPart) {
+    /*public Money(long integerPart, int fractionalPart) {
         value = new BigDecimal(formString(integerPart, fractionalPart));
-    }
+    }*/
 
     public Money add(Money addendum) {
         return new Money(value.add(addendum.value));
@@ -42,10 +42,6 @@ public class Money {
 
     public BigDecimal getValue() {
         return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
     }
 
     public String toString() {

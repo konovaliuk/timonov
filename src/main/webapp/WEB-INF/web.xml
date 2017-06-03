@@ -49,7 +49,7 @@
 
     <filter-mapping>
         <filter-name>SignedInFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/races</url-pattern>
     </filter-mapping>
 
 </web-app>

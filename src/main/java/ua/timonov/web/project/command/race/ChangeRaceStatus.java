@@ -1,6 +1,5 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.race;
 
-import ua.timonov.web.project.command.race.EditRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.HorseInRace;

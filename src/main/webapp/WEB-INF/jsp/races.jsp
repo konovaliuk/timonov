@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--<% request.getSession().getAttribute("user") %>--%>
 <html>
 
 <head>
@@ -32,6 +33,8 @@
                         <th>Country</th>
                         <th>Date</th>
                         <th>Status</th>
+                        <th>Bet sum</th>
+                        <th>Paid sum</th>
                         <th>Go to race</th>
                         <th>Edit race</th>
                         <th>Delete race</th>
@@ -43,6 +46,8 @@
                             <td>${race.location.country.name}</td>
                             <td>${race.date}</td>
                             <td>${race.raceStatus.toString()}</td>
+                            <td>${race.betSum.toString()}</td>
+                            <td>${race.paidSum.toString()}</td>
                             <td><a href="races?action=race&raceId=${race.id}">To race</a></td>
                             <td><a href="races?action=raceEdit&raceId=${race.id}">Edit race</a></td>
                             <td><a href="races?action=raceDelete&raceId=${race.id}">Delete race</a></td>

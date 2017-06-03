@@ -56,7 +56,10 @@ public class SaveEditedRaceAttributesAction extends Action {
         Date date = dateParser.parse(dateValue, DATE);
         RaceStatus raceStatus = RaceStatus.valueOf(stringToEnumView(request.getParameter("raceStatus")));
         Location location = locationService.findById(locationId);
-        return new Race(id, raceStatus, location, date);
+        return new Race.Builder(location, date)
+                .id(id)
+                .raceStatus(raceStatus)
+                .build();
     }
 
     private String stringToEnumView(String raceStatus) {

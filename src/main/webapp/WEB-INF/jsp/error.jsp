@@ -8,6 +8,7 @@
     <div class="container">
         <header>
             <div class="container">
+                <%@include file="reusable/greeting.jspf"%>
                 <h2>Error page</h2>
             </div>
         </header>
