@@ -19,16 +19,3 @@ public class LocationService extends DataService<Location, Race> {
         return instance;
     }
 }
-
-
-    /*public List<Location> getAll() {
-        return locationDao.findAll();
-    }
-
-    public Location findById(long id) throws ServiceException {
-        Location location = locationDao.findById(id);
-        if (location == null) {
-            throw new ServiceException("ID " + id + "does not exist in" + locationDao.getName());
-        }
-        return location;
-    }*/

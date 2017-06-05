@@ -8,6 +8,7 @@ import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.model.user.Money;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class BetService extends DataService<Bet, Bet> {
             bet.setBetStatus(BetStatus.MADE);
             save(bet);
         } else {
-            LOGGER.warn("Race is not open for bet. You can not make bet on it");
-            throw new ServiceException("Race is not open for bet. You can not make bet on it");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_NOT_OPEN);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
     }
 
@@ -61,8 +63,9 @@ public class BetService extends DataService<Bet, Bet> {
     public List<Bet> findListByUser(Long userId) {
         List<Bet> userBets = betDao.findListByUserId(userId);
         if (userBets == null) {
-            LOGGER.error("Database error while searching in table " + betDao.getName());
-            throw new ServiceException("Database error while searching in table " + betDao.getName());
+            String message = ExceptionMessages.getMessage(ExceptionMessages.FIND_ITEMS_FAILED + " " + betDao.getName());
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
         return userBets;
     }

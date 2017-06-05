@@ -11,6 +11,8 @@ import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.model.user.Money;
+import ua.timonov.web.project.util.ExceptionMessages;
+import ua.timonov.web.project.util.LoggerMessages;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,11 +22,12 @@ import java.util.List;
 public class RaceService extends DataService<Race, HorseInRace> {
 
     private static final Logger LOGGER = Logger.getLogger(RaceService.class);
+
     public static final int FINISH_PLACES_SET_CORRECTLY = 0;
+
     private static RaceDao raceDao = daoFactory.createRaceDao();
     private static HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
     private static BetDao betDao = daoFactory.createBetDao();
-    private static UserService userService = ServiceFactory.getInstance().createUserService();
     private static BetService betService = ServiceFactory.getInstance().createBetService();
     private static final RaceService instance = new RaceService();
 
@@ -39,8 +42,10 @@ public class RaceService extends DataService<Race, HorseInRace> {
     public Race findByHorseInRaceId(long horseInRaceId) {
         Race race = raceDao.findByForeignId(horseInRaceId, "HorseInRace");
         if (race == null) {
-            LOGGER.error("Horse in race " + horseInRaceId + " does not exist in table Race");
-            throw new ServiceException("Horse in race " + horseInRaceId + " does not exist in table Race");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_IN_RACE_ID + " " + horseInRaceId +
+                    " " + ExceptionMessages.HORSE_IN_RACE_NOT_FOUND);
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
         return race;
     }
@@ -48,24 +53,26 @@ public class RaceService extends DataService<Race, HorseInRace> {
     public void delete(long id) throws ServiceException {
         Race race = findById(id);
         if (race.getRaceStatus() != RaceStatus.BEING_FORMED) {
-            LOGGER.warn("Race can't be deleted! Should have status \"being formed\"");
-            throw new ServiceException("Race can't be deleted! Should have status \"being formed\"");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_CANT_BE_DELETED);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
         super.delete(id);
     }
 
     public void setCancelStatus(Race race) {
-        if (race.getRaceStatus().compareTo(RaceStatus.FINISHED) < 0) {
+        if (race.getRaceStatus().ordinal() < RaceStatus.FINISHED.ordinal()) {
             race.setRaceStatus(RaceStatus.CANCELLED);
             raceDao.save(race);
             List<Bet> bets = betDao.findListByRaceId(race.getId());
             for (Bet bet : bets) {
                 betService.cancelBet(bet, race);
             }
-            LOGGER.info("Race status is set to \"Cancelled\"");
+            LOGGER.info(LoggerMessages.RACE_SET_CANCELLED);
         } else {
-            LOGGER.error("Race status can't be set to \"Cancelled\"");
-            throw new ServiceException("Race status can't be set to \"Cancelled\"");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_CANT_BE_CANCELLED);
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
     }
 
@@ -97,13 +104,14 @@ public class RaceService extends DataService<Race, HorseInRace> {
 
     private void checkIfRaceReadyToBeOpen(Race race) {
         if (race.getHorsesInRace().size() <= 1) {
-            LOGGER.warn("Should be at least two horses in the race to open betting");
-            throw new ServiceException("Should be at least two horses in the race to open betting");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_SHOULD_BE_TWO_HORSES);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
         HorseInRace horseInRaceWithoutOdds = findHorseInRaceWithoutOdds(race);
         if (horseInRaceWithoutOdds != null) {
-            String message = "Each horse in race should have at least one bet rate. Horse " +
-                    horseInRaceWithoutOdds.getHorse().getName() + " does not";
+            String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_SHOULD_HAVE_ODDS) +
+                    horseInRaceWithoutOdds.getHorse().getName();
             LOGGER.warn(message);
             throw new ServiceException(message);
         }
@@ -118,8 +126,9 @@ public class RaceService extends DataService<Race, HorseInRace> {
     private void checkIfPlacesAreSet(Race race) {
         List<HorseInRace> listOfHorsesInRace = horseInRaceDao.findListByRaceId(race.getId());
         if (!allPlacesAreSet(listOfHorsesInRace)) {
-            LOGGER.warn("One or more horse places are not set or wrong");
-            throw new ServiceException("One or more horse places are not set or wrong");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_PLACES_ERROR);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
     }
 

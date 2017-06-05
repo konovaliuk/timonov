@@ -9,6 +9,7 @@ import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.Money;
 import ua.timonov.web.project.model.user.User;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.math.BigDecimal;
 
@@ -33,8 +34,9 @@ public class UserService extends DataService<User, Bet> {
         Money balanceBeforePay = account.getBalance();
         Money balanceAfterPay = balanceBeforePay.subtract(betSum);
         if (balanceAfterPay.getValue().compareTo(BigDecimal.ZERO) < 0) {
-            LOGGER.error("There is not enough money on your account");
-            throw new SecurityException("There is not enough money on your account");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.NOT_ENOUGH_MONEY);
+            LOGGER.warn(message);
+            throw new SecurityException(message);
         }
         account.setBalance(balanceAfterPay);
         accountDao.save(account);
@@ -63,28 +65,32 @@ public class UserService extends DataService<User, Bet> {
     public void findUserWithSameLogin(User user) {
         User existingUser = userDao.findByLogin(user.getLogin());
         if (existingUser != null) {
-            LOGGER.warn("There is user with the same login");
-            throw new ServiceException("There is user with the same login");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.SAME_LOGIN);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
     }
 
     public User authorize(User userFromRequest) {
         User user = userDao.findByLogin(userFromRequest.getLogin());
         if (user == null) {
-            LOGGER.warn("User inputted wrong login");
-            throw new ServiceException("You've inputted wrong login");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_LOGIN);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
         if (!user.getPassword().equals(userFromRequest.getPassword())) {
-            LOGGER.warn("User inputted wrong password");
-            throw new ServiceException("You've inputted wrong password");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_PASSWORD);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
         return user;
     }
 
     public void checkIdenticalPasswords(User user, String passwordConfirm) {
         if (!passwordConfirm.equals(user.getPassword())) {
-            LOGGER.warn("User inputted different passwords");
-            throw new ServiceException("You've inputted different passwords");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.DIFFERENT_PASSWORDS);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
         }
     }
 }

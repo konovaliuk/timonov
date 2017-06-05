@@ -4,6 +4,7 @@ import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.service.LocationService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,6 @@ public class GetRacesAction extends Action {
     protected String prepareRacesPage(HttpServletRequest request) {
         request.setAttribute(RACES, raceService.findAll());
         request.setAttribute(LOCATIONS, locationService.findAll());
-        return CONFIG.getString(RACES);
+        return Pages.getPage(Pages.RACES_PAGE);
     }
 }

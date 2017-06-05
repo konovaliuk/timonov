@@ -7,13 +7,12 @@ import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.OddsService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class EditOddsAction extends Action {
-
-    public static final String ODDS_EDIT = "oddsEdit";
 
     private HorseInRaceService horseInRaceService = ServiceFactory.getInstance().createHorseInRaceService();
     private RaceService raceService = ServiceFactory.getInstance().createRaceService();
@@ -31,10 +30,6 @@ public class EditOddsAction extends Action {
         request.setAttribute("horseInRace", horseInRaceService.findById(odds.getHorseInRaceId()));
         request.setAttribute("race", raceService.findByHorseInRaceId(odds.getHorseInRaceId()));
         request.setAttribute("betTypes", BetType.values());
-        return CONFIG.getString(ODDS_EDIT);
+        return Pages.getPage(Pages.ODDS_EDIT_PAGE);
     }
 }
-
-/*request.setAttribute("horseInRace", horseInRaceService.findById(id));
-        request.setAttribute("race", raceService.findByHorseInRaceId(id));
-        request.setAttribute("betTypes", BetType.values());*/

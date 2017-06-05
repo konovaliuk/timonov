@@ -6,6 +6,7 @@ import ua.timonov.web.project.dao.daointerface.OddsDao;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.Odds;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.util.List;
 
@@ -36,31 +37,9 @@ public class OddsService extends DataService<Odds, Bet> {
 
     public void validateOddsRates(Odds odds) {
         if (odds.getTotal() <= odds.getChances()) {
-            LOGGER.error("Value of total chances should be more than wining chances in odds");
-            throw new ServiceException("Value of total chances should be more than wining chances in odds");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.ODDS_CHANCES_MORE_TOTAL);
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
     }
 }
-
-
-    /*public Odds findById(long oddsId) {
-        return oddsDao.findById(oddsId);
-    }
-
-    public void save(long horseInRaceId, Odds odds) throws ServiceException {
-        try {
-            oddsDao.save(odds, horseInRaceId);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            throw new ServiceException("Odds saving failed!", e);
-        }
-    }
-
-    public void delete(long oddsId) {
-        try {
-            oddsDao.delete(oddsId);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            throw new ServiceException("Odds deleting failed!", e);
-        }
-    }*/

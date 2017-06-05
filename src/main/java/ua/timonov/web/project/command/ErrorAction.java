@@ -1,14 +1,15 @@
 package ua.timonov.web.project.command;
 
+import ua.timonov.web.project.util.Pages;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Deprecated
 public class ErrorAction extends Action {
-
-    public static final String ERROR_PAGE = "/WEB-INF/jsp/error.jsp";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return ERROR_PAGE;
+        return Pages.getPage(Pages.ERROR_PAGE);
     }
 }

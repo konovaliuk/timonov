@@ -5,13 +5,12 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GetRaceAction extends Action {
-
-    public static final String RACE = "race";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -20,8 +19,8 @@ public class GetRaceAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long raceId = Long.valueOf(request.getParameter("raceId"));
-        request.setAttribute(RACE, raceService.findById(raceId));
+        request.setAttribute("race", raceService.findById(raceId));
         request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(raceId));
-        return CONFIG.getString(RACE);
+        return Pages.getPage(Pages.RACE_PAGE);
     }
 }

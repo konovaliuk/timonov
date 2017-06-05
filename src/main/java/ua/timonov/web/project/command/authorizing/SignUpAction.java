@@ -10,15 +10,13 @@ import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserAccountService;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 public class SignUpAction extends Action {
-
-    public static final String INDEX_PAGE = "index";
-    public static final String SIGN_UP_PAGE = "signUp";
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
@@ -38,12 +36,12 @@ public class SignUpAction extends Action {
             userService.save(user);
 
             request.setAttribute("messageSuccess", true);
-            return CONFIG.getString(SIGN_UP_PAGE);
+            return Pages.getPage(Pages.SIGN_UP_PAGE);
         } catch (ServiceException e) {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
             request.setAttribute("user", user);
-            return CONFIG.getString(SIGN_UP_PAGE);
+            return Pages.getPage(Pages.SIGN_UP_PAGE);
         }
     }
 

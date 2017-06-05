@@ -9,14 +9,13 @@ import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class GetWonBets extends Action {
-
-    public static final String WON_BETS = "wonBets";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -35,6 +34,6 @@ public class GetWonBets extends Action {
         request.setAttribute("race", race);
         request.setAttribute("wonBets", wonBets);
         request.setAttribute("listBetHorses", listBetHorses);
-        return CONFIG.getString(WON_BETS);
+        return Pages.getPage(Pages.WON_BETS_PAGE);
     }
 }

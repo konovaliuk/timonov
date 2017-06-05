@@ -27,10 +27,5 @@ public class DeleteOddsAction extends GetHorseInRaceBookieAction {
         }
 
         return prepareHorseInRacePage(request, odds.getHorseInRaceId());
-
-//        request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
-//        request.setAttribute("race", raceService.findByHorseInRaceId(horseInRaceId));
-//        request.setAttribute("betTypes", BetType.values());
-//        return CONFIG.getString(HORSE_IN_RACE_BOOKIE);
     }
 }

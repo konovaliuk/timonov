@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CancelRaceAction extends ManageRaceAction {
 
-    public static final String RACE_EDIT = "raceEdit";
-
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
 

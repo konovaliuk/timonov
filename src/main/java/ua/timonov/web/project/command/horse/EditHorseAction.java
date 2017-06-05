@@ -6,6 +6,7 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.service.HorseService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,6 @@ public class EditHorseAction extends Action {
 
     private String prepareEditHorsePage(HttpServletRequest request, Horse horse) {
         request.setAttribute("horse", horse);
-        return CONFIG.getString(HORSE_EDIT);
+        return Pages.getPage(Pages.HORSE_EDIT_PAGE);
     }
 }

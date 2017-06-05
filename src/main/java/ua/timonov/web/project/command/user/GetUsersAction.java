@@ -6,6 +6,7 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,6 @@ public class GetUsersAction extends Action {
     protected String prepareUsersPage(HttpServletRequest request) {
         request.setAttribute("users", userService.findAll());
         request.setAttribute("userTypes", UserType.values());
-        return CONFIG.getString(USERS_PAGE);
+        return Pages.getPage(Pages.USERS_PAGE);
     }
 }

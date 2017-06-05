@@ -6,6 +6,7 @@ import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 public class HorseService extends DataService<Horse, HorseInRace> {
 
@@ -22,20 +23,22 @@ public class HorseService extends DataService<Horse, HorseInRace> {
         return instance;
     }
 
-    // TODO why custom method?
     public Horse findByHorseInRaceId(long horseInRaceId) {
         Horse horse = horseDao.findByForeignId(horseInRaceId, "HorseInRace");
         if (horse == null) {
-            LOGGER.error("Horse in race " + horseInRaceId + " does not exist in table Horse");
-            throw new ServiceException("Horse in race " + horseInRaceId + " does not exist in table Horse");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_IN_RACE_ID + " " + horseInRaceId +
+                    " " + ExceptionMessages.HORSE_IN_RACE_NOT_FOUND);
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
         return horse;
     }
 
     public void validateNumberOfWonRaces(Horse horse) {
         if (horse.getTotalRaces() < horse.getWonRaces()) {
-            LOGGER.error("Number of won races can't be more than total races");
-            throw new ServiceException("Number of won races can't be more than total races");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WON_RACES_MORE_TOTAL);
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
     }
 }

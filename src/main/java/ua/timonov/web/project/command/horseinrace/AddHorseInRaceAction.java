@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.horseinrace;
 
 import ua.timonov.web.project.command.race.ManageRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class AddHorseInRaceAction extends ManageRaceAction {
-
-    public static final String RACE_EDIT = "raceEdit";
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();

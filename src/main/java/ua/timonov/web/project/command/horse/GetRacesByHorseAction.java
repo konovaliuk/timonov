@@ -10,6 +10,7 @@ import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.HorseService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetRacesByHorseAction extends Action {
-
-    public static final String RACES_WITH_HORSE = "racesWithHorse";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseService horseService = serviceFactory.createHorseService();
@@ -41,6 +40,6 @@ public class GetRacesByHorseAction extends Action {
         request.setAttribute("horse", horse);
         request.setAttribute("listHorsesInRace", listHorsesInRace);
         request.setAttribute("races", races);
-        return CONFIG.getString(RACES_WITH_HORSE);
+        return Pages.getPage(Pages.RACES_WITH_HORSE_PAGE);
     }
 }

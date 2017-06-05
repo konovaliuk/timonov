@@ -7,6 +7,7 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.Odds;
 import ua.timonov.web.project.model.horse.HorseInRace;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,9 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         HorseInRace horseInRace = super.findById(id);
         List<Odds> oddsByHorseInRace = oddsDao.findListByHorseInRace(horseInRace.getId());
         if (oddsByHorseInRace == null) {
-            LOGGER.error("Items not founded in Odds");
-            throw new ServiceException("Items not founded in Odds");
+            String message = ExceptionMessages.getMessage(ExceptionMessages.FIND_ITEMS_FAILED + " " + oddsDao.getName());
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
         horseInRace.setOddsValues(oddsByHorseInRace);
         return horseInRace;
@@ -51,8 +53,9 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         List<HorseInRace> listStoredHorsesInRace = horseInRaceDao.findListByRaceId(horseInRace.getRaceId());
         for (HorseInRace storedHorseInRace : listStoredHorsesInRace) {
             if (storedHorseInRace.equals(horseInRace)) {
-                LOGGER.warn("Chosen horse is already in the race!");
-                throw new ServiceException("Chosen horse is already in the race!");
+                String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_ALREADY_IN_RACE);
+                LOGGER.warn(message);
+                throw new ServiceException(message);
             }
         }
         super.save(horseInRace);
@@ -76,37 +79,3 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         return listBetHorses;
     }
 }
-
-
-/*
-    @Deprecated
-    private List<HorseInRace> unitEqualRecords(List<HorseInRace> listFromDatabase) {
-        List<HorseInRace> result = new ArrayList<>();
-        if (listFromDatabase.size() == 0) {
-            return result;
-        }
-        // TODO with streams
-        HorseInRace currentUnitedHorse = new HorseInRace();
-        currentUnitedHorse.setHorse(listFromDatabase.get(0).getHorse());
-        for (HorseInRace itemFromDatabase : listFromDatabase) {
-            Horse currentHorse = itemFromDatabase.getHorse();
-            if (currentUnitedHorse.getHorse().equals(currentHorse)) {
-                currentUnitedHorse.getOddsValues().add(itemFromDatabase.getOddsValues().get(0));
-            } else {
-                result.add(currentUnitedHorse);
-                currentUnitedHorse = itemFromDatabase;
-            }
-        }
-        result.add(currentUnitedHorse);
-        return result;
-    }*/
-
-    /*public void save(HorseInRace horseInRace, long raceId) {
-        try {
-            horseInRaceDao.save(horseInRace, raceId);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            // TODO - customize exception!
-            throw new ServiceException("HorseInRace saving failed!", e);
-        }
-    }*/

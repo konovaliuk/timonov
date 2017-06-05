@@ -1,5 +1,6 @@
-package ua.timonov.web.project.command;
+package ua.timonov.web.project.command.user;
 
+import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
@@ -8,14 +9,13 @@ import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.service.BetService;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class GetUserBetsAction extends Action {
-
-    public static final String USER_BETS = "userBets";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private BetService betService = serviceFactory.createBetService();
@@ -29,6 +29,6 @@ public class GetUserBetsAction extends Action {
         request.setAttribute("userBets", userBets);
         request.setAttribute("listBetHorses", listBetHorses);
         request.setAttribute("betStatusPaid", BetStatus.PAID);
-        return CONFIG.getString(USER_BETS);
+        return Pages.getPage(Pages.USER_BETS_PAGE);
     }
 }

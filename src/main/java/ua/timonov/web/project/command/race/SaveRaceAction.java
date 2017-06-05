@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
@@ -16,7 +17,6 @@ import java.util.Date;
 
 public class SaveRaceAction extends GetRacesAction {
 
-    public static final String RACES = "races";
     public static final String DATE = "date";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -26,11 +26,11 @@ public class SaveRaceAction extends GetRacesAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        Race race = createRaceFromRequest(request);
         try {
+            Race race = createRaceFromRequest(request);
             raceService.save(race);
             request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
+        } catch (AppException e) {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
         }

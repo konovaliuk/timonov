@@ -42,7 +42,6 @@ public final class ActionInvoker {
         actionMap.put("racesByHorse", new GetRacesByHorseAction());
 
         actionMap.put("users", new GetUsersAction());
-        actionMap.put("user", new GetUserAction());
         actionMap.put("userEdit", new EditUserAction());
         actionMap.put("userDelete", new DeleteUserAction());
         actionMap.put("userAdd", new AddUserAction());

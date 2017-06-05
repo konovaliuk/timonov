@@ -6,13 +6,13 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.service.HorseService;
 import ua.timonov.web.project.service.ServiceFactory;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SaveEditedHorseAction extends ua.timonov.web.project.command.Action {
 
-    public static final String HORSE_EDIT_PAGE = "horseEdit";
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseService horseService = serviceFactory.createHorseService();
 
@@ -28,7 +28,7 @@ public class SaveEditedHorseAction extends ua.timonov.web.project.command.Action
             request.setAttribute("errorDetails", e.getCause());
         }
         request.setAttribute("horse", horse);
-        return CONFIG.getString(HORSE_EDIT_PAGE);
+        return Pages.getPage(Pages.HORSE_EDIT_PAGE);
     }
 
     private Horse createHorseFromRequest(HttpServletRequest request) {

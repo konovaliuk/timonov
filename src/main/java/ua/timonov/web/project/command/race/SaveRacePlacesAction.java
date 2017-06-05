@@ -14,8 +14,6 @@ import java.util.List;
 
 public class SaveRacePlacesAction extends ManageRaceAction {
 
-    public static final String RACE_EDIT = "raceEdit";
-
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();

@@ -5,13 +5,12 @@ import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.*;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ManageRaceAction extends Action {
-
-    public static final String RACE_EDIT = "raceManage";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -35,7 +34,7 @@ public class ManageRaceAction extends Action {
         request.setAttribute("raceStatusWinsPaid", RaceStatus.WINS_PAID);
         request.setAttribute("locations", locationService.findAll());
         request.setAttribute("horses", horseService.findAll());
-        return CONFIG.getString(RACE_EDIT);
+        return Pages.getPage(Pages.RACE_MANAGE_PAGE);
     }
 }
 

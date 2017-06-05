@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class GreetingTag extends TagSupport {
 
     private static final Logger LOGGER = Logger.getLogger(GreetingTag.class);
+    public static final String GREETING_TAG_ERROR = "Error while using GreetingTag";
 
     private String userName;
 
@@ -21,8 +22,9 @@ public class GreetingTag extends TagSupport {
         try {
             pageContext.getOut().write(userName);
         } catch (Exception e) {
-            LOGGER.error("Error while using GreetingTag");
-            throw new AppException("Error while using GreetingTag");
+            String message = GREETING_TAG_ERROR;
+            LOGGER.error(message);
+            throw new AppException(message);
         }
         return SKIP_BODY;
     }

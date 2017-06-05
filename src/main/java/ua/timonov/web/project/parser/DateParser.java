@@ -1,12 +1,17 @@
 package ua.timonov.web.project.parser;
 
+import org.apache.log4j.Logger;
 import ua.timonov.web.project.exception.ParsingException;
+import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public final class DateParser implements Parser<Date> {
+
+    private static final Logger LOGGER = Logger.getLogger(DateParser.class);
+
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -15,7 +20,10 @@ public final class DateParser implements Parser<Date> {
         try {
             return simpleDateFormat.parse(string);
         } catch (ParseException e) {
-            throw new ParsingException("Wrong value \"" + string + "\" in field " + field);
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_VALUE + string +
+                    ExceptionMessages.IN_FIELD + field);
+            LOGGER.error(message);
+            throw new ParsingException(message);
         }
     }
 

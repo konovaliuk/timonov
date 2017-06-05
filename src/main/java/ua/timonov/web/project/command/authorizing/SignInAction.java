@@ -6,14 +6,12 @@ import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SignInAction extends Action {
-
-    public static final String HOME_PAGE = "main";
-    public static final String INDEX_PAGE = "index";
 
     private UserService userService = ServiceFactory.getInstance().createUserService();
 
@@ -26,11 +24,11 @@ public class SignInAction extends Action {
             request.getSession().setAttribute("roleAdmin", UserType.ADMIN);
             request.getSession().setAttribute("roleBookie", UserType.BOOKIE);
             request.getSession().setAttribute("roleClient", UserType.CLIENT);
-            return CONFIG.getString(HOME_PAGE);
+            return Pages.getPage(Pages.MAIN_PAGE);
         } catch (ServiceException e) {
             request.setAttribute("messageError", e.getMessage());
             request.setAttribute("errorDetails", e.getCause());
-            return CONFIG.getString(INDEX_PAGE);
+            return Pages.getPage(Pages.INDEX_PAGE);
         }
     }
 

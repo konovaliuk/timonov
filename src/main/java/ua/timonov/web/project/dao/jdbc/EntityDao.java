@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.Dao;
 import ua.timonov.web.project.dao.DataSourceFactory;
 import ua.timonov.web.project.dao.Entity;
+import ua.timonov.web.project.util.LoggerMessages;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -23,6 +24,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     public static final String SPACE = " ";
 
     protected static final ResourceBundle QUERIES = ResourceBundle.getBundle("queries");
+
     protected String entityName;
     protected DataSource dataSource = DataSourceFactory.getInstance().getDataSource();
 
@@ -62,8 +64,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             LOGGER.info(rowUpdated + " row(s) updated");
             return rowUpdated > 0;
         } catch (SQLException e) {
-            LOGGER.error("Database error while updating table " + entityName +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_UPDATE + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return false;
         }
     }
@@ -76,14 +77,13 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             LOGGER.info(statement.toString());
             setEntityToParameters(entity, statement);
             int rowInserted = statement.executeUpdate();
-            LOGGER.info(rowInserted + " row(s) inserted into " + entityName);
+            LOGGER.info(rowInserted + LoggerMessages.ROWS_INSERTED_INTO + entityName);
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 generatedKeys.next();
                 return generatedKeys.getLong(1);
             }
         } catch (SQLException e) {
-            LOGGER.error("Database error while inserting into table " + entityName +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_INSERT + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return 0;
         }
     }
@@ -97,11 +97,10 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             statement.setLong(1, id);
             LOGGER.info(statement.toString());
             int rowUpdated = statement.executeUpdate();
-            LOGGER.info(rowUpdated + " row(s) deleted");
+            LOGGER.info(rowUpdated + LoggerMessages.ROWS_DELETED);
             return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
-            LOGGER.error("Database error while deleting from table " + entityName +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_DELETE + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return false;
         }
     }
@@ -119,13 +118,12 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-            LOGGER.info(result.size() + " items founded");
+            LOGGER.info(result.size() + LoggerMessages.ITEMS_FOUND);
             return result;
             // TODO
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + entityName +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return null;
         }
     }
@@ -142,13 +140,12 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                     result.add(getEntityFromResultSet(resultSet));
                 }
             }
-            LOGGER.info(result.size() + " items founded");
+            LOGGER.info(result.size() + LoggerMessages.ITEMS_FOUND);
             return result;
             // TODO
 //            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + entityName +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return null;
         }
     }
@@ -178,15 +175,17 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                 }
             }
             if (result != null) {
-                LOGGER.info("Item " + otherEntity + " with id = " + id + " found in table " + entityName);
+                LOGGER.info(LoggerMessages.ITEM + otherEntity + LoggerMessages.WITH_ID + id +
+                        LoggerMessages.FOUND_IN_TABLE + entityName);
             } else {
-                LOGGER.info("Item with id = " + id + " not found in table " + entityName);
+                LOGGER.info(LoggerMessages.ITEM + otherEntity + LoggerMessages.WITH_ID + id +
+                        LoggerMessages.NOT_FOUND_IN_TABLE + entityName);
             }
             return result;
 //            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + entityName + " record with id = " + id +
-                    ", exception message: " + e.getMessage());
+            LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.ITEM_WITH_ID + id +
+                    LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return null;
         }
     }

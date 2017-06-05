@@ -30,11 +30,6 @@ public class AddOddsAction extends GetHorseInRaceBookieAction {
         }
 
         return prepareHorseInRacePage(request, odds.getHorseInRaceId());
-
-//        request.setAttribute("horseInRace", horseInRaceService.findById(odds.getHorseInRaceId()));
-//        request.setAttribute("race", raceService.findByHorseInRaceId(odds.getHorseInRaceId()));
-//        request.setAttribute("betTypes", BetType.values());
-//        return CONFIG.getString(HORSE_IN_RACE_BOOKIE);
     }
 
     private Odds createOddsFromRequest(HttpServletRequest request) {

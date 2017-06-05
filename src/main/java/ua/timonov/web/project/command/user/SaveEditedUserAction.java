@@ -10,13 +10,12 @@ import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserAccountService;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SaveEditedUserAction extends Action {
-
-    public static final String USER_EDIT = "userEdit";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
@@ -86,6 +85,6 @@ public class SaveEditedUserAction extends Action {
 
     protected String prepareUsersPage(HttpServletRequest request) {
         request.setAttribute("userTypes", UserType.values());
-        return CONFIG.getString(USER_EDIT);
+        return Pages.getPage(Pages.USER_EDIT_PAGE);
     }
 }

@@ -11,13 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteHorseInRaceAction extends ManageRaceAction {
 
-    public static final String RACE_EDIT = "raceEdit";
-
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
-    private HorseService horseService = serviceFactory.createHorseService();
     private RaceService raceService = serviceFactory.createRaceService();
-    private LocationService locationService = serviceFactory.createLocationService();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {

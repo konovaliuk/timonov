@@ -7,13 +7,12 @@ import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.Pages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class EditUserAction extends Action {
-
-    public static final String USER_EDIT = "userEdit";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
@@ -28,6 +27,6 @@ public class EditUserAction extends Action {
     private String prepareEditUserPage(HttpServletRequest request, User user) {
         request.setAttribute("user", user);
         request.setAttribute("userTypes", UserType.values());
-        return CONFIG.getString(USER_EDIT);
+        return Pages.getPage(Pages.USER_EDIT_PAGE);
     }
 }
