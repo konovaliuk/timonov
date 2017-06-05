@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class GetWonBets extends Action {
+public class GetWonBets implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -28,7 +28,7 @@ public class GetWonBets extends Action {
         return prepareWonBetsPage(request, race);
     }
 
-    private String prepareWonBetsPage(HttpServletRequest request, Race race) {
+    private String prepareWonBetsPage(HttpServletRequest request, Race race) throws ServiceException {
         List<Bet> wonBets = raceService.findWonBetsByRaceId(race.getId());
         List<HorseInRace> listBetHorses = horseInRaceService.findBetHorsesInRace(wonBets);
         request.setAttribute("race", race);

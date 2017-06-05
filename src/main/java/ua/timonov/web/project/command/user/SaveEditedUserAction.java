@@ -1,6 +1,7 @@
 package ua.timonov.web.project.command.user;
 
 import ua.timonov.web.project.command.Action;
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.Account;
@@ -15,7 +16,7 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SaveEditedUserAction extends Action {
+public class SaveEditedUserAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
@@ -32,21 +33,22 @@ public class SaveEditedUserAction extends Action {
         return prepareUsersPage(request);
     }
 
-    private void createClient(HttpServletRequest request, UserType userType) {
-        User user = null;
-        try {
-            Account account = createAccountFromRequest(request);
-            user = createClientFromRequest(request, userType, account);
-//            userService.findUserWithSameLogin(user);
-            userAccountService.save(account);
-            userService.save(user);
-            request.setAttribute("messageSuccess", true);
-            request.setAttribute("user", user);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        return prepareUsersPage(request);
+    }
 
+    private void createClient(HttpServletRequest request, UserType userType) throws ServiceException {
+        Account account = createAccountFromRequest(request);
+        User user = createClientFromRequest(request, userType, account);
+        // TODO
+//            userService.findUserWithSameLogin(user);
+        userAccountService.save(account);
+        userService.save(user);
+        request.setAttribute("messageSuccess", true);
+        request.setAttribute("user", user);
     }
 
     private User createClientFromRequest(HttpServletRequest request, UserType userType, Account account) {
@@ -56,18 +58,13 @@ public class SaveEditedUserAction extends Action {
         return new User(userType, login, password, name, account);
     }
 
-    private void createUser(HttpServletRequest request, UserType userType) {
-        User user = null;
-        try {
-            user = createUserFromRequest(request, userType);
+    private void createUser(HttpServletRequest request, UserType userType) throws ServiceException {
+        User user = createUserFromRequest(request, userType);
+        // TODO
 //            userService.findUserWithSameLogin(user);
-            userService.save(user);
-            request.setAttribute("messageSuccess", true);
-            request.setAttribute("user", user);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+        userService.save(user);
+        request.setAttribute("messageSuccess", true);
+        request.setAttribute("user", user);
     }
 
     private User createUserFromRequest(HttpServletRequest request, UserType userType) {

@@ -10,7 +10,7 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GetRaceAction extends Action {
+public class GetRaceAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -18,7 +18,7 @@ public class GetRaceAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        long raceId = Long.valueOf(request.getParameter("raceId"));
+        Long raceId = Long.valueOf(request.getParameter("raceId"));
         request.setAttribute("race", raceService.findById(raceId));
         request.setAttribute("horsesInRace", horseInRaceService.findListByRaceId(raceId));
         return Pages.getPage(Pages.RACE_PAGE);

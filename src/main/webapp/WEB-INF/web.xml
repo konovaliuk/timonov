@@ -5,6 +5,11 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/jsp/error.jsp</location>
+    </error-page>
+
     <servlet>
         <servlet-name>MainServlet</servlet-name>
         <servlet-class>ua.timonov.web.project.controller.MainServlet</servlet-class>

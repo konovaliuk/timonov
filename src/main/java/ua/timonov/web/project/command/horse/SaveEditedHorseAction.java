@@ -1,6 +1,8 @@
 package ua.timonov.web.project.command.horse;
 
 
+import ua.timonov.web.project.command.Action;
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
@@ -11,22 +13,28 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SaveEditedHorseAction extends ua.timonov.web.project.command.Action {
+public class SaveEditedHorseAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseService horseService = serviceFactory.createHorseService();
+    private Horse horse;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        Horse horse = createHorseFromRequest(request);
-        try {
-            horseService.validateNumberOfWonRaces(horse);
-            horseService.save(horse);
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+        horse = createHorseFromRequest(request);
+
+        horseService.validateNumberOfWonRaces(horse);
+        horseService.save(horse);
+        request.setAttribute("messageSuccess", true);
+
+        request.setAttribute("horse", horse);
+        return Pages.getPage(Pages.HORSE_EDIT_PAGE);
+    }
+
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
         request.setAttribute("horse", horse);
         return Pages.getPage(Pages.HORSE_EDIT_PAGE);
     }

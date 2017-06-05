@@ -1,6 +1,7 @@
 package ua.timonov.web.project.command.authorizing;
 
 import ua.timonov.web.project.command.Action;
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.Account;
@@ -16,33 +17,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
-public class SignUpAction extends Action {
+public class SignUpAction implements Action {
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
     private UserAccountService userAccountService = serviceFactory.createUserAccountService();
+    private User user;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        User user = null;
-        try {
-            user = createUserFromRequest(request);
-            String passwordConfirm = request.getParameter("passwordConfirm");
+        user = createUserFromRequest(request);
+        String passwordConfirm = request.getParameter("passwordConfirm");
 
-            userService.checkIdenticalPasswords(user, passwordConfirm);
-            userService.findUserWithSameLogin(user);
+        userService.checkIdenticalPasswords(user, passwordConfirm);
+        userService.findUserWithSameLogin(user);
+        userAccountService.save(user.getAccount());
+        userService.save(user);
 
-            userAccountService.save(user.getAccount());
-            userService.save(user);
+        request.setAttribute("messageSuccess", true);
+        return Pages.getPage(Pages.SIGN_UP_PAGE);
+    }
 
-            request.setAttribute("messageSuccess", true);
-            return Pages.getPage(Pages.SIGN_UP_PAGE);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-            request.setAttribute("user", user);
-            return Pages.getPage(Pages.SIGN_UP_PAGE);
-        }
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        request.setAttribute("user", user);
+        return Pages.getPage(Pages.SIGN_UP_PAGE);
     }
 
     private User createUserFromRequest(HttpServletRequest request) {

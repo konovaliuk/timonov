@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Deprecated
-public class ErrorAction extends Action {
+public class ErrorAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

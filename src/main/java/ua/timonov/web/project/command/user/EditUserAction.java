@@ -12,7 +12,7 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class EditUserAction extends Action {
+public class EditUserAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();

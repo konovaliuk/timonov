@@ -32,7 +32,7 @@ public class BetService extends DataService<Bet, Bet> {
         return instance;
     }
 
-    public void makeBet(Bet bet) {
+    public void makeBet(Bet bet) throws ServiceException {
         Race race = raceService.findByHorseInRaceId(bet.getOdds().getHorseInRaceId());
         if (race.getRaceStatus() == RaceStatus.OPEN_TO_BET) {
             userService.deductUserBalance(bet.getUser(), bet.getSum());
@@ -46,21 +46,21 @@ public class BetService extends DataService<Bet, Bet> {
         }
     }
 
-    public void cancelBet(Bet bet, Race race) {
+    public void cancelBet(Bet bet, Race race) throws ServiceException {
         userService.returnMoney(bet);
         raceService.decreaseBetSum(race, bet.getSum());
         bet.setBetStatus(BetStatus.CANCELLED);
         save(bet);
     }
 
-    public Money payWin(Bet bet) {
+    public Money payWin(Bet bet) throws ServiceException {
         Money paidSum = userService.getWin(bet);
         bet.setBetStatus(BetStatus.PAID);
         save(bet);
         return paidSum;
     }
 
-    public List<Bet> findListByUser(Long userId) {
+    public List<Bet> findListByUser(Long userId) throws ServiceException {
         List<Bet> userBets = betDao.findListByUserId(userId);
         if (userBets == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.FIND_ITEMS_FAILED + " " + betDao.getName());

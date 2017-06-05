@@ -8,7 +8,7 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LogoutAction extends Action {
+public class LogoutAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {

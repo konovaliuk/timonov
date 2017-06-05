@@ -62,7 +62,7 @@ public class UserService extends DataService<User, Bet> {
         accountDao.save(account);
     }
 
-    public void findUserWithSameLogin(User user) {
+    public void findUserWithSameLogin(User user) throws ServiceException {
         User existingUser = userDao.findByLogin(user.getLogin());
         if (existingUser != null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.SAME_LOGIN);
@@ -71,7 +71,7 @@ public class UserService extends DataService<User, Bet> {
         }
     }
 
-    public User authorize(User userFromRequest) {
+    public User authorize(User userFromRequest) throws ServiceException {
         User user = userDao.findByLogin(userFromRequest.getLogin());
         if (user == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_LOGIN);
@@ -86,7 +86,7 @@ public class UserService extends DataService<User, Bet> {
         return user;
     }
 
-    public void checkIdenticalPasswords(User user, String passwordConfirm) {
+    public void checkIdenticalPasswords(User user, String passwordConfirm) throws ServiceException {
         if (!passwordConfirm.equals(user.getPassword())) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.DIFFERENT_PASSWORDS);
             LOGGER.warn(message);

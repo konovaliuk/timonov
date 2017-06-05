@@ -31,6 +31,7 @@ public class ExceptionMessages {
     public final static String ERROR_NOT_IDENTIFIED = "error.notIdentified";
     public final static String WRONG_VALUE = "parser.wrongValue";
     public final static String IN_FIELD = "parser.inField";
+    public final static String ERROR_SETTING_PLACES = "race.errorSettingPlaces";
 
     public static final Locale ENGLISH = new Locale("en", "US");
     public static final Locale UKRAINIAN = new Locale("uk", "UA");
@@ -38,6 +39,7 @@ public class ExceptionMessages {
     private static final String BUNDLE_NAME = "/i18n/exceptions";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, ENGLISH);
 
+    @Deprecated
     public static void setDefaultLocale() {
         setLocale(Locale.getDefault());
     }

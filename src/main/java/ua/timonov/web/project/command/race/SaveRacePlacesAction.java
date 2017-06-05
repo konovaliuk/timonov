@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
@@ -17,26 +18,30 @@ public class SaveRacePlacesAction extends ManageRaceAction {
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
+    private Race race;
+    List<Integer> inputtedPlaces = new ArrayList<>();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        long raceId = Long.valueOf(request.getParameter("raceId"));
-        Race race = raceService.findById(raceId);
+        Long raceId = Long.valueOf(request.getParameter("raceId"));
+        race = raceService.findById(raceId);
         List<HorseInRace> listOfHorsesInRace = horseInRaceService.findListByRaceId(raceId);
-        List<Integer> inputtedPlaces = new ArrayList<>();
         for (int i = 0; i < listOfHorsesInRace.size(); i++) {
             inputtedPlaces.add(Integer.valueOf(request.getParameter("places" + i)));
         }
-        try {
-            raceService.saveInputtedPlaces(listOfHorsesInRace, inputtedPlaces);
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-            request.setAttribute("inputtedPlaces", inputtedPlaces);
-        }
-        return prepareEditRacePage(request, race);
+
+        raceService.saveInputtedPlaces(listOfHorsesInRace, inputtedPlaces);
+        request.setAttribute("messageSuccess", true);
+        request.setAttribute("inputtedPlaces", inputtedPlaces);
+
+        return prepareManageRacePage(request, race);
     }
 
-
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        request.setAttribute("inputtedPlaces", inputtedPlaces);
+        return prepareManageRacePage(request, race);
+    }
 }

@@ -46,7 +46,7 @@ public abstract class DataService<T extends Entity, F extends Entity> {
         }
     }
 
-    private void checkEntityWithForeignKey(long id) {
+    private void checkEntityWithForeignKey(long id) throws ServiceException {
         F entity = daoForeignKey.findByForeignId(id, dao.getName());
         if (entity != null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.IMPOSSIBLE_TO_DELETE) + " " +
@@ -69,7 +69,7 @@ public abstract class DataService<T extends Entity, F extends Entity> {
         return value;
     }
 
-    public List<T> findAll() {
+    public List<T> findAll() throws ServiceException {
         List<T> itemList = dao.findAll();
         if (itemList == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.FIND_ITEMS_FAILED) + " " +

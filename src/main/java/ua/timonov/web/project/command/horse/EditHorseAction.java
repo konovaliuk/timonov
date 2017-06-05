@@ -11,7 +11,7 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class EditHorseAction extends Action {
+public class EditHorseAction implements Action {
 
     public static final String HORSE_EDIT = "horseEdit";
 
@@ -20,7 +20,7 @@ public class EditHorseAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long horseId = Long.valueOf(request.getParameter("horseId"));
+        Long horseId = Long.valueOf(request.getParameter("horseId"));
         Horse horse = horseService.findById(horseId);
         return prepareEditHorsePage(request, horse);
     }

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class GetUserBetsAction extends Action {
+public class GetUserBetsAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private BetService betService = serviceFactory.createBetService();

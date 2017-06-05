@@ -2,7 +2,6 @@ package ua.timonov.web.project.dao;
 
 import ua.timonov.web.project.dao.daointerface.*;
 import ua.timonov.web.project.dao.jdbc.mysql.MysqlDaoFactory;
-import ua.timonov.web.project.exception.AppException;
 
 public abstract class DaoFactory {
 
@@ -26,10 +25,13 @@ public abstract class DaoFactory {
 
     public static DaoFactory getFactory(DatabaseType databaseType) {
         switch (databaseType) {
-            case MYSQL: return MysqlDaoFactory.getInstance();
-            // TODO think twice
-            case POSTGRES: throw new AppException("Support for Postgres is not implemented");
-            default: return MysqlDaoFactory.getInstance();
+            case MYSQL:
+                return MysqlDaoFactory.getInstance();
+            // TODO to ask!
+            case POSTGRES:
+                return null;
+            default:
+                return MysqlDaoFactory.getInstance();
         }
     }
 }

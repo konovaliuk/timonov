@@ -35,7 +35,7 @@ public class OddsService extends DataService<Odds, Bet> {
         super.save(odds);
     }
 
-    public void validateOddsRates(Odds odds) {
+    public void validateOddsRates(Odds odds) throws ServiceException {
         if (odds.getTotal() <= odds.getChances()) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.ODDS_CHANCES_MORE_TOTAL);
             LOGGER.error(message);

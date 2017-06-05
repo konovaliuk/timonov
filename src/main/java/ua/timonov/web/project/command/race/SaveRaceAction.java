@@ -1,8 +1,6 @@
 package ua.timonov.web.project.command.race;
 
 import ua.timonov.web.project.exception.AppException;
-import ua.timonov.web.project.exception.ParsingException;
-import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.parser.FactoryParser;
@@ -25,19 +23,21 @@ public class SaveRaceAction extends GetRacesAction {
     private Parser<Date> dateParser = FactoryParser.createDateParser();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        try {
-            Race race = createRaceFromRequest(request);
-            raceService.save(race);
-            request.setAttribute("messageSuccess", true);
-        } catch (AppException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
+        Race race = createRaceFromRequest(request);
+        raceService.save(race);
+        request.setAttribute("messageSuccess", true);
         return prepareRacesPage(request);
     }
 
-    private Race createRaceFromRequest(HttpServletRequest request) {
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        return prepareRacesPage(request);
+    }
+
+    private Race createRaceFromRequest(HttpServletRequest request) throws AppException {
         long locationId = Long.valueOf(request.getParameter("locationId"));
         Location location = locationService.findById(locationId);
         String dateValue = request.getParameter(DATE);

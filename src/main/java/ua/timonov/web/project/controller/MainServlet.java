@@ -2,7 +2,6 @@ package ua.timonov.web.project.controller;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.ActionInvoker;
-import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.util.ExceptionMessages;
 import ua.timonov.web.project.util.Pages;
 
@@ -37,7 +36,7 @@ public class MainServlet extends HttpServlet {
         try {
             page = actionInvoker.invoke(request, response);
             LOGGER.info("page: " + page);
-        } catch (ServletException | IOException | AppException e) {
+        } catch (RuntimeException e) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.ERROR_NOT_IDENTIFIED);
             LOGGER.error(message);
             LOGGER.error(e.getMessage());

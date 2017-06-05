@@ -1,23 +1,30 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.command.authorizing.*;
-import ua.timonov.web.project.command.bet.*;
+import ua.timonov.web.project.command.authorizing.GetSignUpAction;
+import ua.timonov.web.project.command.authorizing.LogoutAction;
+import ua.timonov.web.project.command.authorizing.SignInAction;
+import ua.timonov.web.project.command.authorizing.SignUpAction;
+import ua.timonov.web.project.command.bet.GetWonBets;
+import ua.timonov.web.project.command.bet.MakeBetAction;
 import ua.timonov.web.project.command.horse.*;
-import ua.timonov.web.project.command.horseinrace.*;
-import ua.timonov.web.project.command.odds.*;
+import ua.timonov.web.project.command.horseinrace.AddHorseInRaceAction;
+import ua.timonov.web.project.command.horseinrace.DeleteHorseInRaceAction;
+import ua.timonov.web.project.command.horseinrace.GetHorseInRaceAction;
+import ua.timonov.web.project.command.horseinrace.GetHorseInRaceBookieAction;
+import ua.timonov.web.project.command.odds.AddOddsAction;
+import ua.timonov.web.project.command.odds.DeleteOddsAction;
+import ua.timonov.web.project.command.odds.EditOddsAction;
+import ua.timonov.web.project.command.odds.SaveEditedOddsAction;
 import ua.timonov.web.project.command.race.*;
 import ua.timonov.web.project.command.user.*;
-import ua.timonov.web.project.exception.ParsingException;
-import ua.timonov.web.project.exception.ServiceException;
+import ua.timonov.web.project.exception.AppException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ActionInvoker {
+public class ActionInvoker {
 
     private static final ActionInvoker instance = new ActionInvoker();
 
@@ -76,14 +83,16 @@ public final class ActionInvoker {
         return instance;
     }
 
-    public String invoke(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParsingException, ServiceException {
+    public String invoke(HttpServletRequest request, HttpServletResponse response) {
         String actionName = request.getParameter("action");
         Action action = actionMap.get(actionName);
         if (action == null) {
             action = new DefaultAction();
         }
-        return action.execute(request, response);
+        try {
+            return action.execute(request, response);
+        } catch (AppException e) {
+            return action.handleError(request, e);
+        }
     }
-
 }

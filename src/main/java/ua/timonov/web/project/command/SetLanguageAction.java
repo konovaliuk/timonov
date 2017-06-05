@@ -8,7 +8,12 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SetLanguageAction extends Action {
+public class SetLanguageAction implements Action {
+
+    public static final String LANG = "lang";
+    public static final String EN = "en";
+    public static final String EN_US = "en_US";
+    public static final String UK_UA = "uk_UA";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
@@ -17,12 +22,12 @@ public class SetLanguageAction extends Action {
     }
 
     protected void setLocale(HttpServletRequest request) {
-        String lang = request.getParameter("lang");
-        if (lang.equals("en")) {
-            request.getSession().setAttribute("lang", "en_US");
+        String lang = request.getParameter(LANG);
+        if (lang.equals(EN)) {
+            request.getSession().setAttribute(LANG, EN_US);
             ExceptionMessages.setLocale(ExceptionMessages.ENGLISH);
         } else {
-            request.getSession().setAttribute("lang", "uk_UA");
+            request.getSession().setAttribute(LANG, UK_UA);
             ExceptionMessages.setLocale(ExceptionMessages.UKRAINIAN);
         }
     }

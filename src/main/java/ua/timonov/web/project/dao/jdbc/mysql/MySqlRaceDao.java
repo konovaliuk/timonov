@@ -35,12 +35,12 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
         return instance;
     }
 
-    @Override
+    /*@Override
     @Deprecated
     public Race findByHorseInRaceId(long horseInRaceId) {
         String sql = getQuery(FIND_BY_HORSE_IN_RACE_ID);
         return findByForeignId(horseInRaceId, "HorseInRace");
-    }
+    }*/
 
     protected Race getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");

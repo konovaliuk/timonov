@@ -23,7 +23,7 @@ public class HorseService extends DataService<Horse, HorseInRace> {
         return instance;
     }
 
-    public Horse findByHorseInRaceId(long horseInRaceId) {
+    public Horse findByHorseInRaceId(long horseInRaceId) throws ServiceException {
         Horse horse = horseDao.findByForeignId(horseInRaceId, "HorseInRace");
         if (horse == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_IN_RACE_ID + " " + horseInRaceId +
@@ -34,7 +34,7 @@ public class HorseService extends DataService<Horse, HorseInRace> {
         return horse;
     }
 
-    public void validateNumberOfWonRaces(Horse horse) {
+    public void validateNumberOfWonRaces(Horse horse) throws ServiceException {
         if (horse.getTotalRaces() < horse.getWonRaces()) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.WON_RACES_MORE_TOTAL);
             LOGGER.error(message);

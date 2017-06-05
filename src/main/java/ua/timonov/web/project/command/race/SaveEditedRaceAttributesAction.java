@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.race;
 
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
@@ -7,7 +8,9 @@ import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.parser.FactoryParser;
 import ua.timonov.web.project.parser.Parser;
-import ua.timonov.web.project.service.*;
+import ua.timonov.web.project.service.LocationService;
+import ua.timonov.web.project.service.RaceService;
+import ua.timonov.web.project.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,19 +25,23 @@ public class SaveEditedRaceAttributesAction extends ManageRaceAction {
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private LocationService locationService = serviceFactory.createLocationService();
+    private Race race;
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response)
-            throws ParsingException, ServiceException {
-        Race race = createRaceFromRequest(request);
-        try {
-            raceService.save(race);
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
-        return prepareEditRacePage(request, race);
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
+        race = createRaceFromRequest(request);
+
+        raceService.save(race);
+        request.setAttribute("messageSuccess", true);
+
+        return prepareManageRacePage(request, race);
+    }
+
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        return prepareManageRacePage(request, race);
     }
 
     private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceException {

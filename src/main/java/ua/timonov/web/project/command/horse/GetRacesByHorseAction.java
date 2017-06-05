@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetRacesByHorseAction extends Action {
+public class GetRacesByHorseAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseService horseService = serviceFactory.createHorseService();
@@ -26,12 +26,12 @@ public class GetRacesByHorseAction extends Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long horseId = Long.valueOf(request.getParameter("horseId"));
+        Long horseId = Long.valueOf(request.getParameter("horseId"));
         Horse horse = horseService.findById(horseId);
         return prepareEditHorsePage(request, horse);
     }
 
-    private String prepareEditHorsePage(HttpServletRequest request, Horse horse) {
+    private String prepareEditHorsePage(HttpServletRequest request, Horse horse) throws ServiceException {
         List<HorseInRace> listHorsesInRace = horseInRaceService.findListByHorseId(horse.getId());
         List<Race> races = new ArrayList<>();
         for (HorseInRace horseInRace : listHorsesInRace) {

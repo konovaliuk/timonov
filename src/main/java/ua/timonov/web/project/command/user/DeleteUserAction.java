@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.user;
 
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.user.User;
@@ -29,25 +30,22 @@ public class DeleteUserAction extends GetUsersAction {
         return prepareUsersPage(request);
     }
 
-    private void deleteClient(HttpServletRequest request, User user) {
-        try {
-            long userAccountId = user.getAccount().getId();
-            userService.delete(user.getId());
-            userAccountService.delete(userAccountId);
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
+        return prepareUsersPage(request);
     }
 
-    private void deleteUser(HttpServletRequest request, User user) {
-        try {
-            userService.delete(user.getId());
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+    private void deleteClient(HttpServletRequest request, User user) throws ServiceException {
+        Long userAccountId = user.getAccount().getId();
+        userService.delete(user.getId());
+        userAccountService.delete(userAccountId);
+        request.setAttribute("messageSuccess", true);
+    }
+
+    private void deleteUser(HttpServletRequest request, User user) throws ServiceException {
+        userService.delete(user.getId());
+        request.setAttribute("messageSuccess", true);
     }
 }

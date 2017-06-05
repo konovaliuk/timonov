@@ -39,7 +39,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return instance;
     }
 
-    public Race findByHorseInRaceId(long horseInRaceId) {
+    public Race findByHorseInRaceId(long horseInRaceId) throws ServiceException {
         Race race = raceDao.findByForeignId(horseInRaceId, "HorseInRace");
         if (race == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_IN_RACE_ID + " " + horseInRaceId +
@@ -60,7 +60,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         super.delete(id);
     }
 
-    public void setCancelStatus(Race race) {
+    public void setCancelStatus(Race race) throws ServiceException {
         if (race.getRaceStatus().ordinal() < RaceStatus.FINISHED.ordinal()) {
             race.setRaceStatus(RaceStatus.CANCELLED);
             raceDao.save(race);
@@ -76,7 +76,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
-    public void setNextStatusIfPossible(Race race) {
+    public void setNextStatusIfPossible(Race race) throws ServiceException {
         RaceStatus raceStatus = race.getRaceStatus();
         switch (raceStatus) {
             case BEING_FORMED:
@@ -102,7 +102,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
-    private void checkIfRaceReadyToBeOpen(Race race) {
+    private void checkIfRaceReadyToBeOpen(Race race) throws ServiceException {
         if (race.getHorsesInRace().size() <= 1) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_SHOULD_BE_TWO_HORSES);
             LOGGER.warn(message);
@@ -117,13 +117,13 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
-    private void setNextStatus(Race race) {
+    private void setNextStatus(Race race) throws ServiceException {
         RaceStatus currentStatus = race.getRaceStatus();
         race.setRaceStatus(currentStatus.nextPossibleStatus());
         super.save(race);
     }
 
-    private void checkIfPlacesAreSet(Race race) {
+    private void checkIfPlacesAreSet(Race race) throws ServiceException {
         List<HorseInRace> listOfHorsesInRace = horseInRaceDao.findListByRaceId(race.getId());
         if (!allPlacesAreSet(listOfHorsesInRace)) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_PLACES_ERROR);
@@ -145,7 +145,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return horseInRaceDao.findHorseInRaceWithoutOdds(race.getId());
     }
 
-    private void payWins(Race race) {
+    private void payWins(Race race) throws ServiceException {
         Money racePaidSum = new Money(BigDecimal.ZERO);
         List<Bet> wonBets = findWonBetsByRaceId(race.getId());
         for (Bet wonBet : wonBets) {
@@ -155,7 +155,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         increaseRacePaidSum(race, racePaidSum);
     }
 
-    private void increaseRacePaidSum(Race race, Money paidSum) {
+    private void increaseRacePaidSum(Race race, Money paidSum) throws ServiceException {
         Money newPaidSum = race.getPaidSum().add(paidSum);
         race.setPaidSum(newPaidSum);
         save(race);
@@ -203,7 +203,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return false;
     }
 
-    public void saveInputtedPlaces(List<HorseInRace> listOfHorsesInRace, List<Integer> inputtedPlaces) {
+    public void saveInputtedPlaces(List<HorseInRace> listOfHorsesInRace, List<Integer> inputtedPlaces) throws ServiceException {
         int wrongPlace = findWrongInputtedPlace(new ArrayList<>(inputtedPlaces));
         if (wrongPlace == FINISH_PLACES_SET_CORRECTLY) {
             for (int i = 0; i < listOfHorsesInRace.size(); i++) {
@@ -212,8 +212,9 @@ public class RaceService extends DataService<Race, HorseInRace> {
                 horseInRaceDao.save(horseInRace);
             }
         } else {
-            LOGGER.error("Error while setting finish place: " + wrongPlace);
-            throw new ServiceException("Error while setting finish place: " + wrongPlace);
+            String message = ExceptionMessages.getMessage(ExceptionMessages.ERROR_SETTING_PLACES) + " " + wrongPlace;
+            LOGGER.error(message);
+            throw new ServiceException(message);
         }
     }
 
@@ -231,13 +232,13 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return FINISH_PLACES_SET_CORRECTLY;
     }
 
-    public void increaseBetSum(Race race, Money addedSum) {
+    public void increaseBetSum(Race race, Money addedSum) throws ServiceException {
         Money newBetRaceSum = race.getBetSum().add(addedSum);
         race.setBetSum(newBetRaceSum);
         save(race);
     }
 
-    public void decreaseBetSum(Race race, Money subtrahendSum) {
+    public void decreaseBetSum(Race race, Money subtrahendSum) throws ServiceException {
         Money newBetRaceSum = race.getBetSum().subtract(subtrahendSum);
         race.setBetSum(newBetRaceSum);
         save(race);

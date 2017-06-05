@@ -1,7 +1,6 @@
 package ua.timonov.web.project.taglib;
 
 import org.apache.log4j.Logger;
-import ua.timonov.web.project.exception.AppException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -24,7 +23,7 @@ public class GreetingTag extends TagSupport {
         } catch (Exception e) {
             String message = GREETING_TAG_ERROR;
             LOGGER.error(message);
-            throw new AppException(message);
+            throw new JspException(message);
         }
         return SKIP_BODY;
     }

@@ -1,6 +1,6 @@
 package ua.timonov.web.project.command.horse;
 
-import ua.timonov.web.project.command.horse.GetHorsesAction;
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.service.HorseService;
@@ -16,14 +16,18 @@ public class DeleteHorseAction extends GetHorsesAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long horseId = Long.valueOf(request.getParameter("horseId"));
-        try {
-            horseService.delete(horseId);
-            request.setAttribute("messageSuccess", true);
-        } catch (ServiceException e) {
-            request.setAttribute("messageError", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-        }
+        Long horseId = Long.valueOf(request.getParameter("horseId"));
+
+        horseService.delete(horseId);
+        request.setAttribute("messageSuccess", true);
+
+        return prepareRacesPage(request);
+    }
+
+    @Override
+    public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        request.setAttribute("messageError", e.getMessage());
+        request.setAttribute("errorDetails", e.getCause());
         return prepareRacesPage(request);
     }
 }

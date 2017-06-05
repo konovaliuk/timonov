@@ -29,7 +29,7 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
     }
 
     @Override
-    public HorseInRace findById(long id) {
+    public HorseInRace findById(long id) throws ServiceException {
         HorseInRace horseInRace = super.findById(id);
         List<Odds> oddsByHorseInRace = oddsDao.findListByHorseInRace(horseInRace.getId());
         if (oddsByHorseInRace == null) {
@@ -69,7 +69,7 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         return horsesInRace;
     }
 
-    public List<HorseInRace> findBetHorsesInRace(List<Bet> wonBets) {
+    public List<HorseInRace> findBetHorsesInRace(List<Bet> wonBets) throws ServiceException {
         List<HorseInRace> listBetHorses = new ArrayList<>();
         for (Bet wonBet : wonBets) {
             long horseInRaceId = wonBet.getOdds().getHorseInRaceId();
