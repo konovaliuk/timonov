@@ -7,28 +7,22 @@
 <div>
     <div class="container">
         <header>
+            <div class="text-left">
+                <h5>
+                    <fmt:message key="app.language" bundle="${bundle}"/> ${lang} &nbsp;
+                    <a href="races?action=setLangIndex&lang=en">EN</a>&nbsp;
+                    <a href="races?action=setLangIndex&lang=ua">UA</a>
+                </h5>
+            </div>
             <div class="container">
-                <h3>World Horse Racing tour</h3>
-                <h4>Sign up page</h4>
+                <h3><fmt:message key="app.appName" bundle="${bundle}"/></h3>
+                <h4><fmt:message key="signup.pageName" bundle="${bundle}"/></h4>
             </div>
         </header>
 
         <article>
             <%@include file="/WEB-INF/jsp/reusable/statusMessage.jspf"%>
-            <h3>Horse Racing at William Hill</h3>
-            <p>For the last word in horse racing, look no further
-                than William Hill - the Home of Betting. Covering
-                all meetings in the UK, Ireland and a wide
-                selection of global horse races, we aim to provide
-                you with the best online betting options & odds.
-                Find markets for Cheltenham, Ascot, the Grand
-                National and more. Watch live races on your PC,
-                smartphone or tablet and get up to the minute odds
-                and updates. Join us and discover why William Hill
-                should be your only bookmaker for horse racing
-                betting.</p>
-
-            <h4>Login:</h4>
+            <h4><fmt:message key="signup.pleaseInputData" bundle="${bundle}"/></h4>
             <form class="form-horizontal" action="races" method="POST">
                 <div>
                     <input class="form-control" name="action" value="signUp" type="hidden"/>
@@ -36,44 +30,47 @@
 
                 <div class="form-group">
                     <div class="col-sm-3">
-                        <label class="control-label" for="login">Enter your name:</label>
+                        <label class="control-label" for="login"><fmt:message key="signup.name" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="name" name="name" placeholder="name"
+                        <input class="form-control" id="name" name="name" placeholder="<fmt:message key="login.name" bundle="${bundle}"/>"
                                value="${user.name}" required/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-3">
-                        <label class="control-label" for="login">Enter your login:</label>
+                        <label class="control-label" for="login"><fmt:message key="signup.login" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="login" name="login" placeholder="login"
+                        <input class="form-control" id="login" name="login"
+                               placeholder="<fmt:message key="login.login" bundle="${bundle}"/>"
                                value="${user.login}" required/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-3">
-                        <label class="control-label" for="password">Enter your password:</label>
+                        <label class="control-label" for="password"><fmt:message key="signup.password" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-3">
-                        <input class="form-control" id="password" name="password" placeholder="password"
+                        <input class="form-control" id="password" name="password"
+                               placeholder="<fmt:message key="login.password" bundle="${bundle}"/>"
                                type="password" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-3">
-                        <label class="control-label" for="passwordConfirm">Confirm your password:</label>
+                        <label class="control-label" for="passwordConfirm"><fmt:message key="signup.password" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-3">
                         <input class="form-control" id="passwordConfirm" name="passwordConfirm"
-                               placeholder="confirm password" type="password" required>
+                               placeholder="<fmt:message key="login.password" bundle="${bundle}"/>" type="password" required>
                     </div>
                 </div>
 
                 <div class="col-sm-2">
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-floppy-save"></span> Sign up</button>
+                        <span class="glyphicon glyphicon-floppy-save">
+                        </span> <fmt:message key="login.signUp" bundle="${bundle}"/></button>
                 </div>
             </form>
 
@@ -83,7 +80,8 @@
                 </div>
                 <div class="col-sm-2">
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-triangle-left"></span> Return to sign in</button>
+                        <span class="glyphicon glyphicon-triangle-left">
+                        </span> <fmt:message key="signup.returnToSignIn" bundle="${bundle}"/></button>
                 </div>
             </form>
         </article>

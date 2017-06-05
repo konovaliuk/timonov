@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
-public class ChangeRaceStatus extends EditRaceAction {
+public class ChangeRaceStatus extends ManageRaceAction {
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();

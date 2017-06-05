@@ -6,12 +6,18 @@ import ua.timonov.web.project.exception.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DefaultAction extends Action {
+public class SetLanguageAction extends Action {
 
-    public static final String INDEX_PAGE = "index";
+    public static final String MAIN_PAGE = "main";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        return CONFIG.getString(INDEX_PAGE);
+        String lang = request.getParameter("lang");
+        if (lang.equals("en")) {
+            request.getSession().setAttribute("lang", "en_US");
+        } else {
+            request.getSession().setAttribute("lang", "uk_UA");
+        }
+        return CONFIG.getString(MAIN_PAGE);
     }
 }

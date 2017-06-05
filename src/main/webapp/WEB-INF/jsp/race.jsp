@@ -13,7 +13,9 @@
         <header>
             <div class="container">
                 <%@include file="reusable/greeting.jspf"%>
-                <h3>Race results</h3>
+                <h3><fmt:message key="race.raceAt" bundle="${bundle}"/> ${race.location.name},
+                    ${race.location.country.name}<fmt:message key="race.on" bundle="${bundle}"/> ${race.date}
+                </h3>
             </div>
         </header>
 
@@ -23,17 +25,15 @@
 
         <article>
             <div>
-                <h4>Race info</h4>
+                <h4><fmt:message key="race.info" bundle="${bundle}"/></h4>
                 <table class="table table-striped">
                     <tr>
-                        <th>ID</th>
-                        <th>Location</th>
-                        <th>Country</th>
-                        <th>Date</th>
-                        <th>Status</th>
+                        <th><fmt:message key="app.location" bundle="${bundle}"/></th>
+                        <th><fmt:message key="app.country" bundle="${bundle}"/></th>
+                        <th><fmt:message key="app.date" bundle="${bundle}"/></th>
+                        <th><fmt:message key="app.status" bundle="${bundle}"/></th>
                     </tr>
                     <tr>
-                        <td>${race.id}</td>
                         <td>${race.location.name}</td>
                         <td>${race.location.country.name}</td>
                         <td>${race.date}</td>
@@ -41,41 +41,48 @@
                     </tr>
                 </table>
 
-                <h4>Horses in race</h4>
+                <h4><fmt:message key="app.horsesInRace" bundle="${bundle}"/></h4>
                 <table class="table table-striped">
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Year of birth</th>
-                        <th>Total races</th>
-                        <th>Won races</th>
-                        <th>Best Bet</th>
-                        <th>Odds</th>
-                        <th>More bets</th>
-                        <th>Set odds</th>
-                        <th>Place at finish</th>
+                        <th><fmt:message key="horse.name" bundle="${bundle}"/></th>
+                        <th><fmt:message key="horse.yearOfBirth" bundle="${bundle}"/></th>
+                        <th><fmt:message key="horse.totalRaces" bundle="${bundle}"/></th>
+                        <th><fmt:message key="horse.wonRaces" bundle="${bundle}"/></th>
+                        <th><fmt:message key="horse.bestBet" bundle="${bundle}"/></th>
+                        <c:if test="${userRole == roleClient}">
+                            <th><fmt:message key="horse.makeBet" bundle="${bundle}"/></th>
+                        </c:if>
+                        <c:if test="${userRole == roleBookie}">
+                            <th><fmt:message key="horse.setBetRates" bundle="${bundle}"/></th>
+                        </c:if>
+                        <th><fmt:message key="horse.placeAtFinish" bundle="${bundle}"/></th>
                     </tr>
                     <c:forEach var="horseInRace" items="${horsesInRace}">
                         <tr>
                             <c:set var="oddsValues" value="${horseInRace.oddsValues}"/>
-
-                            <td>${horseInRace.horse.id}</td>
-                            <td><a href="races?action=horse&horseId=${horse.id}">${horseInRace.horse.name}</a></td>
+                            <td>${horseInRace.horse.name}</td>
                             <td>${horseInRace.horse.yearOfBirth}</td>
                             <td>${horseInRace.horse.totalRaces}</td>
                             <td>${horseInRace.horse.wonRaces}</td>
                             <c:choose>
                                 <c:when test="${oddsValues.size() > 0}">
-                                    <td>${oddsValues[0].betType.toString()}</td>
-                                    <td align="center">${oddsValues[0].total} / ${oddsValues[0].chances}</td>
+                                    <td>${oddsValues[0].betType.toString()}:
+                                        ${oddsValues[0].total} / ${oddsValues[0].chances}</td>
                                 </c:when>
                                 <c:otherwise>
                                     <td></td>
-                                    <td></td>
                                 </c:otherwise>
                             </c:choose>
-                            <td><a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">Make bet</a></td>
-                            <td><a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">Set odds</a></td>
+                            <c:if test="${userRole == roleClient}">
+                                <td><a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">
+                                    <fmt:message key="horse.makeBet" bundle="${bundle}"/></a>
+                                </td>
+                            </c:if>
+                            <c:if test="${userRole == roleBookie}">
+                                <td><a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">
+                                    <fmt:message key="horse.setBetRates" bundle="${bundle}"/></a>
+                                </td>
+                            </c:if>
                             <td><c:if test = "${horseInRace.finishPlace > 0}">${horseInRace.finishPlace}</c:if></td>
                         </tr>
                     </c:forEach>
@@ -86,7 +93,8 @@
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-left"></span> Return to races</button>
+                            <span class="glyphicon glyphicon-triangle-left">
+                            </span> <fmt:message key="app.returnToRaces" bundle="${bundle}"/></button>
                     </div>
                 </form>
             </div>

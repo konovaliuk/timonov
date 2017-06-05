@@ -24,14 +24,17 @@ public final class ActionInvoker {
     private Map<String, Action> actionMap = new HashMap<>();
 
     private ActionInvoker() {
-        actionMap.put("home", new DefaultAction());
+        actionMap.put("main", new GetMainPageAction());
+        actionMap.put("error", new ErrorAction());
+        actionMap.put("setLang", new SetLanguageAction());
+        actionMap.put("setLangIndex", new SetLanguageIndexAction());
+
         actionMap.put("signIn", new SignInAction());
         actionMap.put("getSignUpForm", new GetSignUpAction());
         actionMap.put("signUp", new SignUpAction());
         actionMap.put("logout", new LogoutAction());
 
         actionMap.put("horses", new GetHorsesAction());
-        actionMap.put("horse", new GetHorseAction());
         actionMap.put("horseEdit", new EditHorseAction());
         actionMap.put("horseDelete", new DeleteHorseAction());
         actionMap.put("horseAdd", new AddHorseAction());
@@ -48,7 +51,7 @@ public final class ActionInvoker {
         actionMap.put("races", new GetRacesAction());
         actionMap.put("race", new GetRaceAction());
         actionMap.put("raceAdd", new SaveRaceAction());
-        actionMap.put("raceEdit", new EditRaceAction());
+        actionMap.put("raceManage", new ManageRaceAction());
         actionMap.put("wonBets", new GetWonBets());
         actionMap.put("raceDelete", new DeleteRaceAction());
 
@@ -66,7 +69,8 @@ public final class ActionInvoker {
         actionMap.put("oddsAdd", new AddOddsAction());
         actionMap.put("oddsEdit", new EditOddsAction());
         actionMap.put("oddsDelete", new DeleteOddsAction());
-        actionMap.put("error", new ErrorAction());
+
+        actionMap.put("userBets", new GetUserBetsAction());
     }
 
     public static ActionInvoker getInstance() {

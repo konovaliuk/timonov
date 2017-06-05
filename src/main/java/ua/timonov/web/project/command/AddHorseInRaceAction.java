@@ -1,6 +1,6 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.command.race.EditRaceAction;
+import ua.timonov.web.project.command.race.ManageRaceAction;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.horse.Horse;
@@ -11,7 +11,7 @@ import ua.timonov.web.project.service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddHorseInRaceAction extends EditRaceAction {
+public class AddHorseInRaceAction extends ManageRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 

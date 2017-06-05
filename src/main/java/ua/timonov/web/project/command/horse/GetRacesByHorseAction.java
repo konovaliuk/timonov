@@ -29,7 +29,6 @@ public class GetRacesByHorseAction extends Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
         long horseId = Long.valueOf(request.getParameter("horseId"));
         Horse horse = horseService.findById(horseId);
-
         return prepareEditHorsePage(request, horse);
     }
 

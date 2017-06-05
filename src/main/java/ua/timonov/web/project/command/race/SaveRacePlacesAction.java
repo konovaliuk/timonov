@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveRacePlacesAction extends EditRaceAction {
+public class SaveRacePlacesAction extends ManageRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 

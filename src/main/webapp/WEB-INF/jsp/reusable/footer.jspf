@@ -8,7 +8,7 @@
                 </a>
             </h4>
             <div>
-                <p class="text-small text-gray">Footer about
+                <p class="text-small text-gray">About
                     <%--<fmt:message key="footer.about" bundle="${bundle}"/>--%>
                 </p>
             </div>

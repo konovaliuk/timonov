@@ -9,9 +9,9 @@ import ua.timonov.web.project.service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class EditRaceAction extends Action {
+public class ManageRaceAction extends Action {
 
-    public static final String RACE_EDIT = "raceEdit";
+    public static final String RACE_EDIT = "raceManage";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();

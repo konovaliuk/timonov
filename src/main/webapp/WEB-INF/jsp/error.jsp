@@ -9,7 +9,7 @@
         <header>
             <div class="container">
                 <%@include file="reusable/greeting.jspf"%>
-                <h2>Error page</h2>
+                <h2><fmt:message key="error.pageName" bundle="${bundle}"/></h2>
             </div>
         </header>
 
@@ -17,18 +17,8 @@
 
         <article>
             <%@include file="reusable/statusMessage.jspf"%>
-            <h3>Horse Racing at William Hill</h3>
-            <p>For the last word in horse racing, look no further
-                than William Hill - the Home of Betting. Covering
-                all meetings in the UK, Ireland and a wide
-                selection of global horse races, we aim to provide
-                you with the best online betting options & odds.
-                Find markets for Cheltenham, Ascot, the Grand
-                National and more. Watch live races on your PC,
-                smartphone or tablet and get up to the minute odds
-                and updates. Join us and discover why William Hill
-                should be your only bookmaker for horse racing
-                betting.</p>
+            <h3><fmt:message key="login.descriptionHeader" bundle="${bundle}"/></h3>
+            <p><fmt:message key="login.description" bundle="${bundle}"/></p>
         </article>
 
         <footer><%@include file="reusable/footer.jspf"%></footer>

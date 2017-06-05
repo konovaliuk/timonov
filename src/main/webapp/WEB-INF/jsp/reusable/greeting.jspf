@@ -1,6 +1,12 @@
 <%@ taglib prefix="custom" uri="/WEB-INF/custom.tld"%>
 <c:set var="userName" value="${user.name}"/>
 <div class="text-left">
-    <h5><custom:greeting name="${userName}"/> <a href="races?action=logout">Logout</a></h5>
-    <h5><a href="races?action=changeLang?lang=en">EN</a> <a href="races?action=changeLang?lang=ua">UA</a></h5>
+    <h5><fmt:message key="app.welcome" bundle="${bundle}"/>, <custom:greeting userName="${userName}"/>!</h5>
+    <h5><fmt:message key="app.youveLogged" bundle="${bundle}"/> ${user.userType.toString()}</h5>
+    <h5><a href="races?action=logout"><fmt:message key="app.logout" bundle="${bundle}"/></a>&nbsp;
+        <fmt:message key="app.language" bundle="${bundle}"/> ${lang} &nbsp;
+        <a href="races?action=setLang&lang=en">EN</a>&nbsp;
+        <a href="races?action=setLang&lang=ua">UA</a>
+    </h5>
+
 </div>

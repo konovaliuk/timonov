@@ -1,14 +1,15 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/races">Horse Racing</a>
-        </div>
         <ul class="nav navbar-nav">
-            <li><a href="races?action=home">Home</a></li>
-            <li><a href="races?action=races">Races</a></li>
-            <li><a href="races?action=horses">Horses</a></li>
-            <li><a href="races?action=users">Users</a></li>
-            <li><a href="races?action=bets">Bets</a></li>
+            <li><a href="races?action=main"><fmt:message key="nav.home" bundle="${bundle}"/></a></li>
+            <li><a href="races?action=races"><fmt:message key="nav.races" bundle="${bundle}"/></a></li>
+            <li><a href="races?action=horses"><fmt:message key="nav.horses" bundle="${bundle}"/></a></li>
+            <c:if test="${userRole == roleClient}">
+                <li><a href="races?action=userBets&userId=${user.id}"><fmt:message key="nav.myBets" bundle="${bundle}"/></a></li>
+            </c:if>
+            <c:if test="${userRole == roleAdmin}">
+                <li><a href="races?action=users"><fmt:message key="nav.users" bundle="${bundle}"/></a></li>
+            </c:if>
         </ul>
     </div>
 </nav>

@@ -9,6 +9,8 @@ import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.model.user.Money;
 
+import java.util.List;
+
 public class BetService extends DataService<Bet, Bet> {
 
     private static final Logger LOGGER = Logger.getLogger(BetService.class);
@@ -54,5 +56,14 @@ public class BetService extends DataService<Bet, Bet> {
         bet.setBetStatus(BetStatus.PAID);
         save(bet);
         return paidSum;
+    }
+
+    public List<Bet> findListByUser(Long userId) {
+        List<Bet> userBets = betDao.findListByUserId(userId);
+        if (userBets == null) {
+            LOGGER.error("Database error while searching in table " + betDao.getName());
+            throw new ServiceException("Database error while searching in table " + betDao.getName());
+        }
+        return userBets;
     }
 }

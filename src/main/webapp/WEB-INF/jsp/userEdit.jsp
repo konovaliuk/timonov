@@ -12,7 +12,7 @@
     <header>
         <div class="container">
             <%@include file="reusable/greeting.jspf"%>
-            <h3>Edit user</h3>
+            <h3><fmt:message key="user.edit" bundle="${bundle}"/></h3>
         </div>
     </header>
 
@@ -21,7 +21,6 @@
     <article>
         <div>
             <%@include file="reusable/statusMessage.jspf"%>
-            <h4>Edit existing user:</h4>
             <form class="form-horizontal" action="races" method="POST">
                 <div>
                     <input class="form-control" name="action" value="userSaveEdited" type="hidden"/>
@@ -31,15 +30,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-2">
-                        <label class="control-label" for="id">ID:</label>
-                    </div>
-                    <div class="col-sm-3">
-                        <input class="form-control" id="id" name="id" value="${user.id}" readonly />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-2">
-                        <label class="control-label" for="name">Name:</label>
+                        <label class="control-label" for="name"><fmt:message key="user.name" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
                         <input class="form-control" id="name" name="name" value="${user.name}" type="text" required>
@@ -47,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
-                        <label class="control-label" for="login">Login:</label>
+                        <label class="control-label" for="login"><fmt:message key="login.login" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
                         <input class="form-control" id="login" name="login" value="${user.login}" type="text" required>
@@ -55,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
-                        <label class="control-label" for="password">Password:</label>
+                        <label class="control-label" for="password"><fmt:message key="login.password" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
                         <input class="form-control" id="password" name="password" value="${user.password}" type="text" required>
@@ -63,7 +54,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
-                        <label class="control-label" for="role">Role:</label>
+                        <label class="control-label" for="role"><fmt:message key="user.role" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
                         <select class="form-control" id="role" name="userType">
@@ -76,14 +67,10 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <%--<div class="col-sm-3">
-                        <input class="form-control" id="role" name="userType" value="${user.userType.toString()}"
-                               readonly type="text">
-                    </div>--%>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
-                        <label class="control-label" for="balance">Balance:</label>
+                        <label class="control-label" for="balance"><fmt:message key="user.balance" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
                         <input class="form-control" id="balance" name="balance" value="${user.account.balance.value}"
@@ -92,7 +79,8 @@
                 </div>
                 <div class="col-sm-2">
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Save edited user</button>
+                        <span class="glyphicon glyphicon-floppy-disk">
+                        </span> <fmt:message key="user.saveEdited" bundle="${bundle}"/></button>
                 </div>
             </form>
 
@@ -102,7 +90,8 @@
                 </div>
                 <div class="col-sm-2">
                     <button class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-triangle-left"></span> Return to users</button>
+                        <span class="glyphicon glyphicon-triangle-left">
+                        </span> <fmt:message key="app.returnToUsers" bundle="${bundle}"/></button>
                 </div>
             </form>
         </div>

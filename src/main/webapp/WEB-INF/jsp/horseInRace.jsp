@@ -13,7 +13,8 @@
         <header>
             <div class="container">
                 <%@include file="reusable/greeting.jspf"%>
-                <h3>Make bet on horse ${horseInRace.horse.name}, race at ${race.location.name},
+                <h3><fmt:message key="horse.makeBetOn" bundle="${bundle}"/> ${horseInRace.horse.name},
+                    <fmt:message key="horse.raceAt" bundle="${bundle}"/> ${race.location.name},
                 ${race.location.country.name}</h3>
             </div>
         </header>
@@ -26,14 +27,14 @@
             <div>
                 <%@include file="reusable/raceAndHorse.jspf"%>
                 <br>
-                <h3>Available bets</h3>
+                <h3><fmt:message key="race.availableBets" bundle="${bundle}"/></h3>
                 <table class="table table-striped">
                     <tr>
                         <th></th>
-                        <th>Bet type</th>
-                        <th>Odds</th>
-                        <th>Input bet sum</th>
-                        <th>Push to bet</th>
+                        <th><fmt:message key="bet.betType" bundle="${bundle}"/></th>
+                        <th><fmt:message key="bet.rates" bundle="${bundle}"/></th>
+                        <th><fmt:message key="bet.inputBetSum" bundle="${bundle}"/></th>
+                        <th><fmt:message key="bet.pushToBet" bundle="${bundle}"/></th>
                     </tr>
                     <c:forEach var="odds" items="${horseInRace.oddsValues}">
                         <tr>
@@ -42,20 +43,20 @@
                                     <td>
                                         <div>
                                             <input class="form-control" name="action" type="hidden" value="makeBet"/>
-                                            <%--<input class="form-control" name="horse_in_race" type="hidden" value="${horseInRace.id}"/>--%>
                                             <input class="form-control" name="oddsId" type="hidden" value="${odds.id}"/>
-                                            <%--<input class="form-control" name="userId" type="hidden" value="${user.id}"/>--%>
                                         </div>
                                     </td>
                                     <td>${odds.betType.toString()}</td>
                                     <td align="center">${odds.total} / ${odds.chances}</td>
                                     <td>
                                         <div>
-                                            <input class="form-control" name="sum" type="number" min="0.01" step="0.01"/>
+                                            <input class="form-control" name="sum" type="number" min="0.01" step="0.01"
+                                            required/>
                                         </div>
                                     </td>
                                     <td><button class="btn btn-primary" type="submit">
-                                            <span class="glyphicon glyphicon-floppy-disk"></span> Make bet!</button>
+                                            <span class="glyphicon glyphicon-floppy-disk">
+                                            </span> <fmt:message key="bet.pushToBet" bundle="${bundle}"/></button>
                                     </td>
                                 </div>
                             </form>
@@ -69,7 +70,8 @@
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-left"></span> Return to race</button>
+                            <span class="glyphicon glyphicon-triangle-left">
+                            </span> <fmt:message key="app.returnToRace" bundle="${bundle}"/></button>
                     </div>
                 </form>
 

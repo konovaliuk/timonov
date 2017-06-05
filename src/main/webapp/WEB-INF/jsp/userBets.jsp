@@ -13,8 +13,7 @@
         <header>
             <%@include file="reusable/greeting.jspf"%>
             <div class="container">
-                <h3><fmt:message key="race.wonBetsPage" bundle="${bundle}"/> ${race.location.name}, ${race.location.country.name}
-                    <fmt:message key="race.on" bundle="${bundle}"/> ${race.date}</h3>
+                <h3><fmt:message key="user.betsPageName" bundle="${bundle}"/>Your account data and bets</h3>
             </div>
         </header>
 
@@ -26,47 +25,43 @@
             <div class="container">
                 <%@include file="reusable/statusMessage.jspf"%>
 
-                <h4><fmt:message key="race.info" bundle="${bundle}"/></h4>
+                <h4></h4>
                 <table class="table table-striped">
                     <tr>
-                        <th><fmt:message key="app.location" bundle="${bundle}"/></th>
-                        <th><fmt:message key="app.country" bundle="${bundle}"/></th>
-                        <th><fmt:message key="app.date" bundle="${bundle}"/></th>
-                        <th><fmt:message key="app.status" bundle="${bundle}"/></th>
-                        <th><fmt:message key="bet.betSum" bundle="${bundle}"/></th>
-                        <th><fmt:message key="bet.paidSum" bundle="${bundle}"/></th>
+                        <th><fmt:message key="user.name" bundle="${bundle}"/></th>
+                        <th><fmt:message key="login.login" bundle="${bundle}"/></th>
+                        <th><fmt:message key="user.balance" bundle="${bundle}"/></th>
                     </tr>
                     <tr>
-                        <td>${race.location.name}</td>
-                        <td>${race.location.country.name}</td>
-                        <td>${race.date}</td>
-                        <td>${race.raceStatus.toString()}</td>
-                        <td>${race.betSum.toString()}</td>
-                        <td>${race.paidSum.toString()}</td>
+                        <td>${user.name}</td>
+                        <td>${user.login}</td>
+                        <td>${user.account.balance.toString()}</td>
                     </tr>
                 </table>
 
-                <h4><fmt:message key="race.wonBets" bundle="${bundle}"/></h4>
+                <h4><fmt:message key="user.yourBets" bundle="${bundle}"/></h4>
                 <table class="table table-striped table-condensed">
                     <tr>
-                        <th><fmt:message key="bet.clientName" bundle="${bundle}"/></th>
-                        <th><fmt:message key="bet.clientLogin" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.betType" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.betRate" bundle="${bundle}"/></th>
+                        <th><fmt:message key="app.status" bundle="${bundle}"/></th>
                         <th><fmt:message key="horse.name" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.betSum" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.wonSum" bundle="${bundle}"/></th>
                     </tr>
-                    <c:forEach var="bet" items="${wonBets}" varStatus="loop">
+                    <c:forEach var="bet" items="${userBets}" varStatus="loop">
                         <tr>
-                            <td>${bet.user.name}</td>
-                            <td>${bet.user.login}</td>
                             <td>${bet.odds.betType.toString()}</td>
                             <td align="center">${bet.odds.getValue()}</td>
+                            <td>${bet.betStatus.toString()}</td>
                             <td>${listBetHorses.get(loop.index).horse.name}</td>
                             <td>${bet.sum.toString()}</td>
-                            <%--TODO with custom tag--%>
-                            <td>${bet.sum.toString()} * ${bet.odds.oddsValue}</td>
+                                <%--TODO with custom tag--%>
+                            <td>
+                                <c:if test="${bet.betStatus == betStatusPaid}">
+                                    ${bet.sum.toString()} * ${bet.odds.oddsValue}
+                                </c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -82,17 +77,6 @@
                     </div>
                 </form>
 
-                <form action="races" method="POST">
-                    <div>
-                        <input class="form-control" name="action" value="raceManage" type="hidden"/>
-                        <input class="form-control" name="raceId" value="${race.id}" type="hidden"/>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-right">
-                            </span> <fmt:message key="race.manage" bundle="${bundle}"/></button>
-                    </div>
-                </form>
             </div>
         </article>
 

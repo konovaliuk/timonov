@@ -2,7 +2,8 @@
     <div class="col-md-2"></div>
     <div class="alert alert-success alert-dismissable fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Success!</strong> Operation succeed.
+        <strong><fmt:message key="message.success" bundle="${bundle}"/>
+        </strong> <fmt:message key="message.operationSucceed" bundle="${bundle}"/>
     </div>
 
 </c:if>
@@ -10,7 +11,7 @@
     <div class="col-md-2"></div>
     <div class="alert alert-danger alert-dismissable fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Error occurred!</strong> ${messageError}
+        <strong><fmt:message key="message.error" bundle="${bundle}"/></strong> ${messageError}
     </div>
     <div hidden>
         ${errorDetails}

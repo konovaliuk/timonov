@@ -26,6 +26,7 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     private static final Logger LOGGER = Logger.getLogger(MysqlBetDao.class);
     private static final MysqlBetDao instance = new MysqlBetDao();
     public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
+    public static final String FIND_LIST_BY_USER_ID = "findListByUserId";
 
     private MysqlBetDao() {
         super(ENTITY_NAME);
@@ -53,6 +54,12 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     public List<Bet> findListByRaceId(long raceId) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_LIST_BY_RACE_ID);
         return findListWithSql(sql, raceId);
+    }
+
+    @Override
+    public List<Bet> findListByUserId(Long userId) {
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_LIST_BY_USER_ID);
+        return findListWithSql(sql, userId);
     }
 
     protected void setEntityToParameters(Bet bet, PreparedStatement statement) throws SQLException {

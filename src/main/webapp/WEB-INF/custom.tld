@@ -13,7 +13,7 @@
         <tag-class>ua.timonov.web.project.taglib.GreetingTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <name>name</name>
+            <name>userName</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

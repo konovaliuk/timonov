@@ -8,7 +8,7 @@ import ua.timonov.web.project.service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CancelRaceAction extends EditRaceAction {
+public class CancelRaceAction extends ManageRaceAction {
 
     public static final String RACE_EDIT = "raceEdit";
 

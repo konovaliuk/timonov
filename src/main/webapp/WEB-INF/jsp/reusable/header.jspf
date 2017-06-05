@@ -3,4 +3,5 @@
     <link href='<c:url value="/resources/css/style.css"/>' rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Horse Racing</title>
+    <c:set var="userRole" value="${user.userType}"/>
 </head>

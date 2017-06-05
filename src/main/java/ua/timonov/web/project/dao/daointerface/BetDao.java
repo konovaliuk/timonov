@@ -8,4 +8,6 @@ import java.util.List;
 public interface BetDao extends Dao<Bet> {
 
     List<Bet> findListByRaceId(long raceId);
+
+    List<Bet> findListByUserId(Long userId);
 }
