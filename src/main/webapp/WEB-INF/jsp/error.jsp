@@ -4,6 +4,7 @@
 <html>
 <%@include file="reusable/header.jspf"%>
 <body>
+<%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
 <div>
     <div class="container">
         <header>
@@ -13,7 +14,9 @@
             </div>
         </header>
 
-        <%@include file="reusable/nav.jspf"%>
+        <nav class="navbar navbar-default">
+            <%@include file="reusable/nav.jspf"%>
+        </nav>
 
         <article>
             <%@include file="reusable/statusMessage.jspf"%>

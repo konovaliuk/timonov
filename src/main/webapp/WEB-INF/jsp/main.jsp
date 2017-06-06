@@ -4,19 +4,24 @@
 <html>
     <%@include file="reusable/header.jspf"%>
 <body>
+<%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
 <div>
     <div class="container">
-        <%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
         <header>
-            <%@include file="reusable/greeting.jspf"%>
             <div class="container">
-                <h3><fmt:message key="app.appName" bundle="${bundle}"/></h3>
+                <%@include file="reusable/greeting.jspf"%>
+                <div class="headers">
+                    <h3><fmt:message key="app.appName" bundle="${bundle}"/></h3>
+                </div>
             </div>
         </header>
 
-        <%@include file="reusable/nav.jspf"%>
+        <nav class="navbar navbar-default">
+            <%@include file="reusable/nav.jspf"%>
+        </nav>
 
         <article>
+            <%@include file="reusable/statusMessage.jspf"%>
             <h3><fmt:message key="login.descriptionHeader" bundle="${bundle}"/></h3>
             <p><fmt:message key="login.description" bundle="${bundle}"/></p>
         </article>

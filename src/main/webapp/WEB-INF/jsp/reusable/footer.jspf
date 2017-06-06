@@ -1,33 +1,37 @@
 <div>
     <div class="row offset-top-20">
-        <div class="col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
             <h4>
                 <a href="#">
-                    <img width="90" height="80" src='<c:url value="/resources/img/logo.png"/>' alt="">
+                    <img width="90" height="80" src='<c:url value="/resources/img/logo.png"/>' alt="logo">
                 </a>
             </h4>
         </div>
 
-        <div class="col-sm-7 col-md-7 col-lg-7">
-            <h4>Contacts
+        <div class="col-sm-8">
+            <h4>Our contacts:
             </h4>
             <div>
                 <address class="text-left">
-                    <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-sm-6">
                         <p class="text-small text-gray">
-                            <span class="text-orange glyphicon glyphicon-map-marker"></span>
-                            <span>Address
+                            <span class="glyphicon glyphicon-map-marker"></span>
+                            <span>Kyiv, Blvd Shevchenko, 325, office 77E
                             </span>
                         </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6">
                         <p class="text-small text-gray">
-                            <span class="text-orange glyphicon glyphicon-phone"></span>
+                            <span class="glyphicon glyphicon-globe"></span>
+                            <span>http://www.horseracing.ua</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-small text-gray">
+                            <span class="glyphicon glyphicon-phone"></span>
                             <span>123-456-789</span>
                         </p>
                         <p class="text-small text-gray">
-                            <span class="text-orange glyphicon glyphicon-envelope"></span>
+                            <span class="glyphicon glyphicon-envelope"></span>
                             <span>info@horseracing.ua</span>
                         </p>
                     </div>

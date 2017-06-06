@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
 <div>
     <div class="container">
         <header>
@@ -19,11 +20,12 @@
             </div>
         </header>
 
-        <nav>
+        <nav class="navbar navbar-default">
             <%@include file="reusable/nav.jspf"%>
         </nav>
 
         <article>
+            <%@include file="reusable/statusMessage.jspf"%>
             <div>
                 <h4><fmt:message key="race.info" bundle="${bundle}"/></h4>
                 <table class="table table-striped">

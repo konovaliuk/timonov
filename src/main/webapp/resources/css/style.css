@@ -10,12 +10,12 @@ header, footer {
 
 header {
     color: lightyellow;
-    background-color: cadetblue;
+    background-color: darkblue;
 }
 
 footer {
     color: darkslategray;
-    background-color: lavender;
+    background-color: #f5f4e6;
 }
 
 nav {
@@ -43,7 +43,7 @@ article {
     overflow: hidden;
 }
 
-.signblock {
+/*.signblock {
     float: right;
     display: block;
     width: 120px;
@@ -54,8 +54,28 @@ article {
 
 .text-small{
     font-size: small;
-}
+}*/
 
 .no-bottom-margin {
     margin-bottom: 0px;
+}
+
+.greeting {
+    float: left;
+    width: 25%;
+}
+
+.greeting a,
+.greeting a:visited {
+    color: gold;
+}
+
+.greeting a:hover,
+.greeting a:active {
+    color: darkkhaki;
+}
+
+.headers {
+    float: right;
+    width: 75%;
 }

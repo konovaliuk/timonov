@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
 <div class="container">
     <header>
         <div class="container">
@@ -16,7 +17,9 @@
         </div>
     </header>
 
-    <nav><%@include file="reusable/nav.jspf"%></nav>
+    <nav class="navbar navbar-default">
+        <%@include file="reusable/nav.jspf"%>
+    </nav>
 
     <article>
         <div class="container">

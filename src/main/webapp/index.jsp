@@ -4,20 +4,22 @@
 <html>
 <%@include file="/WEB-INF/jsp/reusable/header.jspf"%>
 <body>
+<%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
 <div>
     <div class="container">
-        <%@include file="/WEB-INF/jsp/reusable/i18n.jspf"%>
         <header>
-            <div class="text-left">
-                <h5>
-                    <fmt:message key="app.language" bundle="${bundle}"/> ${lang} &nbsp;
-                    <a href="races?action=setLangIndex&lang=en">EN</a>&nbsp;
-                    <a href="races?action=setLangIndex&lang=ua">UA</a>
-                </h5>
-            </div>
             <div class="container">
-                <h3><fmt:message key="app.appName" bundle="${bundle}"/></h3>
-                <h4><fmt:message key="login.pageName" bundle="${bundle}"/></h4>
+                <div class="greeting">
+                    <h5>
+                        <fmt:message key="app.language" bundle="${bundle}"/>&nbsp;
+                        <a href="races?action=setLangIndex&lang=en">EN</a>&nbsp;
+                        <a href="races?action=setLangIndex&lang=ua">UA</a>
+                    </h5>
+                </div>
+                <div class="headers">
+                    <h3><fmt:message key="app.appName" bundle="${bundle}"/></h3>
+                    <h4><fmt:message key="login.pageName" bundle="${bundle}"/></h4>
+                </div>
             </div>
         </header>
 
