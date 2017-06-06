@@ -26,6 +26,7 @@
                     <input class="form-control" name="action" value="userSaveEdited" type="hidden"/>
                     <input class="form-control" name="userId" type="hidden" value="${user.id}"/>
                     <input class="form-control" name="accountId" type="hidden" value="${user.account.id}"/>
+                    <input class="form-control" name="userType" type="hidden" value="${user.userType}"/>
                 </div>
 
                 <div class="form-group">
@@ -57,8 +58,7 @@
                         <label class="control-label" for="role"><fmt:message key="user.role" bundle="${bundle}"/>:</label>
                     </div>
                     <div class="col-sm-3">
-                        <select class="form-control" id="role" name="userType">
-                            <option disabled hidden>Choose user role:</option>
+                        <select class="form-control" id="role" name="userType" disabled>
                             <c:forEach var="userType" items="${userTypes}">
                                 <option <c:if test="${userType == user.userType}">selected
                                         </c:if>

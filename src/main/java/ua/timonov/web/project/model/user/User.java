@@ -38,6 +38,10 @@ public class User implements Entity {
         this.id = id;
     }
 
+    public User(long id, UserType userType, String login, String password, String name) {
+        this(userType, login, password, name);
+        this.id = id;
+    }
 
 
     public long getId() {

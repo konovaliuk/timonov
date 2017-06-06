@@ -76,12 +76,12 @@
                     </div>
                     <div class="form-group col-sm-2">
                         <label class="control-label" for="password"><fmt:message key="login.password" bundle="${bundle}"/>:</label>
-                        <input class="form-control" id="password" name="password" type="text"
+                        <input class="form-control" id="password" name="password" type="password"
                                placeholder="<fmt:message key="login.password" bundle="${bundle}"/>" required
                                value="${userWithInputError.password}"
                         />
                     </div>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-1">
                         <label class="control-label" for="role"><fmt:message key="user.role" bundle="${bundle}"/>:</label>
                         <select class="form-control" id="role" name="userType">
                             <option selected disabled hidden><fmt:message key="login.name" bundle="${bundle}"/></option>

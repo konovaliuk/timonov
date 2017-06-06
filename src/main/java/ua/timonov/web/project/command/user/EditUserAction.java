@@ -1,8 +1,7 @@
 package ua.timonov.web.project.command.user;
 
 import ua.timonov.web.project.command.Action;
-import ua.timonov.web.project.exception.ParsingException;
-import ua.timonov.web.project.exception.ServiceException;
+import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -18,8 +17,8 @@ public class EditUserAction implements Action {
     private UserService userService = serviceFactory.createUserService();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long userId = Long.valueOf(request.getParameter("userId"));
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
+        Long userId = Long.valueOf(request.getParameter("userId"));
         User user = userService.findById(userId);
         return prepareEditUserPage(request, user);
     }

@@ -8,6 +8,7 @@ import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.parser.FactoryParser;
+import ua.timonov.web.project.parser.Parser;
 import ua.timonov.web.project.service.*;
 import ua.timonov.web.project.util.Pages;
 
@@ -30,8 +31,7 @@ public class MakeBetAction implements Action {
         Long horseInRaceId = bet.getOdds().getHorseInRaceId();
         race = raceService.findByHorseInRaceId(horseInRaceId);
         Horse horse = horseService.findByHorseInRaceId(horseInRaceId);
-
-        betService.makeBet(bet);
+        betService.makeBet(bet, race);
         request.setAttribute("messageSuccess", true);
 
         request.setAttribute("bet", bet);
@@ -49,11 +49,11 @@ public class MakeBetAction implements Action {
     }
 
     private Bet createBetFromRequest(HttpServletRequest request) throws AppException {
-        Long userId =  FactoryParser.createIdParser().parse(request.getParameter("user"), "id");
-        Long oddsId = Long.valueOf(request.getParameter("oddsId"));
+        Parser<Long> idParser = FactoryParser.createIdParser();
+        Long oddsId = idParser.parse(request.getParameter("oddsId"), "oddsId");
         Odds odds = oddsService.findById(oddsId);
+        User user = (User) request.getSession().getAttribute("user");
         Double betSum = Double.valueOf(request.getParameter("sum"));
-        User user = userService.findById(userId);
         return new Bet.Builder(user, odds)
                 .money(betSum)
                 .build();

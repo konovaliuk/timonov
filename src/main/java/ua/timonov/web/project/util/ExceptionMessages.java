@@ -32,6 +32,7 @@ public class ExceptionMessages {
     public final static String WRONG_VALUE = "parser.wrongValue";
     public final static String IN_FIELD = "parser.inField";
     public final static String ERROR_SETTING_PLACES = "race.errorSettingPlaces";
+    public final static String BET_CANT_BE_CANCELLED = "bet.cantBeCancelled";
 
     public static final Locale ENGLISH = new Locale("en", "US");
     public static final Locale UKRAINIAN = new Locale("uk", "UA");

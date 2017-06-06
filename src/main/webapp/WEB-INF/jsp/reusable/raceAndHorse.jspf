@@ -23,7 +23,7 @@
     </tr>
     <tr>
         <c:set var="horse" value="${horseInRace.horse}"/>
-        <td><a href="/races?action=horse&horseId=${horse.id}">${horse.name}</a></td>
+        <td>${horse.name}</td>
         <td>${horse.yearOfBirth}</td>
         <td>${horse.totalRaces}</td>
         <td>${horse.wonRaces}</td>

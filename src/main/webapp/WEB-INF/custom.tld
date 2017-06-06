@@ -18,4 +18,15 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+
+    <tag>
+        <name>wonSum</name>
+        <tag-class>ua.timonov.web.project.taglib.WonSumTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>betWonSum</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

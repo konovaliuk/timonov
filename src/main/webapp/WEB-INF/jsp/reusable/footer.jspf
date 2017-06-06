@@ -7,24 +7,17 @@
                     <img width="90" height="80" src='<c:url value="/resources/img/logo.png"/>' alt="">
                 </a>
             </h4>
-            <div>
-                <p class="text-small text-gray">About
-                    <%--<fmt:message key="footer.about" bundle="${bundle}"/>--%>
-                </p>
-            </div>
         </div>
 
         <div class="col-sm-7 col-md-7 col-lg-7">
-            <h4>Footer contacts
-                <%--<fmt:message key="footer.contacts" bundle="${bundle}"/>--%>
+            <h4>Contacts
             </h4>
             <div>
                 <address class="text-left">
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <p class="text-small text-gray">
                             <span class="text-orange glyphicon glyphicon-map-marker"></span>
-                            <span>Footer address
-                                <%--<fmt:message key="footer.address" bundle="${bundle}"/>--%>
+                            <span>Address
                             </span>
                         </p>
                     </div>
@@ -42,35 +35,4 @@
             </div>
         </div>
     </div>
-
-    <%--<nav class="navbar navbar-default no-bottom-margin">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">
-                        <p class="text-small">
-                            Copyright &copy; Horseracing <span id="copyright-year">2017</span> All Rights Reserved.
-                        </p>
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#">
-                        <p class="text-small">Privacy Policy</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <p class="text-small">Terms of Use</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <p class="text-small">Contact Support</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>--%>
 </div>

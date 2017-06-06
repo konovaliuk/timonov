@@ -17,7 +17,7 @@ public class GetHorseInRaceAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        long id = Long.valueOf(request.getParameter("horseInRaceId"));
+        Long id = Long.valueOf(request.getParameter("horseInRaceId"));
         request.setAttribute("horseInRace", horseInRaceService.findById(id));
         request.setAttribute("race", raceService.findByHorseInRaceId(id));
         return Pages.getPage(Pages.HORSE_IN_RACE_PAGE);

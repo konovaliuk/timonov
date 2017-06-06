@@ -49,10 +49,10 @@
                         <th><fmt:message key="horse.totalRaces" bundle="${bundle}"/></th>
                         <th><fmt:message key="horse.wonRaces" bundle="${bundle}"/></th>
                         <th><fmt:message key="horse.bestBet" bundle="${bundle}"/></th>
-                        <c:if test="${userRole == roleClient}">
-                            <th><fmt:message key="horse.makeBet" bundle="${bundle}"/></th>
+                        <c:if test="${userRole == roleClient && race.raceStatus == openRaceStatus}">
+                            <th><fmt:message key="horse.allOdds" bundle="${bundle}"/></th>
                         </c:if>
-                        <c:if test="${userRole == roleBookie}">
+                        <c:if test="${userRole != roleClient}">
                             <th><fmt:message key="horse.setBetRates" bundle="${bundle}"/></th>
                         </c:if>
                         <th><fmt:message key="horse.placeAtFinish" bundle="${bundle}"/></th>
@@ -73,12 +73,12 @@
                                     <td></td>
                                 </c:otherwise>
                             </c:choose>
-                            <c:if test="${userRole == roleClient}">
+                            <c:if test="${userRole == roleClient && race.raceStatus == openRaceStatus}">
                                 <td><a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">
-                                    <fmt:message key="horse.makeBet" bundle="${bundle}"/></a>
+                                    <fmt:message key="horse.allOdds" bundle="${bundle}"/></a>
                                 </td>
                             </c:if>
-                            <c:if test="${userRole == roleBookie}">
+                            <c:if test="${userRole != roleClient}">
                                 <td><a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">
                                     <fmt:message key="horse.setBetRates" bundle="${bundle}"/></a>
                                 </td>

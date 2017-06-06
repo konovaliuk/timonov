@@ -38,7 +38,7 @@
                             <fmt:message key="bet.raceStarusAndDate" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-8">
-                        <label class="control-label">${race.raceStatus}, ${race.date}</label>
+                        <label class="control-label">${race.raceStatus.toString()}, ${race.date}</label>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                         <label class="control-label"><fmt:message key="bet.typeAndSum" bundle="${bundle}"/></label>
                     </div>
                     <div class="col-sm-8">
-                        <label class="control-label">${bet.odds.betType}, ${bet.sum}</label>
+                        <label class="control-label">${bet.odds.betType.toString()}, ${bet.sum}</label>
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@ import ua.timonov.web.project.command.authorizing.GetSignUpAction;
 import ua.timonov.web.project.command.authorizing.LogoutAction;
 import ua.timonov.web.project.command.authorizing.SignInAction;
 import ua.timonov.web.project.command.authorizing.SignUpAction;
+import ua.timonov.web.project.command.bet.CancelBet;
 import ua.timonov.web.project.command.bet.GetWonBets;
 import ua.timonov.web.project.command.bet.MakeBetAction;
 import ua.timonov.web.project.command.horse.*;
@@ -77,6 +78,7 @@ public class ActionInvoker {
         actionMap.put("oddsDelete", new DeleteOddsAction());
 
         actionMap.put("userBets", new GetUserBetsAction());
+        actionMap.put("cancelBet", new CancelBet());
     }
 
     public static ActionInvoker getInstance() {

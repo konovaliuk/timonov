@@ -32,8 +32,7 @@ public class BetService extends DataService<Bet, Bet> {
         return instance;
     }
 
-    public void makeBet(Bet bet) throws ServiceException {
-        Race race = raceService.findByHorseInRaceId(bet.getOdds().getHorseInRaceId());
+    public void makeBet(Bet bet, Race race) throws ServiceException {
         if (race.getRaceStatus() == RaceStatus.OPEN_TO_BET) {
             userService.deductUserBalance(bet.getUser(), bet.getSum());
             raceService.increaseBetSum(race, bet.getSum());
@@ -68,5 +67,18 @@ public class BetService extends DataService<Bet, Bet> {
             throw new ServiceException(message);
         }
         return userBets;
+    }
+
+    public void cancelBetById(Long betId) throws ServiceException {
+        Bet bet = findById(betId);
+        Long horseInRaceId = bet.getOdds().getHorseInRaceId();
+        Race race = raceService.findByHorseInRaceId(horseInRaceId);
+        if (race.getRaceStatus().ordinal() < RaceStatus.FINISHED.ordinal() && bet.getBetStatus() == BetStatus.MADE) {
+            cancelBet(bet, race);
+        } else {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.BET_CANT_BE_CANCELLED);
+            LOGGER.error(message);
+            throw new ServiceException(message);
+        }
     }
 }

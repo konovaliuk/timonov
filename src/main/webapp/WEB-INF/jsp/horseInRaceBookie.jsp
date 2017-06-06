@@ -27,7 +27,7 @@
                 <tr>
                     <th><fmt:message key="bet.betType" bundle="${bundle}"/></th>
                     <th><fmt:message key="bet.rates" bundle="${bundle}"/></th>
-                    <c:if test="${userRole == roleBookie}">
+                    <c:if test="${userRole == roleBookie && race.raceStatus.ordinal() <= raceStatusOpen.ordinal()}">
                         <th><fmt:message key="app.edit" bundle="${bundle}"/></th>
                         <th><fmt:message key="app.delete" bundle="${bundle}"/></th>
                     </c:if>
@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <td>${odds.betType.toString()}</td>
                             <td>${odds.total} / ${odds.chances}</td>
-                            <c:if test="${userRole == roleBookie}">
+                            <c:if test="${userRole == roleBookie && race.raceStatus.ordinal() <= raceStatusOpen.ordinal()}">
                                 <td><a href="races?action=oddsEdit&oddsId=${odds.id}">
                                     <fmt:message key="app.edit" bundle="${bundle}"/></a>
                                 </td>
@@ -50,7 +50,7 @@
                 </c:forEach>
                 <tr>
             </table>
-            <c:if test="${userRole == roleBookie}">
+            <c:if test="${userRole == roleBookie && race.raceStatus.ordinal() <= raceStatusOpen.ordinal()}">
                 <form class="form-inline" action="races" method="POST">
                     <div class="form-group col-sm-4">
                         <input class="form-control" name="action" value="oddsAdd" type="hidden"/>
@@ -78,7 +78,7 @@
                     <div class="form-group col-sm-4">
                         <label class="control-label"><fmt:message key="bet.chancesOdds" bundle="${bundle}"/></label>
                         <input class="form-control" type="number" name="chances"
-                               placeholder="<fmt:message key="app.chances" bundle="${bundle}"/>" required
+                               placeholder="<fmt:message key="odds.add" bundle="${bundle}"/>" required
                                value="${oddsWithInputError.chances}">
                     </div>
                     <br>
@@ -86,36 +86,23 @@
                     <div class="col-sm-2">
                         <button class="btn btn-primary" type="submit">
                             <span class="glyphicon glyphicon-plus-sign">
-                            </span> <fmt:message key="app.chances" bundle="${bundle}"/></button>
+                            </span> <fmt:message key="odds.add" bundle="${bundle}"/></button>
                     </div>
                 </form>
                 <br>
                 <br>
-                <form class="form-horizontal" action="races" method="GET">
-                    <div>
-                        <input class="form-control" name="action" value="race" type="hidden"/>
-                        <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-left">
-                            </span> <fmt:message key="app.returnToRace" bundle="${bundle}"/></button>
-                    </div>
-                </form>
             </c:if>
-            <c:if test="${userRole == roleAdmin}">
-                <form class="form-horizontal" action="races" method="GET">
-                    <div>
-                        <input class="form-control" name="action" value="raceManage" type="hidden"/>
-                        <input class="form-control" name="raceId" value="${race.id}" type="hidden" />
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-left">
-                            </span> <fmt:message key="app.returnToRace" bundle="${bundle}"/></button>
-                    </div>
-                </form>
-            </c:if>
+            <form class="form-horizontal" action="races" method="GET">
+                <div>
+                    <input class="form-control" name="action" value="race" type="hidden"/>
+                    <input class="form-control" name="raceId" type="hidden" value="${race.id}"/>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-triangle-left">
+                        </span> <fmt:message key="app.returnToRace" bundle="${bundle}"/></button>
+                </div>
+            </form>
         </div>
     </article>
 

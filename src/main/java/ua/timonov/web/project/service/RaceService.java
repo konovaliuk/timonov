@@ -6,6 +6,7 @@ import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.daointerface.RaceDao;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
+import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.bet.BetType;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
@@ -66,7 +67,9 @@ public class RaceService extends DataService<Race, HorseInRace> {
             raceDao.save(race);
             List<Bet> bets = betDao.findListByRaceId(race.getId());
             for (Bet bet : bets) {
-                betService.cancelBet(bet, race);
+                if (bet.getBetStatus() == BetStatus.MADE) {
+                    betService.cancelBet(bet, race);
+                }
             }
             LOGGER.info(LoggerMessages.RACE_SET_CANCELLED);
         } else {
@@ -242,5 +245,15 @@ public class RaceService extends DataService<Race, HorseInRace> {
         Money newBetRaceSum = race.getBetSum().subtract(subtrahendSum);
         race.setBetSum(newBetRaceSum);
         save(race);
+    }
+
+    public List<Race> findBetRaces(List<Bet> userBets) throws ServiceException {
+        List<Race> races = new ArrayList<>();
+        for (Bet userBet : userBets) {
+            long horseInRaceId = userBet.getOdds().getHorseInRaceId();
+            Race race = findByHorseInRaceId(horseInRaceId);
+            races.add(race);
+        }
+        return races;
     }
 }

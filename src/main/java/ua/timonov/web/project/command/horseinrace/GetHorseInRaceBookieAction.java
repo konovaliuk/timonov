@@ -4,6 +4,7 @@ import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.BetType;
+import ua.timonov.web.project.model.race.RaceStatus;
 import ua.timonov.web.project.service.HorseInRaceService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
@@ -26,6 +27,7 @@ public class GetHorseInRaceBookieAction implements Action {
     protected String prepareHorseInRacePage(HttpServletRequest request, long horseInRaceId) throws ServiceException {
         request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
         request.setAttribute("race", raceService.findByHorseInRaceId(horseInRaceId));
+        request.setAttribute("raceStatusOpen", RaceStatus.OPEN_TO_BET);
         request.setAttribute("betTypes", BetType.values());
         return Pages.getPage(Pages.HORSE_IN_RACE_BOOKIE_PAGE);
     }

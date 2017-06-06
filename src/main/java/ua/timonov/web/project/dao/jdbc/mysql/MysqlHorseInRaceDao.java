@@ -18,7 +18,7 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
     public static final int FINISH_PLACE_INDEX = 3;
     public static final int ID_INDEX = 4;
     public static final String FIND_LIST_BY_RACE_ID = "findListByRaceId";
-    public static final String FIND_LIST_BY_HORSE_ID = "findListByRaceId";
+    public static final String FIND_LIST_BY_HORSE_ID = "findListByHorseId";
     public static final String FIND_WITHOUT_ODDS = "findHorseInRaceWithoutOdds";
 
     public static final String ENTITY_NAME = "HorseInRace";

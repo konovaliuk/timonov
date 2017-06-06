@@ -40,7 +40,7 @@ public class MainServlet extends HttpServlet {
             String message = ExceptionMessages.getMessage(ExceptionMessages.ERROR_NOT_IDENTIFIED);
             LOGGER.error(message);
             LOGGER.error(e.getMessage());
-            request.setAttribute("errorMessage", message);
+            request.setAttribute("messageError", message);
             request.setAttribute("errorDetails", e.getMessage());
             page = Pages.getPage(Pages.ERROR_PAGE);
         }

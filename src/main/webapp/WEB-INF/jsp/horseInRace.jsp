@@ -33,6 +33,7 @@
                         <th></th>
                         <th><fmt:message key="bet.betType" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.rates" bundle="${bundle}"/></th>
+
                         <th><fmt:message key="bet.inputBetSum" bundle="${bundle}"/></th>
                         <th><fmt:message key="bet.pushToBet" bundle="${bundle}"/></th>
                     </tr>

@@ -112,7 +112,7 @@
                                         ${horseInRace.finishPlace}
                                     </c:if>
                                 </td>
-                                <td><a href="races?action=horse&id=${horse.id}">${horseInRace.horse.name}</a></td>
+                                <td>${horseInRace.horse.name}</td>
                                 <td>${horseInRace.horse.yearOfBirth}</td>
                                 <td>${horseInRace.horse.totalRaces}</td>
                                 <td>${horseInRace.horse.wonRaces}</td>

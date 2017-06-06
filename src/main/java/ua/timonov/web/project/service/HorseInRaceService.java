@@ -61,7 +61,7 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         super.save(horseInRace);
     }
 
-    public List<HorseInRace> findListByHorseId(long horseId) {
+    public List<HorseInRace> findListByHorseId(Long horseId) {
         List<HorseInRace> horsesInRace = horseInRaceDao.findListByHorseId(horseId);
         for (HorseInRace horseInRace : horsesInRace) {
             horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
@@ -77,5 +77,27 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
             listBetHorses.add(horseInRace);
         }
         return listBetHorses;
+    }
+
+    /**
+     * Deletes HorseInRace even there are some Odds referencing to HorseInRace
+     * Founded Odds are deleted too
+     * @param horseInRaceId             ID of HorseInRace
+     * @throws ServiceException         if database error occurs
+     */
+    public void delete(long horseInRaceId) throws ServiceException {
+        List<Odds> oddsList = oddsDao.findListByHorseInRace(horseInRaceId);
+        for (Odds odds : oddsList) {
+            if (!oddsDao.delete(odds.getId())) {
+                String message = ExceptionMessages.getMessage(ExceptionMessages.DELETE_FAILED) + " " + oddsDao.getName();
+                LOGGER.error(message);
+                throw new ServiceException(message);
+            }
+        }
+        if (!dao.delete(horseInRaceId)) {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.DELETE_FAILED) + " " + dao.getName();
+            LOGGER.error(message);
+            throw new ServiceException(message);
+        }
     }
 }

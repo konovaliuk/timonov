@@ -29,14 +29,14 @@ public class UserService extends DataService<User, Bet> {
         return instance;
     }
 
-    public void deductUserBalance(User user, Money betSum) {
+    public void deductUserBalance(User user, Money betSum) throws ServiceException {
         Account account = user.getAccount();
         Money balanceBeforePay = account.getBalance();
         Money balanceAfterPay = balanceBeforePay.subtract(betSum);
         if (balanceAfterPay.getValue().compareTo(BigDecimal.ZERO) < 0) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.NOT_ENOUGH_MONEY);
             LOGGER.warn(message);
-            throw new SecurityException(message);
+            throw new ServiceException(message);
         }
         account.setBalance(balanceAfterPay);
         accountDao.save(account);
@@ -65,6 +65,15 @@ public class UserService extends DataService<User, Bet> {
     public void findUserWithSameLogin(User user) throws ServiceException {
         User existingUser = userDao.findByLogin(user.getLogin());
         if (existingUser != null) {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.SAME_LOGIN);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    public void findUserWithSameLoginAndAnotherId(User user) throws ServiceException {
+        User existingUser = userDao.findByLogin(user.getLogin());
+        if (existingUser != null && existingUser.getId() != user.getId()) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.SAME_LOGIN);
             LOGGER.warn(message);
             throw new ServiceException(message);
