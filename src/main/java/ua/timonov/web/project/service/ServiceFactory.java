@@ -1,5 +1,8 @@
 package ua.timonov.web.project.service;
 
+/**
+ * Factory for available services
+ */
 public class ServiceFactory {
 
     private static ServiceFactory instance;

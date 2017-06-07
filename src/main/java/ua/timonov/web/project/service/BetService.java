@@ -12,6 +12,9 @@ import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.util.List;
 
+/**
+ * Represents service for interact with DAO layer interface BetDao and perform some logic with other services
+ */
 public class BetService extends DataService<Bet, Bet> {
 
     private static final Logger LOGGER = Logger.getLogger(BetService.class);
@@ -32,9 +35,15 @@ public class BetService extends DataService<Bet, Bet> {
         return instance;
     }
 
+    /**
+     * performs actions for make new bet (decrease user balance, increase race bet sum) and saves new bet
+     * @param bet
+     * @param race
+     * @throws ServiceException
+     */
     public void makeBet(Bet bet, Race race) throws ServiceException {
         if (race.getRaceStatus() == RaceStatus.OPEN_TO_BET) {
-            userService.deductUserBalance(bet.getUser(), bet.getSum());
+            userService.reduceUserBalance(bet.getUser(), bet.getSum());
             raceService.increaseBetSum(race, bet.getSum());
             bet.setBetStatus(BetStatus.MADE);
             save(bet);
@@ -45,6 +54,12 @@ public class BetService extends DataService<Bet, Bet> {
         }
     }
 
+    /**
+     * performs actions for cancelling bet and saves it with new status
+     * @param bet
+     * @param race
+     * @throws ServiceException
+     */
     public void cancelBet(Bet bet, Race race) throws ServiceException {
         userService.returnMoney(bet.getUser().getAccount().getId(), bet.getSum());
         raceService.decreaseBetSum(race, bet.getSum());
@@ -52,6 +67,12 @@ public class BetService extends DataService<Bet, Bet> {
         save(bet);
     }
 
+    /**
+     * finds sum to pay on won bet and returns it
+     * @param bet
+     * @return
+     * @throws ServiceException
+     */
     public Money payWin(Bet bet) throws ServiceException {
         Money paidSum = userService.getWin(bet);
         bet.setBetStatus(BetStatus.PAID);
@@ -59,6 +80,12 @@ public class BetService extends DataService<Bet, Bet> {
         return paidSum;
     }
 
+    /**
+     * finds bets by user ID
+     * @param userId
+     * @return
+     * @throws ServiceException
+     */
     public List<Bet> findListByUser(Long userId) throws ServiceException {
         List<Bet> userBets = betDao.findListByUserId(userId);
         if (userBets == null) {
@@ -69,6 +96,11 @@ public class BetService extends DataService<Bet, Bet> {
         return userBets;
     }
 
+    /**
+     * cancels bet if it's possible and saves its new status
+     * @param betId
+     * @throws ServiceException
+     */
     public void cancelBetById(Long betId) throws ServiceException {
         Bet bet = findById(betId);
         Long horseInRaceId = bet.getOdds().getHorseInRaceId();

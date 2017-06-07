@@ -5,6 +5,9 @@ import ua.timonov.web.project.dao.daointerface.UserDao;
 import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.User;
 
+/**
+ * Represents service for interact with DAO layer interface UserAccountDao
+ */
 public class UserAccountService extends DataService<Account, User> {
 
     private static UserAccountDao userAccountDao = daoFactory.createUserAccountDao();

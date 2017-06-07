@@ -12,6 +12,9 @@ import ua.timonov.web.project.util.ExceptionMessages;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents service for interact with DAO layer interface HorseInRaceDao and perform some logic with other DAO
+ */
 public class HorseInRaceService extends DataService<HorseInRace, Odds> {
 
     private static final Logger LOGGER = Logger.getLogger(HorseInRaceService.class);
@@ -29,7 +32,7 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
     }
 
     @Override
-    public HorseInRace findById(long id) throws ServiceException {
+    public HorseInRace findById(Long id) throws ServiceException {
         HorseInRace horseInRace = super.findById(id);
         List<Odds> oddsByHorseInRace = oddsDao.findListByHorseInRace(horseInRace.getId());
         if (oddsByHorseInRace == null) {
@@ -41,7 +44,12 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         return horseInRace;
     }
 
-    public List<HorseInRace> findListByRaceId(long raceId) {
+    /**
+     * finds list of HorseInRace in certain race by ID
+     * @param raceId
+     * @return
+     */
+    public List<HorseInRace> findListByRaceId(Long raceId) {
         List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(raceId);
         for (HorseInRace horseInRace : listHorsesInRace) {
             horseInRace.setOddsValues(oddsDao.findListByHorseInRace(horseInRace.getId()));
@@ -61,6 +69,11 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         super.save(horseInRace);
     }
 
+    /**
+     * finds list of HorseInRace by certain horse by ID
+     * @param horseId
+     * @return
+     */
     public List<HorseInRace> findListByHorseId(Long horseId) {
         List<HorseInRace> horsesInRace = horseInRaceDao.findListByHorseId(horseId);
         for (HorseInRace horseInRace : horsesInRace) {
@@ -69,10 +82,16 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
         return horsesInRace;
     }
 
+    /**
+     * returns list of HorseInRace by list of won bets
+     * @param wonBets
+     * @return
+     * @throws ServiceException
+     */
     public List<HorseInRace> findBetHorsesInRace(List<Bet> wonBets) throws ServiceException {
         List<HorseInRace> listBetHorses = new ArrayList<>();
         for (Bet wonBet : wonBets) {
-            long horseInRaceId = wonBet.getOdds().getHorseInRaceId();
+            Long horseInRaceId = wonBet.getOdds().getHorseInRaceId();
             HorseInRace horseInRace = findById(horseInRaceId);
             listBetHorses.add(horseInRace);
         }
@@ -80,12 +99,12 @@ public class HorseInRaceService extends DataService<HorseInRace, Odds> {
     }
 
     /**
-     * Deletes HorseInRace even there are some Odds referencing to HorseInRace
+     * deletes HorseInRace even there are some Odds referencing to HorseInRace
      * Founded Odds are deleted too
      * @param horseInRaceId             ID of HorseInRace
      * @throws ServiceException         if database error occurs
      */
-    public void delete(long horseInRaceId) throws ServiceException {
+    public void delete(Long horseInRaceId) throws ServiceException {
         List<Odds> oddsList = oddsDao.findListByHorseInRace(horseInRaceId);
         for (Odds odds : oddsList) {
             if (!oddsDao.delete(odds.getId())) {

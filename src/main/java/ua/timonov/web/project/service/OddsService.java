@@ -10,6 +10,9 @@ import ua.timonov.web.project.util.ExceptionMessages;
 
 import java.util.List;
 
+/**
+ * Represents service for interact with DAO layer interface OddsDao and perform some logic with other DAO
+ */
 public class OddsService extends DataService<Odds, Bet> {
 
     private static final Logger LOGGER = Logger.getLogger(HorseService.class);
@@ -25,6 +28,11 @@ public class OddsService extends DataService<Odds, Bet> {
         return instance;
     }
 
+    /**
+     * saves odds to database, if there is the odds with same type, updates it
+     * @param odds
+     * @throws ServiceException
+     */
     public void save(Odds odds) throws ServiceException {
         List<Odds> listStoredOdds = oddsDao.findListByHorseInRace(odds.getHorseInRaceId());
         for (Odds storedOdd : listStoredOdds) {
@@ -35,6 +43,11 @@ public class OddsService extends DataService<Odds, Bet> {
         super.save(odds);
     }
 
+    /**
+     * checks if user (bookie) inputted not valid values for odds (total chances is less than wining chances)
+     * @param odds
+     * @throws ServiceException
+     */
     public void validateOddsRates(Odds odds) throws ServiceException {
         if (odds.getTotal() <= odds.getChances()) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.ODDS_CHANCES_MORE_TOTAL);

@@ -5,6 +5,9 @@ import ua.timonov.web.project.dao.daointerface.RaceDao;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 
+/**
+ * Represents service for interact with DAO layer interface LocationDao
+ */
 public class LocationService extends DataService<Location, Race> {
 
     private static LocationDao locationDao = daoFactory.createLocationDao();

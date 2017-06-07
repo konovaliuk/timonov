@@ -5,6 +5,9 @@ import ua.timonov.web.project.dao.daointerface.LocationDao;
 import ua.timonov.web.project.model.location.Country;
 import ua.timonov.web.project.model.location.Location;
 
+/**
+ * Represents service for interact with DAO layer interface CountryDao
+ */
 public class CountryService extends DataService<Country, Location> {
 
     private static CountryDao countryDao = daoFactory.createCountryDao();

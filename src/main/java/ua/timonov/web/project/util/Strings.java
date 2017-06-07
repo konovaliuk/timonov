@@ -55,13 +55,13 @@ public class Strings {
     public static final String HORSES = "horses";
     public static final String HORSE_ID = "horseId";
     public static final String LIST_BET_HORSES = "listBetHorses";
-    public static final String HORSE_IN_RACE = "horseInRace";
     public static final String YEAR = "year";
-
     /* Horse in race messages */
     public static final String LIST_HORSES_IN_RACE = "listHorsesInRace";
+
     public static final String HORSE_WITH_INPUT_ERROR = "horseWithInputError";
     public static final String HORSE_IN_RACE_ID = "horseInRaceId";
+    public static final String HORSE_IN_RACE = "horseInRace";
     public static final String HORSES_IN_RACE = "horsesInRace";
     public static final String INPUTTED_PLACES = "inputtedPlaces";
     public static final String PLACES = "places";

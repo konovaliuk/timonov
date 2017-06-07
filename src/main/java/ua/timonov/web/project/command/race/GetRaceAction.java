@@ -30,7 +30,7 @@ public class GetRaceAction implements Action {
         Long raceId = idParser.parse(request.getParameter(Strings.RACE_ID), Strings.RACE_ID);
         request.setAttribute(Strings.RACE, raceService.findById(raceId));
         request.setAttribute(Strings.OPEN_RACE_STATUS, RaceStatus.OPEN_TO_BET);
-        request.setAttribute(Strings.HORSE_IN_RACE, horseInRaceService.findListByRaceId(raceId));
+        request.setAttribute(Strings.HORSES_IN_RACE, horseInRaceService.findListByRaceId(raceId));
         return Pages.getPage(Pages.RACE_PAGE);
     }
 }

@@ -44,7 +44,13 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return instance;
     }
 
-    public Race findByHorseInRaceId(long horseInRaceId) throws ServiceException {
+    /**
+     * finds race by HorseInRace ID
+     * @param horseInRaceId
+     * @return
+     * @throws ServiceException
+     */
+    public Race findByHorseInRaceId(Long horseInRaceId) throws ServiceException {
         Race race = raceDao.findByForeignId(horseInRaceId, "HorseInRace");
         if (race == null) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.HORSE_IN_RACE_ID + " " + horseInRaceId +
@@ -55,7 +61,12 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return race;
     }
 
-    public void delete(long id) throws ServiceException {
+    /**
+     * deletes race by ID, only if race has status BEING_FORMED
+     * @param id persisted entity
+     * @throws ServiceException
+     */
+    public void delete(Long id) throws ServiceException {
         Race race = findById(id);
         if (race.getRaceStatus() != RaceStatus.BEING_FORMED) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_CANT_BE_DELETED);
@@ -65,6 +76,11 @@ public class RaceService extends DataService<Race, HorseInRace> {
         super.delete(id);
     }
 
+    /**
+     * cancels race and bets on its horses
+     * @param race
+     * @throws ServiceException
+     */
     public void setCancelStatus(Race race) throws ServiceException {
         if (race.getRaceStatus().ordinal() < RaceStatus.FINISHED.ordinal()) {
             race.setRaceStatus(RaceStatus.CANCELLED);
@@ -83,6 +99,11 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
+    /**
+     * performs races life cycle
+     * @param race
+     * @throws ServiceException
+     */
     public void setNextStatusIfPossible(Race race) throws ServiceException {
         RaceStatus raceStatus = race.getRaceStatus();
         switch (raceStatus) {
@@ -109,6 +130,11 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
+    /**
+     * checks if race has 2 or more horses and each horse has even one bet rate (odds)
+     * @param race
+     * @throws ServiceException
+     */
     private void checkIfRaceReadyToBeOpen(Race race) throws ServiceException {
         if (race.getHorsesInRace().size() <= 1) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.RACE_SHOULD_BE_TWO_HORSES);
@@ -124,12 +150,14 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
+    /* sets next status for race */
     private void setNextStatus(Race race) throws ServiceException {
         RaceStatus currentStatus = race.getRaceStatus();
         race.setRaceStatus(currentStatus.nextPossibleStatus());
         super.save(race);
     }
 
+    /* checks if not all finish places in race are set */
     private void checkIfPlacesAreSet(Race race) throws ServiceException {
         List<HorseInRace> listOfHorsesInRace = horseInRaceDao.findListByRaceId(race.getId());
         if (!allPlacesAreSet(listOfHorsesInRace)) {
@@ -139,6 +167,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
+    /* checks each finish place is set */
     private boolean allPlacesAreSet(List<HorseInRace> listOfHorsesInRace) {
         for (HorseInRace horseInRace : listOfHorsesInRace) {
             if (horseInRace.getFinishPlace() == 0) {
@@ -148,10 +177,12 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return true;
     }
 
+    /* finds HorseInRace without set Odds */
     private HorseInRace findHorseInRaceWithoutOdds(Race race) {
         return horseInRaceDao.findHorseInRaceWithoutOdds(race.getId());
     }
 
+    /* executes paying by won bets */
     private void payWins(Race race) throws ServiceException {
         Money racePaidSum = new Money(BigDecimal.ZERO);
         List<Bet> wonBets = findWonBetsByRaceId(race.getId());
@@ -164,12 +195,14 @@ public class RaceService extends DataService<Race, HorseInRace> {
         increaseRacePaidSum(race, racePaidSum);
     }
 
+    /* increases paid sum for race */
     private void increaseRacePaidSum(Race race, Money paidSum) throws ServiceException {
         Money newPaidSum = race.getPaidSum().add(paidSum);
         race.setPaidSum(newPaidSum);
         save(race);
     }
 
+    /* finds list of won bet in race */
     public List<Bet> findWonBetsByRaceId(Long raceId) {
         List<Bet> bets = betDao.findListByRaceId(raceId);
         List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(raceId);
@@ -183,27 +216,15 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return wonBets;
     }
 
+    /* defines if bet wins */
     private boolean isWinningBet(Bet bet, List<HorseInRace> listHorsesInRace) {
         BetType betType = bet.getOdds().getBetType();
-        long betHorseInRaceId = bet.getOdds().getHorseInRaceId();
-        switch (betType) {
-            case WINNER:
-            case SECOND_PLACE:
-            case PRIZE_PLACE:
-                return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, betType.ordinal() + 1);
-            // TODO remove or leave
-            case DOUBLE_EXPRESS:
-                return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, 2);
-            case TRIPLE_EXPRESS:
-                return false;
-            case QUINELLA:
-                return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, 2);
-            default:
-                return false;
-        }
+        Long betHorseInRaceId = bet.getOdds().getHorseInRaceId();
+        return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, betType.ordinal() + 1);
     }
 
-    private boolean horseIsOnPrizePlace(long betHorseInRaceId, List<HorseInRace> listHorsesInRace, int place) {
+    /* defines if horse placed prize place */
+    private boolean horseIsOnPrizePlace(Long betHorseInRaceId, List<HorseInRace> listHorsesInRace, int place) {
         for (int i = 0; i < place; i++) {
             if (betHorseInRaceId == listHorsesInRace.get(i).getId()) {
                 return true;
@@ -212,6 +233,12 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return false;
     }
 
+    /**
+     * saves inputted finish places
+     * @param listOfHorsesInRace
+     * @param inputtedPlaces
+     * @throws ServiceException
+     */
     public void saveInputtedPlaces(List<HorseInRace> listOfHorsesInRace, List<Integer> inputtedPlaces) throws ServiceException {
         int wrongPlace = findWrongInputtedPlace(new ArrayList<>(inputtedPlaces));
         if (wrongPlace != FINISH_PLACES_SET_CORRECTLY) {
@@ -228,14 +255,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         }
     }
 
-    private void increaseRacesNumberForHorse(Horse horse, int finishPlace) {
-        horse.setTotalRaces(horse.getTotalRaces() + 1);
-        if (finishPlace == 1) {
-            horse.setWonRaces(horse.getWonRaces() + 1);
-        }
-        horseDao.save(horse);
-    }
-
+    /* finds wrong inputted finish place */
     private int findWrongInputtedPlace(List<Integer> places) {
         Collections.sort(places);
         for (int i = 0; i < places.size(); i++) {
@@ -250,18 +270,45 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return FINISH_PLACES_SET_CORRECTLY;
     }
 
+    /* increases total races and won races if horse won */
+    private void increaseRacesNumberForHorse(Horse horse, int finishPlace) {
+        horse.setTotalRaces(horse.getTotalRaces() + 1);
+        if (finishPlace == 1) {
+            horse.setWonRaces(horse.getWonRaces() + 1);
+        }
+        horseDao.save(horse);
+    }
+
+    /**
+     * increases bet sum for race by given amount of money
+     * @param race
+     * @param addedSum
+     * @throws ServiceException
+     */
     public void increaseBetSum(Race race, Money addedSum) throws ServiceException {
         Money newBetRaceSum = race.getBetSum().add(addedSum);
         race.setBetSum(newBetRaceSum);
         save(race);
     }
 
+    /**
+     * decreases bet sum for race by given amount of money
+     * @param race
+     * @param subtrahendSum
+     * @throws ServiceException
+     */
     public void decreaseBetSum(Race race, Money subtrahendSum) throws ServiceException {
         Money newBetRaceSum = race.getBetSum().subtract(subtrahendSum);
         race.setBetSum(newBetRaceSum);
         save(race);
     }
 
+    /**
+     * returns list of races by bets of certain user
+     * @param userBets
+     * @return
+     * @throws ServiceException
+     */
     public List<Race> findBetRaces(List<Bet> userBets) throws ServiceException {
         List<Race> races = new ArrayList<>();
         for (Bet userBet : userBets) {
