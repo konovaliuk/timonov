@@ -1,6 +1,5 @@
 package ua.timonov.web.project.dao.jdbc.mysql;
 
-import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.HorseDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.horse.Horse;
@@ -17,9 +16,7 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
     public static final int WON_RACES_INDEX = 4;
     public static final int ID_INDEX = 5;
     public static final String ENTITY_NAME = "Horse";
-    public static final String FIND_BY_HORSE_IN_RACE_ID = "findByHorseInRaceId";
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlHorseDao.class);
     private static final MysqlHorseDao instance = new MysqlHorseDao();
 
     private MysqlHorseDao() {
@@ -52,75 +49,3 @@ public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
         }
     }
 }
-
-/*@Override
-    @Deprecated
-    public Horse findByHorseInRaceId(long horseInRaceId) {
-        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_HORSE_IN_RACE_ID);
-        return findByForeignId(horseInRaceId, )
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setLong(1, horseInRaceId);
-            LOGGER.info(statement.toString());
-            Horse result = null;
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    result = getEntityFromResultSet(resultSet);
-                }
-            }
-            if (result != null) {
-                LOGGER.info("Horse founded by HorseInRace with id = " + horseInRaceId);
-            } else {
-                LOGGER.info("Horse not founded by HorseInRace with id = " + horseInRaceId);
-            }
-            return result;
-            // TODO
-//            return new QueryResult<T>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error("Database error while searching in table " + ENTITY_NAME + " by horseInRace id " +
-                    horseInRaceId + ", exception message: " + e.getMessage());
-            return null;
-        }
-    }*/
-
-/*@Override
-    public boolean save(Horse horse) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Horse horse) {
-        return false;
-    }
-
-    @Override
-    public Horse findById(long id) {
-        return null;
-    }
-
-    @Override
-    public List<Horse> findAll() {
-        return null;
-    }*/
-
-    /*public List<Horse> findAll() {
-        String sql = "SELECT ID, NAME, YEAR, TOTALRACES, WONRACES FROM HORSE";
-//        LOGGER.info(sql);
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            LOGGER.info(ps.toString());
-            List<Horse> result = new ArrayList<>();
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-            return result;
-//            return new QueryResult<>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
-        }
-    }*/

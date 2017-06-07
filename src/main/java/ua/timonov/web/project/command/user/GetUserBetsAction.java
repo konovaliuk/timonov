@@ -31,10 +31,10 @@ public class GetUserBetsAction implements Action {
     protected String prepareUserBetsPage(HttpServletRequest request) throws ServiceException {
         Long userId = Long.valueOf(request.getParameter("userId"));
         User user = userService.findById(userId);
-        List<Bet> userBets = betService.findListByUser(userId);
+        List<Bet> userBets = betService.findListByUser(user.getId());
         List<HorseInRace> listBetHorses = horseInRaceService.findBetHorsesInRace(userBets);
         List<Race> listBetRaces = raceService.findBetRaces(userBets);
-        request.getSession().setAttribute("user", user);
+        request.setAttribute("user", user);
         request.setAttribute("userBets", userBets);
         request.setAttribute("listBetHorses", listBetHorses);
         request.setAttribute("listBetRaces", listBetRaces);

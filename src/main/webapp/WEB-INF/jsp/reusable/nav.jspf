@@ -4,7 +4,7 @@
         <li><a href="races?action=races"><fmt:message key="nav.races" bundle="${bundle}"/></a></li>
         <li><a href="races?action=horses"><fmt:message key="nav.horses" bundle="${bundle}"/></a></li>
         <c:if test="${userRole == roleClient}">
-            <li><a href="races?action=userBets&userId=${user.id}"><fmt:message key="nav.myBets" bundle="${bundle}"/>
+            <li><a href="races?action=userBets&userId=${loggedUser.id}"><fmt:message key="nav.myBets" bundle="${bundle}"/>
             </a></li>
         </c:if>
         <c:if test="${userRole == roleAdmin}">

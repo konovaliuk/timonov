@@ -33,7 +33,6 @@ public class ActionInvoker {
 
     private ActionInvoker() {
         actionMap.put("main", new GetMainPageAction());
-        actionMap.put("error", new ErrorAction());
         actionMap.put("setLang", new SetLanguageAction());
         actionMap.put("setLangIndex", new SetLanguageIndexAction());
 

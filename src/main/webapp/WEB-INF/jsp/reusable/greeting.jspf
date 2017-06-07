@@ -1,11 +1,11 @@
 <%@ taglib prefix="custom" uri="/WEB-INF/custom.tld"%>
-<c:set var="userName" value="${user.name}"/>
+<c:set var="userName" value="${loggedUser.name}"/>
 <div class="greeting">
     <h5>
         <fmt:message key="app.welcome" bundle="${bundle}"/>, <custom:greeting userName="${userName}"/>!
     </h5>
     <h5>
-        <fmt:message key="app.youveLogged" bundle="${bundle}"/> ${user.userType.toString()}&nbsp;
+        <fmt:message key="app.youveLogged" bundle="${bundle}"/> ${loggedUser.userType.toString()}&nbsp;
         <a href="races?action=logout"><fmt:message key="app.logout" bundle="${bundle}"/></a>
     </h5>
     <h5>

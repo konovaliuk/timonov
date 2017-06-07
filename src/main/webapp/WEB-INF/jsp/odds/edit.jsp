@@ -25,8 +25,8 @@
             <form class="form-horizontal" action="races" method="POST">
                 <div>
                     <input class="form-control" name="action" value="oddsSaveEdited" type="hidden"/>
-                    <input class="form-control" name="horseInRaceId" type="hidden" value="${odds.horseInRaceId}"/>
-                    <input class="form-control" name="oddsId" value="${odds.id}"/>
+                    <input class="form-control" name="horseInRaceId" value="${odds.horseInRaceId}" type="hidden"/>
+                    <input class="form-control" name="oddsId" value="${odds.id}" type="hidden"/>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">

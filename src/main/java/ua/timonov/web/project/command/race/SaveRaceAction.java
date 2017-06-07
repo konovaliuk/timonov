@@ -42,6 +42,6 @@ public class SaveRaceAction extends GetRacesAction {
         Location location = locationService.findById(locationId);
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);
-        return new Race(location, date);
+        return new Race(new Race.Builder(location, date));
     }
 }

@@ -120,8 +120,6 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             }
             LOGGER.info(result.size() + LoggerMessages.ITEMS_FOUND);
             return result;
-            // TODO
-//            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return null;
@@ -142,8 +140,6 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
             }
             LOGGER.info(result.size() + LoggerMessages.ITEMS_FOUND);
             return result;
-            // TODO
-//            return new QueryResult<>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
             return null;
@@ -182,7 +178,6 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
                         LoggerMessages.NOT_FOUND_IN_TABLE + entityName);
             }
             return result;
-//            return new QueryResult<T>(result, result.size());
         } catch (SQLException e) {
             LOGGER.error(LoggerMessages.DB_ERROR_SEARCH + entityName + LoggerMessages.ITEM_WITH_ID + id +
                     LoggerMessages.EXCEPTION_MESSAGE + e.getMessage());
@@ -200,7 +195,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
-    protected abstract void setEntityToParameters(T entity, PreparedStatement statementexternalId)
+    protected abstract void setEntityToParameters(T entity, PreparedStatement statementExternalId)
             throws SQLException;
 
     protected String convertToEnumNameType(String stringFromDatabase) {

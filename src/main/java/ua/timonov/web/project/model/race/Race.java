@@ -6,16 +6,18 @@ import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.user.Money;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Race implements Entity {
     private long id;
     private RaceStatus raceStatus;
     private Location location;
     private Date date;
-    private List<HorseInRace> horsesInRace;
+    private List<HorseInRace> horsesInRace = new ArrayList<>();
     private Money betSum;
     private Money paidSum;
 
@@ -50,7 +52,7 @@ public class Race implements Entity {
         }
 
         public Builder horsesInRace(List<HorseInRace> horsesInRace) {
-            // TODO copy!
+            // TODO make copies
             this.horsesInRace = horsesInRace;
             return this;
         }
@@ -90,12 +92,6 @@ public class Race implements Entity {
         this.paidSum = builder.paidSum;
     }
 
-    public Race(Location location, Date date) {
-        this.location = location;
-        this.date = date;
-        this.raceStatus = RaceStatus.BEING_FORMED;
-    }
-
     public long getId() {
         return id;
     }
@@ -114,6 +110,12 @@ public class Race implements Entity {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getStringDate() {
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+        String stringDate = dateFormat.format(this.date);
+        return stringDate;
     }
 
     public void setDate(Date date) {

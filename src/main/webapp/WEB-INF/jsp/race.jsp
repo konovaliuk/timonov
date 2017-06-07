@@ -54,8 +54,18 @@
                         <c:if test="${userRole == roleClient && race.raceStatus == openRaceStatus}">
                             <th><fmt:message key="horse.allOdds" bundle="${bundle}"/></th>
                         </c:if>
-                        <c:if test="${userRole != roleClient}">
-                            <th><fmt:message key="horse.setBetRates" bundle="${bundle}"/></th>
+                        <c:if test="${userRole == roleBookie}">
+                            <c:choose>
+                                <c:when test="${race.raceStatus.ordinal() <= openRaceStatus.ordinal()}">
+                                    <th><fmt:message key="horse.setBetRates" bundle="${bundle}"/></th>
+                                </c:when>
+                                <c:otherwise>
+                                    <th><fmt:message key="horse.viewBetRates" bundle="${bundle}"/></th>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                        <c:if test="${userRole == roleAdmin}">
+                            <th><fmt:message key="horse.viewBetRates" bundle="${bundle}"/></th>
                         </c:if>
                         <th><fmt:message key="horse.placeAtFinish" bundle="${bundle}"/></th>
                     </tr>
@@ -76,16 +86,37 @@
                                 </c:otherwise>
                             </c:choose>
                             <c:if test="${userRole == roleClient && race.raceStatus == openRaceStatus}">
-                                <td><a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">
-                                    <fmt:message key="horse.allOdds" bundle="${bundle}"/></a>
+                                <td>
+                                    <a href="races?action=horseInRace&horseInRaceId=${horseInRace.id}">
+                                        <fmt:message key="horse.allOdds" bundle="${bundle}"/>
+                                    </a>
                                 </td>
                             </c:if>
-                            <c:if test="${userRole != roleClient}">
-                                <td><a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">
-                                    <fmt:message key="horse.setBetRates" bundle="${bundle}"/></a>
+
+                            <c:if test="${userRole == roleBookie}">
+                                <td>
+                                    <a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">
+                                    <c:choose>
+                                        <c:when test="${race.raceStatus.ordinal() <= openRaceStatus.ordinal()}">
+                                            <fmt:message key="horse.setBetRates" bundle="${bundle}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message key="horse.viewBetRates" bundle="${bundle}"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </a>
                                 </td>
                             </c:if>
-                            <td><c:if test = "${horseInRace.finishPlace > 0}">${horseInRace.finishPlace}</c:if></td>
+                            <c:if test="${userRole == roleAdmin}">
+                                <td>
+                                    <a href="races?action=horseInRaceBookie&horseInRaceId=${horseInRace.id}">
+                                        <fmt:message key="horse.viewBetRates" bundle="${bundle}"/>
+                                    </a>
+                                </td>
+                            </c:if>
+                            <td>
+                                <c:if test = "${horseInRace.finishPlace > 0}">${horseInRace.finishPlace}</c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

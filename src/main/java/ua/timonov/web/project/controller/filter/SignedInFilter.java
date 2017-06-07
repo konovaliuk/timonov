@@ -1,5 +1,7 @@
 package ua.timonov.web.project.controller.filter;
 
+import ua.timonov.web.project.util.Pages;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +26,8 @@ public class SignedInFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         boolean allowedRequest = isAllowedRequest(request);
-        if (!allowedRequest && (session == null || session.getAttribute("user") == null)) {
-            res.sendRedirect("index.jsp");
+        if (!allowedRequest && (session == null || session.getAttribute("loggedUser") == null)) {
+            res.sendRedirect(Pages.INDEX_PAGE);
         } else {
             chain.doFilter(request, response);
         }

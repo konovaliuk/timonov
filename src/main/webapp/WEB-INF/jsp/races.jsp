@@ -32,7 +32,7 @@
                         <th><fmt:message key="app.location" bundle="${bundle}"/></th>
                         <th><fmt:message key="app.country" bundle="${bundle}"/></th>
                         <th><fmt:message key="app.status" bundle="${bundle}"/></th>
-                        <th><fmt:message key="races.raceBets" bundle="${bundle}"/></th>
+                        <th><fmt:message key="races.betRates" bundle="${bundle}"/></th>
                         <c:if test="${userRole == roleAdmin}">
                             <th><fmt:message key="races.betSum" bundle="${bundle}"/></th>
                             <th><fmt:message key="races.paidSum" bundle="${bundle}"/></th>
@@ -46,7 +46,7 @@
                             <td>${race.location.name}</td>
                             <td>${race.location.country.name}</td>
                             <td>${race.raceStatus.toString()}</td>
-                            <td><a href="races?action=race&raceId=${race.id}"><fmt:message key="races.raceBets" bundle="${bundle}"/>
+                            <td><a href="races?action=race&raceId=${race.id}"><fmt:message key="races.betRates" bundle="${bundle}"/>
                                 </a></td>
                             <c:if test="${userRole == roleAdmin}">
                                 <td align="right">${race.betSum.toString()}</td>

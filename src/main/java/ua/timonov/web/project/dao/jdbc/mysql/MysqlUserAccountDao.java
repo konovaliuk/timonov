@@ -42,19 +42,3 @@ public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccou
         }
     }
 }
-
-/*@Override
-    public boolean save(UserAccount userAccount) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(UserAccount userAccount) {
-        return false;
-    }
-
-    @Override
-    public UserAccount findById(long id) {
-        return null;
-    }
-*/

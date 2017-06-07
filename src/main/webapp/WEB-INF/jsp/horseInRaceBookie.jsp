@@ -59,8 +59,8 @@
                         <input class="form-control" name="action" value="oddsAdd" type="hidden"/>
                         <input class="form-control" name="horseInRaceId" type="hidden" value="${horseInRace.id}"/>
                         <label class="control-label">Add odds:</label>
-                        <select class="form-control" name="betType">
-                            <option selected disabled hidden><fmt:message key="bet.chooseBetType" bundle="${bundle}"/></option>
+                        <select class="form-control" name="betType" required>
+                            <option disabled><fmt:message key="bet.chooseBetType" bundle="${bundle}"/></option>
                             <c:forEach var="betType" items="${betTypes}">
                                 <option value="${betType}"
                                     <c:if test="${oddsWithInputError.betType == betType}">

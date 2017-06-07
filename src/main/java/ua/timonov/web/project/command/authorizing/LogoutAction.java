@@ -12,7 +12,6 @@ public class LogoutAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-//        request.getSession().removeAttribute("user");
         request.getSession().invalidate();
         return Pages.getPage(Pages.INDEX_PAGE);
     }

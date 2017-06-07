@@ -19,16 +19,17 @@ public class MakeBetAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private HorseService horseService = serviceFactory.createHorseService();
+    private HorseInRaceService horseInRaceService = serviceFactory.createHorseInRaceService();
     private RaceService raceService = serviceFactory.createRaceService();
     private OddsService oddsService = serviceFactory.createOddsService();
-    private UserService userService = serviceFactory.createUserService();
     private BetService betService = serviceFactory.createBetService();
     private Race race;
+    private Long horseInRaceId;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
         Bet bet = createBetFromRequest(request);
-        Long horseInRaceId = bet.getOdds().getHorseInRaceId();
+        horseInRaceId = bet.getOdds().getHorseInRaceId();
         race = raceService.findByHorseInRaceId(horseInRaceId);
         Horse horse = horseService.findByHorseInRaceId(horseInRaceId);
         betService.makeBet(bet, race);
@@ -44,15 +45,18 @@ public class MakeBetAction implements Action {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         request.setAttribute("messageError", e.getMessage());
         request.setAttribute("errorDetails", e.getCause());
+        /*request.setAttribute("race", race);
+        return Pages.getPage(Pages.RACE_PAGE);*/
+        request.setAttribute("horseInRace", horseInRaceService.findById(horseInRaceId));
         request.setAttribute("race", race);
-        return Pages.getPage(Pages.RACE_PAGE);
+        return Pages.getPage(Pages.HORSE_IN_RACE_PAGE);
     }
 
     private Bet createBetFromRequest(HttpServletRequest request) throws AppException {
         Parser<Long> idParser = FactoryParser.createIdParser();
         Long oddsId = idParser.parse(request.getParameter("oddsId"), "oddsId");
         Odds odds = oddsService.findById(oddsId);
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("loggedUser");
         Double betSum = Double.valueOf(request.getParameter("sum"));
         return new Bet.Builder(user, odds)
                 .money(betSum)

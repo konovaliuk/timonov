@@ -66,8 +66,7 @@
                             <td align="center">${bet.odds.getValue()}</td>
                             <td>${listBetHorses.get(loop.index).horse.name}</td>
                             <td>${bet.sum.toString()}</td>
-                            <%--TODO with custom tag--%>
-                            <td>${bet.sum.toString()} * ${bet.odds.oddsValue}</td>
+                            <td><custom:wonSum betWonSum="${bet}"/></td>
                         </tr>
                     </c:forEach>
                 </table>

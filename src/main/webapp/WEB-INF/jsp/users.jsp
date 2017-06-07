@@ -46,7 +46,7 @@
                             <td align="right">${user.account.balance.value}</td>
                             <td>
                                 <c:if test="${user.userType.ordinal() > 1}">
-                                    <a href="races?action=betsByUser&userId=${user.id}">
+                                    <a href="races?action=userBets&userId=${user.id}">
                                         <fmt:message key="user.bets" bundle="${bundle}"/></a>
                                 </c:if>
                             </td>

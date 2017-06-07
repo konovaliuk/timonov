@@ -46,7 +46,7 @@ public class BetService extends DataService<Bet, Bet> {
     }
 
     public void cancelBet(Bet bet, Race race) throws ServiceException {
-        userService.returnMoney(bet);
+        userService.returnMoney(bet.getUser().getAccount().getId(), bet.getSum());
         raceService.decreaseBetSum(race, bet.getSum());
         bet.setBetStatus(BetStatus.CANCELLED);
         save(bet);

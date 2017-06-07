@@ -2,12 +2,14 @@ package ua.timonov.web.project.service;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.BetDao;
+import ua.timonov.web.project.dao.daointerface.HorseDao;
 import ua.timonov.web.project.dao.daointerface.HorseInRaceDao;
 import ua.timonov.web.project.dao.daointerface.RaceDao;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.bet.Bet;
 import ua.timonov.web.project.model.bet.BetStatus;
 import ua.timonov.web.project.model.bet.BetType;
+import ua.timonov.web.project.model.horse.Horse;
 import ua.timonov.web.project.model.horse.HorseInRace;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
@@ -28,8 +30,10 @@ public class RaceService extends DataService<Race, HorseInRace> {
 
     private static RaceDao raceDao = daoFactory.createRaceDao();
     private static HorseInRaceDao horseInRaceDao = daoFactory.createHorseInRaceDao();
+    private static HorseDao horseDao = daoFactory.createHorseDao();
     private static BetDao betDao = daoFactory.createBetDao();
     private static BetService betService = ServiceFactory.getInstance().createBetService();
+
     private static final RaceService instance = new RaceService();
 
     private RaceService() {
@@ -152,8 +156,10 @@ public class RaceService extends DataService<Race, HorseInRace> {
         Money racePaidSum = new Money(BigDecimal.ZERO);
         List<Bet> wonBets = findWonBetsByRaceId(race.getId());
         for (Bet wonBet : wonBets) {
-            Money paidBetSum = betService.payWin(wonBet);
-            racePaidSum.add(paidBetSum);
+            if (wonBet.getBetStatus() == BetStatus.MADE) {
+                Money paidBetSum = betService.payWin(wonBet);
+                racePaidSum = racePaidSum.add(paidBetSum);
+            }
         }
         increaseRacePaidSum(race, racePaidSum);
     }
@@ -164,9 +170,10 @@ public class RaceService extends DataService<Race, HorseInRace> {
         save(race);
     }
 
-    public List<Bet> findWonBetsByRaceId(long raceId) {
+    public List<Bet> findWonBetsByRaceId(Long raceId) {
         List<Bet> bets = betDao.findListByRaceId(raceId);
         List<HorseInRace> listHorsesInRace = horseInRaceDao.findListByRaceId(raceId);
+        Collections.sort(listHorsesInRace);
         List<Bet> wonBets = new ArrayList<>();
         for (Bet bet : bets) {
             if (isWinningBet(bet, listHorsesInRace)) {
@@ -176,9 +183,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
         return wonBets;
     }
 
-
     private boolean isWinningBet(Bet bet, List<HorseInRace> listHorsesInRace) {
-        Collections.sort(listHorsesInRace);
         BetType betType = bet.getOdds().getBetType();
         long betHorseInRaceId = bet.getOdds().getHorseInRaceId();
         switch (betType) {
@@ -186,6 +191,7 @@ public class RaceService extends DataService<Race, HorseInRace> {
             case SECOND_PLACE:
             case PRIZE_PLACE:
                 return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, betType.ordinal() + 1);
+            // TODO remove or leave
             case DOUBLE_EXPRESS:
                 return horseIsOnPrizePlace(betHorseInRaceId, listHorsesInRace, 2);
             case TRIPLE_EXPRESS:
@@ -208,17 +214,26 @@ public class RaceService extends DataService<Race, HorseInRace> {
 
     public void saveInputtedPlaces(List<HorseInRace> listOfHorsesInRace, List<Integer> inputtedPlaces) throws ServiceException {
         int wrongPlace = findWrongInputtedPlace(new ArrayList<>(inputtedPlaces));
-        if (wrongPlace == FINISH_PLACES_SET_CORRECTLY) {
-            for (int i = 0; i < listOfHorsesInRace.size(); i++) {
-                HorseInRace horseInRace = listOfHorsesInRace.get(i);
-                horseInRace.setFinishPlace(inputtedPlaces.get(i));
-                horseInRaceDao.save(horseInRace);
-            }
-        } else {
+        if (wrongPlace != FINISH_PLACES_SET_CORRECTLY) {
             String message = ExceptionMessages.getMessage(ExceptionMessages.ERROR_SETTING_PLACES) + " " + wrongPlace;
             LOGGER.error(message);
             throw new ServiceException(message);
         }
+        for (int i = 0; i < listOfHorsesInRace.size(); i++) {
+            int finishPlace = inputtedPlaces.get(i);
+            HorseInRace horseInRace = listOfHorsesInRace.get(i);
+            horseInRace.setFinishPlace(finishPlace);
+            horseInRaceDao.save(horseInRace);
+            increaseRacesNumberForHorse(horseInRace.getHorse(), finishPlace);
+        }
+    }
+
+    private void increaseRacesNumberForHorse(Horse horse, int finishPlace) {
+        horse.setTotalRaces(horse.getTotalRaces() + 1);
+        if (finishPlace == 1) {
+            horse.setWonRaces(horse.getWonRaces() + 1);
+        }
+        horseDao.save(horse);
     }
 
     private int findWrongInputtedPlace(List<Integer> places) {

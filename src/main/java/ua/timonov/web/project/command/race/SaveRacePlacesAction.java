@@ -26,6 +26,7 @@ public class SaveRacePlacesAction extends ManageRaceAction {
         Long raceId = Long.valueOf(request.getParameter("raceId"));
         race = raceService.findById(raceId);
         List<HorseInRace> listOfHorsesInRace = horseInRaceService.findListByRaceId(raceId);
+        inputtedPlaces.clear();
         for (int i = 0; i < listOfHorsesInRace.size(); i++) {
             inputtedPlaces.add(Integer.valueOf(request.getParameter("places" + i)));
         }

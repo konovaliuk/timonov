@@ -1,6 +1,5 @@
 package ua.timonov.web.project.dao.jdbc.mysql;
 
-import org.apache.log4j.Logger;
 import ua.timonov.web.project.dao.daointerface.LocationDao;
 import ua.timonov.web.project.dao.jdbc.EntityDao;
 import ua.timonov.web.project.model.location.Country;
@@ -17,7 +16,6 @@ public class MysqlLocationDao extends EntityDao<Location> implements LocationDao
     public static final int ID_INDEX = 3;
     public static final String ENTITY_NAME = "Location";
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlLocationDao.class);
     private static final MysqlLocationDao instance = new MysqlLocationDao();
 
     private MysqlLocationDao() {
@@ -51,69 +49,3 @@ public class MysqlLocationDao extends EntityDao<Location> implements LocationDao
         }
     }
 }
-
-/*@Override
-    public boolean save(Location location) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Location location) {
-        return false;
-    }
-
-    @Override
-    public Location findById(long id) {
-        return null;
-    }
-
-    @Override
-    public List<Location> findAll() {
-        return null;
-    }*/
-
-    /*public List<Location> findAll() {
-        String sql = "SELECT location.id AS location_id, location.name AS location, " +
-                "country.id AS country_id, country.name AS country FROM location\n" +
-                "INNER JOIN country ON location.country_id = country.id";
-//        LOGGER.info(sql);
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            LOGGER.info(ps.toString());
-            List<Location> result = new ArrayList<>();
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    result.add(getEntityFromResultSet(resultSet));
-                }
-            }
-            return result;
-//            return new QueryResult<>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
-        }
-    }*/
-
-    /*public Location findById(long locationId) {
-        String sql = "SELECT location.id AS location_id, location.name AS location, " +
-                "country.id AS country_id, country.name AS country FROM location\n" +
-                "INNER JOIN country ON location.country_id = country.id";
-//        LOGGER.info(sql);
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            LOGGER.info(ps.toString());
-            Location result = null;
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    result = getEntityFromResultSet(resultSet);
-                }
-            }
-            return result;
-//            return new QueryResult<>(result, result.size());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new RuntimeException("Database operation failed! " + e.getMessage());
-        }
-    }*/

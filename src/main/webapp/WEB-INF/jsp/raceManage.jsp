@@ -54,7 +54,7 @@
                             <label class="control-label" for="date"><fmt:message key="app.date" bundle="${bundle}"/>:</label>
                         </div>
                         <div class="col-sm-3">
-                            <input class="form-control" id="date" name="date" value="${race.date}" type="date"
+                            <input class="form-control" id="date" name="date" value="${race.date}" type="datetime"
                                 <c:if test="${race.raceStatus.ordinal() > raceStatusBeingFormed.ordinal()}">readonly
                                 </c:if>
                             />

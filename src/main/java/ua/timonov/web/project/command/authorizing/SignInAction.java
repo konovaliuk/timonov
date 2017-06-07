@@ -21,9 +21,7 @@ public class SignInAction implements Action {
         User userFromRequest = createUserFromRequest(request);
         User user = userService.authorize(userFromRequest);
 
-        request.getSession().setAttribute("user", user);
-        request.getSession().setAttribute("loggedIn", true);
-        request.getSession().removeAttribute("logout");
+        request.getSession().setAttribute("loggedUser", user);
         request.getSession().setAttribute("roleAdmin", UserType.ADMIN);
         request.getSession().setAttribute("roleBookie", UserType.BOOKIE);
         request.getSession().setAttribute("roleClient", UserType.CLIENT);

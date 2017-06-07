@@ -72,7 +72,7 @@
                                 </c:if>
                             </td>
                             <td>
-                                <c:if test="${bet.betStatus == betStatusMaid}">
+                                <c:if test="${userRole == roleClient && bet.betStatus == betStatusMaid}">
                                     <a href="races?action=cancelBet&betId=${bet.id}&userId=${user.id}">
                                         <fmt:message key="bet.cancel" bundle="${bundle}"/></a>
                                 </c:if>
@@ -81,16 +81,18 @@
                     </c:forEach>
                 </table>
 
-                <form action="races" method="POST">
-                    <div>
-                        <input class="form-control" name="action" value="races" type="hidden"/>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-triangle-left">
-                            </span> <fmt:message key="app.returnToRaces" bundle="${bundle}"/></button>
-                    </div>
-                </form>
+                <c:if test="${userRole == roleAdmin}">
+                    <form action="races" method="POST">
+                        <div>
+                            <input class="form-control" name="action" value="users" type="hidden"/>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <button class="btn btn-primary" type="submit">
+                                <span class="glyphicon glyphicon-triangle-left">
+                                </span> <fmt:message key="app.returnToUsers" bundle="${bundle}"/></button>
+                        </div>
+                    </form>
+                </c:if>
 
             </div>
         </article>
