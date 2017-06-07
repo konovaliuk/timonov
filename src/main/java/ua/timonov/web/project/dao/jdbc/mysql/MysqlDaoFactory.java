@@ -3,6 +3,9 @@ package ua.timonov.web.project.dao.jdbc.mysql;
 import ua.timonov.web.project.dao.*;
 import ua.timonov.web.project.dao.daointerface.*;
 
+/**
+ * MySql implementation for DaoFactory
+ */
 public class MysqlDaoFactory extends DaoFactory {
 
     private static final MysqlDaoFactory mysqlDaoFactory = new MysqlDaoFactory();

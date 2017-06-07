@@ -3,6 +3,9 @@ package ua.timonov.web.project.controller.filter;
 import javax.servlet.*;
 import java.io.IOException;
 
+/**
+ * sets encoding to UTF-8
+ */
 public class EncodingFilter implements Filter {
 
     public static final String ENCODING = "utf-8";

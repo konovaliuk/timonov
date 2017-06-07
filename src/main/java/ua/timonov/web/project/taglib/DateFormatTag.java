@@ -7,6 +7,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Custom tag for output date in JSP pages
+ */
 public class DateFormatTag extends TagSupport {
     private static final Logger LOGGER = Logger.getLogger(DateFormatTag.class);
     public static final String DATE_FORMAT_TAG_ERROR = "Error while using DateFormatTag";

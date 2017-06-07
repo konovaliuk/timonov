@@ -13,6 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * MySql implementation for BetDao interface
+ */
 public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
 
     public static final int USER_INDEX = 1;
@@ -49,7 +52,7 @@ public class MysqlBetDao extends EntityDao<Bet> implements BetDao {
     }
 
     @Override
-    public List<Bet> findListByRaceId(long raceId) {
+    public List<Bet> findListByRaceId(Long raceId) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_LIST_BY_RACE_ID);
         return findListWithSql(sql, raceId);
     }

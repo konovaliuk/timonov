@@ -10,6 +10,9 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ */
 public class GetHorsesAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -17,10 +20,10 @@ public class GetHorsesAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
-        return prepareRacesPage(request);
+        return prepareHorsesPage(request);
     }
 
-    protected String prepareRacesPage(HttpServletRequest request) throws ServiceException {
+    protected String prepareHorsesPage(HttpServletRequest request) throws ServiceException {
         request.setAttribute("horses", horseService.findAll());
         return Pages.getPage(Pages.HORSES_PAGE);
     }

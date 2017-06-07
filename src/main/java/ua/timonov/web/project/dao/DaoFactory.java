@@ -3,6 +3,9 @@ package ua.timonov.web.project.dao;
 import ua.timonov.web.project.dao.daointerface.*;
 import ua.timonov.web.project.dao.jdbc.mysql.MysqlDaoFactory;
 
+/**
+ * Abstract factory for application DAO
+ */
 public abstract class DaoFactory {
 
     public abstract BetDao createBetDao();

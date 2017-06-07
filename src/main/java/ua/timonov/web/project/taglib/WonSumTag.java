@@ -7,6 +7,9 @@ import ua.timonov.web.project.model.user.Money;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * Custom tag for output multiplied money sum
+ */
 public class WonSumTag extends TagSupport {
 
     private static final Logger LOGGER = Logger.getLogger(WonSumTag.class);

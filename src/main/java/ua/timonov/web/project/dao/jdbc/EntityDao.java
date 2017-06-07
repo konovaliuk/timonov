@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Abstract implementation of DAO interface
+ * @param <T>       entity type
+ */
 public abstract class EntityDao<T extends Entity> implements Dao<T> {
 
     public static final String FIND_ALL = "findAll";
@@ -52,6 +56,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
+    /* updates existing entity in database */
     private boolean update(T entity) {
         String sql = getQuery(UPDATE);
         try (Connection connection = dataSource.getConnection();
@@ -69,6 +74,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
+    /* inserts new entity to database */
     private long insert(T entity) {
         String sql = getQuery(INSERT);
         try (Connection connection = dataSource.getConnection();
@@ -89,7 +95,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         String sql = getQuery(DELETE);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -126,7 +132,20 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
-    protected List<T> findListWithSql(String sql, long foreignId) {
+    @Override
+    public T findById(Long id) {
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_ID);
+        return findByIdWithSql(id, sql, "");
+    }
+
+    @Override
+    public T findByForeignId(Long id, String foreignKeyEntityName) {
+        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY + foreignKeyEntityName);
+        return findByIdWithSql(id, sql, foreignKeyEntityName);
+    }
+
+    /* finds list of entities by ID of some other entity */
+    protected List<T> findListWithSql(String sql, Long foreignId) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -146,18 +165,7 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
-    @Override
-    public T findById(long id) {
-        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_ID);
-        return findByIdWithSql(id, sql, "");
-    }
-
-    @Override
-    public T findByForeignId(long id, String foreignKeyEntityName) {
-        String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY + foreignKeyEntityName);
-        return findByIdWithSql(id, sql, foreignKeyEntityName);
-    }
-
+    /* finds list of entities by ID of some other entity */
     protected T findByIdWithSql(long id, String sql, String otherEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -185,19 +193,24 @@ public abstract class EntityDao<T extends Entity> implements Dao<T> {
         }
     }
 
+    /* fetches SQL query from property file by short query name */
     protected String getQuery(String queryName) {
         return QUERIES.getString(entityName + "." + queryName);
     }
 
+    /* fetches suffix for query if necessary */
     protected String getQuerySuffixOrderBy() {
         return "";
     }
 
+    /* retrieves entity from result set */
     protected abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
+    /* sets entity properties to prepare statement parameters */
     protected abstract void setEntityToParameters(T entity, PreparedStatement statementExternalId)
             throws SQLException;
 
+    /* converts names of enum names to Java style */
     protected String convertToEnumNameType(String stringFromDatabase) {
         return stringFromDatabase.toUpperCase().replace(' ', '_');
     }

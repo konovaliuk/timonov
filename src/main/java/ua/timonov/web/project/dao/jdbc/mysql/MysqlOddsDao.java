@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * MySql implementation for OddsDao interface
+ */
 public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
 
     public static final int HORSE_IN_RACE_ID_INDEX = 1;
@@ -31,7 +34,7 @@ public class MysqlOddsDao extends EntityDao<Odds> implements OddsDao {
     }
 
     @Override
-    public List<Odds> findListByHorseInRace(long horseInRaceId) {
+    public List<Odds> findListByHorseInRace(Long horseInRaceId) {
         String sql = getQuery(FIND_ALL) + " " + getQuery(FIND_BY_HORSE_IN_RACE);
         return findListWithSql(sql, horseInRaceId);
     }

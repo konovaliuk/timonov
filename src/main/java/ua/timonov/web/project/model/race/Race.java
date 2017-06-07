@@ -10,18 +10,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents race
+ */
 public class Race implements Entity {
+
+    /* entity ID */
     private long id;
+
+    /* race status */
     private RaceStatus raceStatus;
+
+    /* race location */
     private Location location;
+
+    /* race date */
     private Date date;
+
+    /* list of participant horses */
     private List<HorseInRace> horsesInRace = new ArrayList<>();
+
+    /* sum of bets on race */
     private Money betSum;
+
+    /* sim of paid wins */
     private Money paidSum;
 
     public Race() {
     }
 
+    /**
+     * Builder for Race instances
+     */
     public static class Builder {
         /* requirement parameters */
         private final Location location;

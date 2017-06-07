@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.user;
 
+import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
@@ -8,24 +9,34 @@ import ua.timonov.web.project.model.user.Account;
 import ua.timonov.web.project.model.user.Money;
 import ua.timonov.web.project.model.user.User;
 import ua.timonov.web.project.model.user.UserType;
+import ua.timonov.web.project.parser.Parser;
+import ua.timonov.web.project.parser.ParserFactory;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserAccountService;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.LoggerMessages;
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * saves edited user
+ */
 public class SaveEditedUserAction implements Action {
+
+    private static final Logger LOGGER = Logger.getLogger(DeleteUserAction.class);
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
     private UserAccountService userAccountService = serviceFactory.createUserAccountService();
+    private Parser<Long> idParser = ParserFactory.createIdParser();
     private User user;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        UserType userType = UserType.valueOf(request.getParameter("userType"));
+        UserType userType = UserType.valueOf(request.getParameter(Strings.USER_TYPE));
         if (userType.equals(UserType.CLIENT)) {
             createClient(request, userType);
         } else {
@@ -36,26 +47,28 @@ public class SaveEditedUserAction implements Action {
 
     @Override
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
-        request.setAttribute("messageError", e.getMessage());
-        request.setAttribute("errorDetails", e.getCause());
+        LOGGER.info(LoggerMessages.ERROR_EDITING_USER);
+        request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         return prepareUsersPage(request);
     }
 
-    private void createClient(HttpServletRequest request, UserType userType) throws ServiceException {
+    private void createClient(HttpServletRequest request, UserType userType) throws ServiceException, ParsingException {
         Account account = createAccountFromRequest(request);
         user = createClientFromRequest(request, userType, account);
         userService.findUserWithSameLoginAndAnotherId(user);
         userAccountService.save(account);
         userService.save(user);
-        request.setAttribute("messageSuccess", true);
-        request.setAttribute("user", user);
+        LOGGER.info(LoggerMessages.USER_SAVE_EDITED);
+        request.setAttribute(Strings.MESSAGE_SUCCESS, true);
+        request.setAttribute(Strings.USER, user);
     }
 
-    private User createClientFromRequest(HttpServletRequest request, UserType userType, Account account) {
-        Long userId = Long.valueOf(request.getParameter("userId"));
-        String name = request.getParameter("name");
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+    private User createClientFromRequest(HttpServletRequest request, UserType userType, Account account) throws ParsingException {
+        Long userId = idParser.parse(request.getParameter(Strings.USER_ID), Strings.USER_ID);
+        String name = request.getParameter(Strings.NAME);
+        String login = request.getParameter(Strings.LOGIN);
+        String password = request.getParameter(Strings.PASSWORD);
         return new User(userId, userType, login, password, name, account);
     }
 
@@ -63,27 +76,28 @@ public class SaveEditedUserAction implements Action {
         user = createUserFromRequest(request, userType);
         userService.findUserWithSameLoginAndAnotherId(user);
         userService.save(user);
-        request.setAttribute("messageSuccess", true);
-        request.setAttribute("user", user);
+        LOGGER.info(LoggerMessages.USER_SAVE_EDITED);
+        request.setAttribute(Strings.MESSAGE_SUCCESS, true);
+        request.setAttribute(Strings.USER, user);
     }
 
     private User createUserFromRequest(HttpServletRequest request, UserType userType) {
-        Long userId = Long.valueOf(request.getParameter("userId"));
-        String name = request.getParameter("name");
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        Long userId = Long.valueOf(request.getParameter(Strings.USER_ID));
+        String name = request.getParameter(Strings.NAME);
+        String login = request.getParameter(Strings.LOGIN);
+        String password = request.getParameter(Strings.PASSWORD);
         return new User(userId, userType, login, password, name);
     }
 
-    private Account createAccountFromRequest(HttpServletRequest request) {
-        Long accountId = Long.valueOf(request.getParameter("accountId"));
-        double balance = Double.valueOf(request.getParameter("balance"));
+    private Account createAccountFromRequest(HttpServletRequest request) throws ParsingException {
+        Long accountId = idParser.parse(request.getParameter(Strings.ACCOUNT_ID), Strings.ACCOUNT_ID);
+        double balance = Double.valueOf(request.getParameter(Strings.BALANCE));
         return new Account(accountId, new Money(balance));
     }
 
     protected String prepareUsersPage(HttpServletRequest request) {
-        request.setAttribute("user", user);
-        request.setAttribute("userTypes", UserType.values());
+        request.setAttribute(Strings.USER, user);
+        request.setAttribute(Strings.USER_TYPES, UserType.values());
         return Pages.getPage(Pages.USER_EDIT_PAGE);
     }
 }

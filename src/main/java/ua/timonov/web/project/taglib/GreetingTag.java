@@ -5,6 +5,9 @@ import org.apache.log4j.Logger;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * Custom tag for output logged user on JSP pages
+ */
 public class GreetingTag extends TagSupport {
 
     private static final Logger LOGGER = Logger.getLogger(GreetingTag.class);

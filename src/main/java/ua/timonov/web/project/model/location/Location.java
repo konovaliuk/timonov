@@ -2,9 +2,18 @@ package ua.timonov.web.project.model.location;
 
 import ua.timonov.web.project.dao.Entity;
 
+/**
+ * Represents location (hippodrome) of race
+ */
 public class Location implements Entity, Cloneable {
+
+    /* entite ID */
     private long id;
+
+    /* location name */
     private String name;
+
+    /* country of location */
     private Country country;
 
     public Location() {

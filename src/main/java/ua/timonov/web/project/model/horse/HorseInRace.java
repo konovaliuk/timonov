@@ -6,11 +6,24 @@ import ua.timonov.web.project.model.bet.Odds;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents horse that participates in certain race
+ */
 public class HorseInRace implements Entity, Comparable<HorseInRace>, Cloneable {
+
+    /* entity ID */
     private long id;
+
+    /* race ID */
     private long raceId;
+
+    /* horse */
     private Horse horse;
+
+    /* place at finish in race */
     private int finishPlace;
+
+    /* list of possible bet rates on this horse */
     private List<Odds> oddsValues = new ArrayList<>();
 
     public HorseInRace() {
@@ -120,6 +133,7 @@ public class HorseInRace implements Entity, Comparable<HorseInRace>, Cloneable {
                 '}';
     }
 
+    /* compares horses in race by finish place */
     @Override
     public int compareTo(HorseInRace thatHorseInRace) {
         return finishPlace - thatHorseInRace.finishPlace;

@@ -8,6 +8,9 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * returns address to JSP page with sign up form
+ */
 public class GetSignUpAction implements Action {
 
     @Override

@@ -1,6 +1,7 @@
 package ua.timonov.web.project.controller.filter;
 
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -8,11 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Manages access to secured part: if user is not logged he can visit only allowed pages
+ */
 public class SignedInFilter implements Filter {
-
-    public static final String SIGN_IN = "signIn";
-    public static final String SIGN_UP = "signUp";
-    public static final String SIGN_UP_FORM = "getSignUpForm";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -20,13 +20,14 @@ public class SignedInFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
 
         boolean allowedRequest = isAllowedRequest(request);
-        if (!allowedRequest && (session == null || session.getAttribute("loggedUser") == null)) {
+        if (!allowedRequest && (session == null || session.getAttribute(Strings.LOGGED_USER) == null)) {
             res.sendRedirect(Pages.INDEX_PAGE);
         } else {
             chain.doFilter(request, response);
@@ -34,9 +35,9 @@ public class SignedInFilter implements Filter {
     }
 
     private boolean isAllowedRequest(ServletRequest request) {
-        String action = request.getParameter("action");
-        if (action != null && (action.equals(SIGN_IN) || action.equals(SIGN_UP) ||
-                action.equals(SIGN_UP_FORM))) {
+        String action = request.getParameter(Strings.ACTION);
+        if (action != null && (action.equals(Strings.SIGN_IN) || action.equals(Strings.SIGN_UP) ||
+                action.equals(Strings.SIGN_UP_FORM))) {
             return true;
         }
         return false;

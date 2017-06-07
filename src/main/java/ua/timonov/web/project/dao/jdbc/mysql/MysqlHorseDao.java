@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySql implementation for HorseDao interface
+ */
 public class MysqlHorseDao extends EntityDao<Horse> implements HorseDao {
 
     public static final int NAME_INDEX = 1;

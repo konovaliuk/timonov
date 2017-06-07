@@ -2,6 +2,9 @@ package ua.timonov.web.project.util;
 
 import java.util.ResourceBundle;
 
+/**
+ * Util class with property mapping for JSP pages
+ */
 public class Pages {
     public final static String INDEX_PAGE = "index";
     public final static String MAIN_PAGE = "main";

@@ -7,14 +7,15 @@ import ua.timonov.web.project.service.LocationService;
 import ua.timonov.web.project.service.RaceService;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * finds all races
+ */
 public class GetRacesAction implements Action {
-
-    public static final String RACES = "races";
-    public static final String LOCATIONS = "locations";
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
@@ -26,8 +27,8 @@ public class GetRacesAction implements Action {
     }
 
     protected String prepareRacesPage(HttpServletRequest request) throws ServiceException {
-        request.setAttribute(RACES, raceService.findAll());
-        request.setAttribute(LOCATIONS, locationService.findAll());
+        request.setAttribute(Strings.RACES, raceService.findAll());
+        request.setAttribute(Strings.LOCATIONS, locationService.findAll());
         return Pages.getPage(Pages.RACES_PAGE);
     }
 }

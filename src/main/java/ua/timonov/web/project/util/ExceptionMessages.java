@@ -3,6 +3,9 @@ package ua.timonov.web.project.util;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Util class with property mapping for localization of exception messages
+ */
 public class ExceptionMessages {
 
     public final static String SAVE_FAILED = "saving.failed";
@@ -39,11 +42,6 @@ public class ExceptionMessages {
 
     private static final String BUNDLE_NAME = "/i18n/exceptions";
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, ENGLISH);
-
-    @Deprecated
-    public static void setDefaultLocale() {
-        setLocale(Locale.getDefault());
-    }
 
     public static void setLocale(Locale locale) {
         resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);

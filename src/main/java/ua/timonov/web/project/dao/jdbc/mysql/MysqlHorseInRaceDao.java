@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * MySql implementation for HorseInRaceDao interface
+ */
 public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements HorseInRaceDao {
 
     public static final int RACE_ID_INDEX = 1;
@@ -31,19 +34,19 @@ public class MysqlHorseInRaceDao extends EntityDao<HorseInRace> implements Horse
         return instance;
     }
 
-    public List<HorseInRace> findListByRaceId(long raceId) {
+    public List<HorseInRace> findListByRaceId(Long raceId) {
         String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_LIST_BY_RACE_ID);
         return findListWithSql(sql, raceId);
     }
 
     @Override
-    public HorseInRace findHorseInRaceWithoutOdds(long id) {
+    public HorseInRace findHorseInRaceWithoutOdds(Long raceId) {
         String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_WITHOUT_ODDS);
-        return findByIdWithSql(id, sql, "Race");
+        return findByIdWithSql(raceId, sql, "Race");
     }
 
     @Override
-    public List<HorseInRace> findListByHorseId(long horseId) {
+    public List<HorseInRace> findListByHorseId(Long horseId) {
         String sql = getQuery(FIND_ALL) + SPACE + getQuery(FIND_LIST_BY_HORSE_ID);
         return findListWithSql(sql, horseId);
     }

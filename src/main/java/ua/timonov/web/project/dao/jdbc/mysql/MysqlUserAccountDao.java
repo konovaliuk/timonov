@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySql implementation for UserAccountDao interface
+ */
 public class MysqlUserAccountDao extends EntityDao<Account> implements UserAccountDao {
 
     public static final int BALANCE_INDEX = 1;

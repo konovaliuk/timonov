@@ -19,12 +19,16 @@ import ua.timonov.web.project.command.odds.SaveEditedOddsAction;
 import ua.timonov.web.project.command.race.*;
 import ua.timonov.web.project.command.user.*;
 import ua.timonov.web.project.exception.AppException;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Retrieves action property from from request and takes appropriate action from Map
+ */
 public class ActionInvoker {
 
     private static final ActionInvoker instance = new ActionInvoker();
@@ -85,7 +89,7 @@ public class ActionInvoker {
     }
 
     public String invoke(HttpServletRequest request, HttpServletResponse response) {
-        String actionName = request.getParameter("action");
+        String actionName = request.getParameter(Strings.ACTION);
         Action action = actionMap.get(actionName);
         if (action == null) {
             action = new DefaultAction();

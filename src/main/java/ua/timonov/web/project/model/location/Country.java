@@ -2,8 +2,15 @@ package ua.timonov.web.project.model.location;
 
 import ua.timonov.web.project.dao.Entity;
 
+/**
+ * Represents country of location
+ */
 public class Country implements Entity, Cloneable {
+
+    /* entity ID */
     private long id;
+
+    /* country name */
     private String name;
 
     public Country() {

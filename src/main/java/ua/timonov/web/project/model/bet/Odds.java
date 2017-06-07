@@ -2,12 +2,27 @@ package ua.timonov.web.project.model.bet;
 
 import ua.timonov.web.project.dao.Entity;
 
+/**
+ * Represents Bet rate, odds - level of possible win of Bet
+ */
 public class Odds implements Entity, Cloneable {
+
+    /* entity ID */
     private long id;
+
+    /* ID of horse in race */
     private long horseInRaceId;
+
+    /* type of bet */
     private BetType betType;
+
+    /* total chances that are opposite a client */
     private int total;
+
+    /* winning chances that for a client */
     private int chances;
+
+    /* value of winning ratio */
     private double oddsValue;
 
     public Odds() {

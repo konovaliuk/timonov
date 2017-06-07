@@ -1,7 +1,23 @@
 package ua.timonov.web.project.model.race;
 
+/**
+ * Race status
+ */
 public enum RaceStatus {
-    BEING_FORMED, OPEN_TO_BET, CLOSED_TO_BET, FINISHED, RESULTS_FIXATED, WINS_PAID, CANCELLED;
+    /* race is being formed by admin, bookie can set bet rates (odds) */
+    BEING_FORMED,
+    /* clients can make bets */
+    OPEN_TO_BET,
+    /* bets are not allowed */
+    CLOSED_TO_BET,
+    /* race is finished */
+    FINISHED,
+    /* horse places are set by admin */
+    RESULTS_FIXATED,
+    /* clients take their wins */
+    WINS_PAID,
+    /* race is cancelled, bets are returned */
+    CANCELLED;
 
     public static final String SPACE = " ";
     public static final String UNDERSCORE = "_";
@@ -16,14 +32,5 @@ public enum RaceStatus {
             return values()[ordinal() + 1];
         }
         return this;
-    }
-
-    @Deprecated
-    public String nameForJspFile() {
-        String result = "";
-        for (String word : name().split(UNDERSCORE)) {
-            result += word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
-        }
-        return result;
     }
 }

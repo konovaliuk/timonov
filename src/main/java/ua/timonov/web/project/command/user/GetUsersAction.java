@@ -7,10 +7,14 @@ import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserService;
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * finds all users
+ */
 public class GetUsersAction implements Action {
 
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -22,8 +26,8 @@ public class GetUsersAction implements Action {
     }
 
     protected String prepareUsersPage(HttpServletRequest request) throws ServiceException {
-        request.setAttribute("users", userService.findAll());
-        request.setAttribute("userTypes", UserType.values());
+        request.setAttribute(Strings.USERS, userService.findAll());
+        request.setAttribute(Strings.USER_TYPES, UserType.values());
         return Pages.getPage(Pages.USERS_PAGE);
     }
 }

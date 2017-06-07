@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.util.ExceptionMessages;
 
+/**
+ * Parser for Long (ID) values
+ */
 public class IdParser implements Parser<Long> {
 
     private static final Logger LOGGER = Logger.getLogger(IdParser.class);
@@ -24,10 +27,5 @@ public class IdParser implements Parser<Long> {
             throw new ParsingException(message);
         }
         return id;
-    }
-
-    @Override
-    public String createString(Long value) {
-        return null;
     }
 }

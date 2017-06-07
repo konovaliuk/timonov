@@ -1,5 +1,6 @@
 package ua.timonov.web.project.command.authorizing;
 
+import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.AppException;
 import ua.timonov.web.project.exception.ParsingException;
@@ -11,13 +12,21 @@ import ua.timonov.web.project.model.user.UserType;
 import ua.timonov.web.project.service.ServiceFactory;
 import ua.timonov.web.project.service.UserAccountService;
 import ua.timonov.web.project.service.UserService;
+import ua.timonov.web.project.util.LoggerMessages;
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
+
+/**
+ * performs signing up for new user
+ */
 public class SignUpAction implements Action {
+
+    private static final Logger LOGGER = Logger.getLogger(SignUpAction.class);
 
     ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private UserService userService = serviceFactory.createUserService();
@@ -27,29 +36,29 @@ public class SignUpAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
         user = createUserFromRequest(request);
-        String passwordConfirm = request.getParameter("passwordConfirm");
-
+        String passwordConfirm = request.getParameter(Strings.PASSWORD_CONFIRM);
         userService.checkIdenticalPasswords(user, passwordConfirm);
         userService.findUserWithSameLogin(user);
         userAccountService.save(user.getAccount());
         userService.save(user);
-
-        request.setAttribute("messageSuccess", true);
+        LOGGER.info(LoggerMessages.USER_SIGNED_UP + user.getLogin());
+        request.setAttribute(Strings.MESSAGE_SUCCESS, true);
         return Pages.getPage(Pages.SIGN_UP_PAGE);
     }
 
     @Override
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
-        request.setAttribute("messageError", e.getMessage());
-        request.setAttribute("errorDetails", e.getCause());
-        request.setAttribute("user", user);
+        request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.USER, user);
+        LOGGER.warn(LoggerMessages.USER_NOT_SIGNED_UP + user.getLogin());
         return Pages.getPage(Pages.SIGN_UP_PAGE);
     }
 
     private User createUserFromRequest(HttpServletRequest request) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String name = request.getParameter("name");
+        String login = request.getParameter(Strings.LOGIN);
+        String password = request.getParameter(Strings.PASSWORD);
+        String name = request.getParameter(Strings.NAME);
         Account account = new Account(new Money(BigDecimal.ZERO));
         return new User(UserType.CLIENT, login, password, name, account);
     }

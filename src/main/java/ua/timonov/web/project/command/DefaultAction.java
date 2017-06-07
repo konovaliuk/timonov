@@ -7,6 +7,9 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * redirects to start login page (if action is not registered)
+ */
 public class DefaultAction implements Action {
 
     @Override

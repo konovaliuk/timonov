@@ -7,6 +7,9 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * changes current locale to chosen language, redirects to start login page
+ */
 public class SetLanguageIndexAction extends SetLanguageAction {
 
     @Override

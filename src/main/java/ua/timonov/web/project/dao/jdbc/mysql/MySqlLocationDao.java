@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySql implementation for LocationDao interface
+ */
 public class MysqlLocationDao extends EntityDao<Location> implements LocationDao {
 
     public static final int COUNTRY_ID_INDEX = 1;

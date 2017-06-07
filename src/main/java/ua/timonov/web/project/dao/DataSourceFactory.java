@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * DataSource Factory with BasicDataSourse connection pool
+ */
 public class DataSourceFactory {
 
     private static final DataSourceFactory instance = new DataSourceFactory();

@@ -3,13 +3,23 @@ package ua.timonov.web.project.model.horse;
 import ua.timonov.web.project.dao.Entity;
 
 /**
- *
+ * Represents horse that can participate in races
  */
 public class Horse implements Entity, Cloneable {
+
+    /* entity ID */
     private long id;
+
+    /* horse name */
     private String name;
+
+    /* year of birth */
     private int yearOfBirth;
+
+    /* total number of races for this horse */
     private int totalRaces;
+
+    /* number of won races by this horse */
     private int wonRaces;
 
     public Horse() {

@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySql implementation for UserDao interface
+ */
 public class MysqlUserDao extends EntityDao<User> implements UserDao {
 
     public static final int USER_TYPE_INDEX = 1;

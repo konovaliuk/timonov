@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * MySql implementation for CountryDao interface
+ */
 public class MysqlCountryDao extends EntityDao<Country> implements CountryDao {
 
     public static final int NAME_INDEX = 1;

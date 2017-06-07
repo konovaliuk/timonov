@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * MySql implementation for RaceDao interface
+ */
 public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
 
     public static final int RACE_STATUS_INDEX = 1;

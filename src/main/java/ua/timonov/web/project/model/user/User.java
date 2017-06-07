@@ -92,7 +92,7 @@ public class User implements Entity, Cloneable {
     }
 
     public Account getAccount() {
-        return (Account) this.account.clone();
+        return account;
     }
 
     public void setAccount(Account account) {

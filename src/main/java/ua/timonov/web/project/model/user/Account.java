@@ -2,8 +2,14 @@ package ua.timonov.web.project.model.user;
 
 import ua.timonov.web.project.dao.Entity;
 
+/**
+ * Represents client's account
+ */
 public class Account implements Entity, Cloneable {
+    /* entity ID */
     private long id;
+
+    /* account balance */
     private Money balance;
 
     public Account() {
@@ -21,15 +27,6 @@ public class Account implements Entity, Cloneable {
     public Account(Account account) {
         this.id = account.id;
         this.balance = account.balance;
-    }
-
-    // TODO to remove these 2 methods?
-    public void addSum(Money addendum) {
-        balance = balance.add(addendum);
-    }
-
-    public void deductSum(Money subtrahend) {
-        balance = balance.subtract(subtrahend);
     }
 
     public long getId() {

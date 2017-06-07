@@ -4,16 +4,15 @@ import ua.timonov.web.project.exception.ParsingException;
 import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.util.ExceptionMessages;
 import ua.timonov.web.project.util.Pages;
+import ua.timonov.web.project.util.Strings;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * changes current locale to chosen language, redirects to main page
+ */
 public class SetLanguageAction implements Action {
-
-    public static final String LANG = "lang";
-    public static final String EN = "en";
-    public static final String EN_US = "en_US";
-    public static final String UK_UA = "uk_UA";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
@@ -22,12 +21,12 @@ public class SetLanguageAction implements Action {
     }
 
     protected void setLocale(HttpServletRequest request) {
-        String lang = request.getParameter(LANG);
-        if (lang.equals(EN)) {
-            request.getSession().setAttribute(LANG, EN_US);
+        String lang = request.getParameter(Strings.LANGUAGE);
+        if (lang.equals(Strings.EN)) {
+            request.getSession().setAttribute(Strings.LANGUAGE, Strings.EN_US);
             ExceptionMessages.setLocale(ExceptionMessages.ENGLISH);
         } else {
-            request.getSession().setAttribute(LANG, UK_UA);
+            request.getSession().setAttribute(Strings.LANGUAGE, Strings.UK_UA);
             ExceptionMessages.setLocale(ExceptionMessages.UKRAINIAN);
         }
     }

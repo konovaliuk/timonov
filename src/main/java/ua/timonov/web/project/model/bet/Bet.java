@@ -6,16 +6,32 @@ import ua.timonov.web.project.model.user.User;
 
 import java.math.BigDecimal;
 
+/**
+ * represents Bet made by client
+ */
 public class Bet implements Entity {
+
+    /* ID in database */
     private long id;
+
+    /* client that made Bet */
     private User user;
+
+    /* Bet rate (odds) */
     private Odds odds;
+
+    /* bet sum of money */
     private Money sum;
+
+    /* Bet status */
     private BetStatus betStatus;
 
     public Bet() {
     }
 
+    /**
+     * Builder for Bet entities
+     */
     public static class Builder {
         /* requirement parameters */
         private final User user;

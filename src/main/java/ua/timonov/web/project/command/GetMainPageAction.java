@@ -5,6 +5,9 @@ import ua.timonov.web.project.util.Pages;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * redirects to main page
+ */
 public class GetMainPageAction implements Action {
 
     @Override

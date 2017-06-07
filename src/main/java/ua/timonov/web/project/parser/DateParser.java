@@ -8,7 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateParser implements Parser<Date> {
+/**
+ * Abstract Date parser
+ */
+public abstract class DateParser implements Parser<Date> {
 
     private static final Logger LOGGER = Logger.getLogger(DateParser.class);
     protected SimpleDateFormat simpleFormat;
@@ -27,10 +30,5 @@ public class DateParser implements Parser<Date> {
             LOGGER.error(message);
             throw new ParsingException(message);
         }
-    }
-
-    @Override
-    public String createString(Date value) {
-        return simpleFormat.format(value);
     }
 }
