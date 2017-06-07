@@ -1,8 +1,6 @@
 package ua.timonov.web.project.command.race;
 
 import ua.timonov.web.project.exception.AppException;
-import ua.timonov.web.project.exception.ParsingException;
-import ua.timonov.web.project.exception.ServiceException;
 import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.race.Race;
 import ua.timonov.web.project.model.race.RaceStatus;
@@ -25,30 +23,28 @@ public class SaveEditedRaceAttributesAction extends ManageRaceAction {
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private LocationService locationService = serviceFactory.createLocationService();
-    private Race race;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
-        race = createRaceFromRequest(request);
-
+        Race race = createRaceFromRequest(request);
         raceService.save(race);
         request.setAttribute("messageSuccess", true);
-
         return prepareManageRacePage(request, race);
     }
 
     @Override
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
+        Long raceId = FactoryParser.createIdParser().parse(request.getParameter("raceId"), "raceId");
+        Race race = raceService.findById(raceId);
         request.setAttribute("messageError", e.getMessage());
         request.setAttribute("errorDetails", e.getCause());
         return prepareManageRacePage(request, race);
     }
 
-    private Race createRaceFromRequest(HttpServletRequest request) throws ParsingException, ServiceException {
+    private Race createRaceFromRequest(HttpServletRequest request) throws AppException {
         String parameterId = request.getParameter("raceId");
-        long id = parameterId != null ? Long.valueOf(parameterId) : 0;
-        long locationId = Long.valueOf(request.getParameter("location"));
-        // TODO with Date
+        Long id = parameterId != null ? Long.valueOf(parameterId) : 0;
+        Long locationId = Long.valueOf(request.getParameter("location"));
         Parser<Date> dateParser = FactoryParser.createDateParser();
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);

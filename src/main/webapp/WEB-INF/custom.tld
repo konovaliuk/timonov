@@ -29,4 +29,20 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+
+    <tag>
+        <name>formatDate</name>
+        <tag-class>ua.timonov.web.project.taglib.DateFormatTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>date</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>format</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

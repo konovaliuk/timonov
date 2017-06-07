@@ -21,9 +21,7 @@ public class GreetingTag extends TagSupport {
         try {
             pageContext.getOut().write(userName);
         } catch (Exception e) {
-            String message = GREETING_TAG_ERROR;
-            LOGGER.error(message);
-            throw new JspException(message);
+            LOGGER.error(GREETING_TAG_ERROR);
         }
         return SKIP_BODY;
     }

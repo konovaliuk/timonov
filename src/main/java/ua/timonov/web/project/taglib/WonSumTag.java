@@ -24,9 +24,7 @@ public class WonSumTag extends TagSupport {
         try {
             pageContext.getOut().write(wonSum.getValue().toString());
         } catch (Exception e) {
-            String message = WON_SUM_TAG_ERROR;
-            LOGGER.error(message);
-            throw new JspException(message);
+            LOGGER.error(WON_SUM_TAG_ERROR);
         }
         return SKIP_BODY;
     }

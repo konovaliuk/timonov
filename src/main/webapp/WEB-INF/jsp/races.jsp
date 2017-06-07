@@ -42,7 +42,7 @@
                     </tr>
                     <c:forEach var="race" items="${races}">
                         <tr>
-                            <td>${race.date}</td>
+                            <td><custom:formatDate date="${race.date}" format="dd.MM.yyyy"/></td>
                             <td>${race.location.name}</td>
                             <td>${race.location.country.name}</td>
                             <td>${race.raceStatus.toString()}</td>

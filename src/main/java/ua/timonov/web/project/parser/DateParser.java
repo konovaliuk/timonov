@@ -11,17 +11,15 @@ import java.util.Date;
 public final class DateParser implements Parser<Date> {
 
     private static final Logger LOGGER = Logger.getLogger(DateParser.class);
-
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat simpleFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     public Date parse(String string, String field) throws ParsingException {
         try {
-            return simpleDateFormat.parse(string);
+            return simpleFormat.parse(string);
         } catch (ParseException e) {
-            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_VALUE + string +
-                    ExceptionMessages.IN_FIELD + field);
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_VALUE) + string +
+                    ExceptionMessages.getMessage(ExceptionMessages.IN_FIELD) + " " + field;
             LOGGER.error(message);
             throw new ParsingException(message);
         }
@@ -29,6 +27,6 @@ public final class DateParser implements Parser<Date> {
 
     @Override
     public String createString(Date value) {
-        return simpleDateFormat.format(value);
+        return simpleFormat.format(value);
     }
 }

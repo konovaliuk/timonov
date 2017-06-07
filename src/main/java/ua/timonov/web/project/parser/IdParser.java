@@ -18,8 +18,8 @@ public class IdParser implements Parser<Long> {
             success = false;
         }
         if (!success || id == null || id < 0) {
-            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_VALUE + string +
-                    ExceptionMessages.IN_FIELD + field);
+            String message = ExceptionMessages.getMessage(ExceptionMessages.WRONG_VALUE) + string +
+                    ExceptionMessages.getMessage(ExceptionMessages.IN_FIELD) + field;
             LOGGER.error(message);
             throw new ParsingException(message);
         }

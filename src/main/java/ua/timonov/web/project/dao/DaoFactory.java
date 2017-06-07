@@ -27,9 +27,8 @@ public abstract class DaoFactory {
         switch (databaseType) {
             case MYSQL:
                 return MysqlDaoFactory.getInstance();
-            // TODO to ask!
             case POSTGRES:
-                return null;
+                // not implemented, so go to default
             default:
                 return MysqlDaoFactory.getInstance();
         }
