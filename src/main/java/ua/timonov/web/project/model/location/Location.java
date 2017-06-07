@@ -2,7 +2,7 @@ package ua.timonov.web.project.model.location;
 
 import ua.timonov.web.project.dao.Entity;
 
-public class Location implements Entity {
+public class Location implements Entity, Cloneable {
     private long id;
     private String name;
     private Country country;
@@ -14,6 +14,12 @@ public class Location implements Entity {
         this.id = id;
         this.name = name;
         this.country = country;
+    }
+
+    public Location(Location location) {
+        this.id = location.id;
+        this.name = location.name;
+        this.country = location.getCountry();
     }
 
     public long getId() {
@@ -33,11 +39,17 @@ public class Location implements Entity {
     }
 
     public Country getCountry() {
-        return country;
+        return (Country) this.country.clone();
     }
 
     public void setCountry(Country country) {
-        this.country = country;
+        this.country = (Country) country.clone();
+    }
+
+    @Override
+    public Object clone() {
+        Location clone = new Location(this);
+        return clone;
     }
 
     @Override

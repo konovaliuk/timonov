@@ -55,7 +55,6 @@ public class MysqlRaceDao extends EntityDao<Race> implements RaceDao {
     protected void setEntityToParameters(Race race, PreparedStatement statement) throws SQLException {
         statement.setLong(RACE_STATUS_INDEX, race.getRaceStatus().ordinal() + 1);
         statement.setLong(LOCATION_INDEX, race.getLocation().getId());
-        // TODO consider Date problem
         statement.setDate(DATE_INDEX, new java.sql.Date(race.getDate().getTime()));
         statement.setBigDecimal(BET_SUM_INDEX, race.getBetSum().getValue());
         statement.setBigDecimal(PAID_SUM_INDEX, race.getPaidSum().getValue());

@@ -5,7 +5,7 @@ import ua.timonov.web.project.dao.Entity;
 /**
  *
  */
-public class User implements Entity {
+public class User implements Entity, Cloneable {
     private long id;
     private UserType userType;
     private String login;
@@ -22,9 +22,8 @@ public class User implements Entity {
     }
 
     public User(UserType userType, String login, String password, String name) {
+        this(login, password);
         this.userType = userType;
-        this.login = login;
-        this.password = password;
         this.name = name;
     }
 
@@ -33,16 +32,24 @@ public class User implements Entity {
         this.account = account;
     }
 
-    public User(long id, UserType userType, String login, String password, String name, Account account) {
-        this(userType, login, password, name, account);
-        this.id = id;
-    }
-
     public User(long id, UserType userType, String login, String password, String name) {
         this(userType, login, password, name);
         this.id = id;
     }
 
+    public User(long id, UserType userType, String login, String password, String name, Account account) {
+        this(userType, login, password, name, account);
+        this.id = id;
+    }
+
+    public User(User user) {
+        this.id = user.id;
+        this.userType = user.userType;
+        this.login = user.login;
+        this.password = user.password;
+        this.name = user.name;
+        this.account = user.getAccount();
+    }
 
     public long getId() {
         return id;
@@ -85,11 +92,16 @@ public class User implements Entity {
     }
 
     public Account getAccount() {
-        return account;
+        return (Account) this.account.clone();
     }
 
     public void setAccount(Account account) {
-        this.account = account;
+        this.account = (Account) account.clone();
+    }
+
+    @Override
+    public Object clone() {
+        return new User(this);
     }
 
     @Override

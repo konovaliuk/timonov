@@ -20,7 +20,7 @@ public class SaveRaceAction extends GetRacesAction {
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private RaceService raceService = serviceFactory.createRaceService();
     private LocationService locationService = serviceFactory.createLocationService();
-    private Parser<Date> dateParser = FactoryParser.createDateParser();
+    private Parser<Date> dateParser = FactoryParser.createDateParserInputTypeDate();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException {
@@ -42,6 +42,6 @@ public class SaveRaceAction extends GetRacesAction {
         Location location = locationService.findById(locationId);
         String dateValue = request.getParameter(DATE);
         Date date = dateParser.parse(dateValue, DATE);
-        return new Race(new Race.Builder(location, date));
+        return new Race.Builder(location, date).build();
     }
 }

@@ -16,10 +16,6 @@ public final class Money {
         this.value = rounded(BigDecimal.valueOf(value));
     }
 
-    /*public Money(long integerPart, int fractionalPart) {
-        value = new BigDecimal(formString(integerPart, fractionalPart));
-    }*/
-
     public Money add(Money addendum) {
         return new Money(value.add(addendum.value));
     }
@@ -46,9 +42,5 @@ public final class Money {
 
     public String toString() {
         return value.toString();
-//        NumberFormat numberFormat = NumberFormat.getInstance();
-//        numberFormat.setMinimumFractionDigits(DECIMALS);
-//        numberFormat.setMaximumFractionDigits(DECIMALS);
-//        return numberFormat.format(value);
     }
 }

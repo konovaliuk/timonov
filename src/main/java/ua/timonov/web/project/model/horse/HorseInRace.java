@@ -6,7 +6,7 @@ import ua.timonov.web.project.model.bet.Odds;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorseInRace implements Entity, Comparable<HorseInRace> {
+public class HorseInRace implements Entity, Comparable<HorseInRace>, Cloneable {
     private long id;
     private long raceId;
     private Horse horse;
@@ -16,16 +16,23 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
     public HorseInRace() {
     }
 
-    public HorseInRace(long id, long raceId, Horse horse, int finishPlace) {
-        this.id = id;
-        this.raceId = raceId;
-        this.horse = horse;
-        this.finishPlace = finishPlace;
-    }
-
     public HorseInRace(long raceId, Horse horse) {
         this.raceId = raceId;
         this.horse = horse;
+    }
+
+    public HorseInRace(long id, long raceId, Horse horse, int finishPlace) {
+        this(raceId, horse);
+        this.id = id;
+        this.finishPlace = finishPlace;
+    }
+
+    public HorseInRace(HorseInRace horseInRace) {
+        this.id = horseInRace.id;
+        this.raceId = horseInRace.raceId;
+        this.horse = horseInRace.getHorse();
+        this.finishPlace = horseInRace.finishPlace;
+        this.oddsValues = horseInRace.getOddsValues();
     }
 
     public long getId() {
@@ -37,11 +44,11 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
     }
 
     public Horse getHorse() {
-        return horse;
+        return (Horse) horse.clone();
     }
 
     public void setHorse(Horse horse) {
-        this.horse = horse;
+        this.horse = (Horse) horse.clone();
     }
 
     public int getFinishPlace() {
@@ -52,13 +59,19 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
         this.finishPlace = finishPlace;
     }
 
-    // TODO make copies
     public List<Odds> getOddsValues() {
-        return oddsValues;
+        List<Odds> resultList = new ArrayList<>();
+        for (Odds oddsValue : this.oddsValues) {
+            resultList.add((Odds) oddsValue.clone());
+        }
+        return resultList;
     }
 
     public void setOddsValues(List<Odds> oddsValues) {
-        this.oddsValues = oddsValues;
+        this.oddsValues = new ArrayList<>();
+        for (Odds oddsValue : oddsValues) {
+            this.oddsValues.add((Odds) oddsValue.clone());
+        }
     }
 
     public long getRaceId() {
@@ -67,6 +80,11 @@ public class HorseInRace implements Entity, Comparable<HorseInRace> {
 
     public void setRaceId(long raceId) {
         this.raceId = raceId;
+    }
+
+    @Override
+    public Object clone() {
+        return new HorseInRace(this);
     }
 
     @Override

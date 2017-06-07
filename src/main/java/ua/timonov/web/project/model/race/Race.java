@@ -6,11 +6,9 @@ import ua.timonov.web.project.model.location.Location;
 import ua.timonov.web.project.model.user.Money;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Race implements Entity {
     private long id;
@@ -37,8 +35,8 @@ public class Race implements Entity {
         private Money paidSum = new Money(BigDecimal.ZERO);
 
         public Builder(Location location, Date date) {
-            this.location = location;
-            this.date = date;
+            this.location = (Location) location.clone();
+            this.date = (Date) date.clone();
         }
 
         public Builder id(long id) {
@@ -52,8 +50,10 @@ public class Race implements Entity {
         }
 
         public Builder horsesInRace(List<HorseInRace> horsesInRace) {
-            // TODO make copies
-            this.horsesInRace = horsesInRace;
+            this.horsesInRace = new ArrayList<>();
+            for (HorseInRace horseInRace : horsesInRace) {
+                this.horsesInRace.add((HorseInRace) horseInRace.clone());
+            }
             return this;
         }
 
@@ -101,25 +101,19 @@ public class Race implements Entity {
     }
 
     public Location getLocation() {
-        return location;
+        return (Location) this.location.clone();
     }
 
     public void setLocation(Location location) {
-        this.location = location;
+        this.location = (Location) location.clone();
     }
 
     public Date getDate() {
-        return date;
-    }
-
-    public String getStringDate() {
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
-        String stringDate = dateFormat.format(this.date);
-        return stringDate;
+        return (Date) this.date.clone();
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = (Date) date.clone();
     }
 
     public Money getBetSum() {
@@ -138,13 +132,19 @@ public class Race implements Entity {
         this.paidSum = paidSum;
     }
 
-    // TODO make copies
     public List<HorseInRace> getHorsesInRace() {
-        return horsesInRace;
+        List<HorseInRace> resultList = new ArrayList<>();
+        for (HorseInRace horseInRace : this.horsesInRace) {
+            resultList.add((HorseInRace) horseInRace.clone());
+        }
+        return resultList;
     }
 
     public void setHorsesInRace(List<HorseInRace> horsesInRace) {
-        this.horsesInRace = horsesInRace;
+        this.horsesInRace = new ArrayList<>();
+        for (HorseInRace horseInRace : horsesInRace) {
+            this.horsesInRace.add((HorseInRace) horseInRace.clone());
+        }
     }
 
     public RaceStatus getRaceStatus() {

@@ -2,7 +2,7 @@ package ua.timonov.web.project.model.bet;
 
 import ua.timonov.web.project.dao.Entity;
 
-public class Odds implements Entity {
+public class Odds implements Entity, Cloneable {
     private long id;
     private long horseInRaceId;
     private BetType betType;
@@ -20,16 +20,20 @@ public class Odds implements Entity {
     }
 
     public Odds(long id, long horseInRaceId, BetType betType, int total, int chances) {
+        this(total, chances);
         this.id = id;
         this.horseInRaceId = horseInRaceId;
         this.betType = betType;
-        this.total = total;
-        this.chances = chances;
         this.oddsValue = (double) total / chances;
     }
 
-    public Odds(double oddsValue) {
-        this.oddsValue = oddsValue;
+    public Odds(Odds odds) {
+        this.id = odds.id;
+        this.horseInRaceId = odds.horseInRaceId;
+        this.betType = odds.betType;
+        this.total = odds.total;
+        this.chances = odds.chances;
+        this.oddsValue = odds.oddsValue;
     }
 
     public long getId() {
@@ -78,6 +82,11 @@ public class Odds implements Entity {
 
     public void setHorseInRaceId(long horseInRaceId) {
         this.horseInRaceId = horseInRaceId;
+    }
+
+    @Override
+    public Object clone() {
+        return new Odds(this);
     }
 
     @Override

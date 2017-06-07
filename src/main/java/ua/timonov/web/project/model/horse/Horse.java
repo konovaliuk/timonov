@@ -5,7 +5,7 @@ import ua.timonov.web.project.dao.Entity;
 /**
  *
  */
-public class Horse implements Entity {
+public class Horse implements Entity, Cloneable {
     private long id;
     private String name;
     private int yearOfBirth;
@@ -15,19 +15,24 @@ public class Horse implements Entity {
     public Horse() {
     }
 
-    public Horse(long id, String name, int yearOfBirth, int totalRaces, int wonRaces) {
-        this.id = id;
+    public Horse(String name, int yearOfBirth, int totalRaces, int wonRaces) {
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.totalRaces = totalRaces;
         this.wonRaces = wonRaces;
     }
 
-    public Horse(String name, int yearOfBirth, int totalRaces, int wonRaces) {
-        this.name = name;
-        this.yearOfBirth = yearOfBirth;
-        this.totalRaces = totalRaces;
-        this.wonRaces = wonRaces;
+    public Horse(long id, String name, int yearOfBirth, int totalRaces, int wonRaces) {
+        this(name, yearOfBirth, totalRaces, wonRaces);
+        this.id = id;
+    }
+
+    public Horse(Horse horse) {
+        this.id = horse.id;
+        this.name = horse.name;
+        this.yearOfBirth = horse.yearOfBirth;
+        this.totalRaces = horse.totalRaces;
+        this.wonRaces = horse.wonRaces;
     }
 
     public long getId() {
@@ -68,6 +73,11 @@ public class Horse implements Entity {
 
     public void setWonRaces(int wonRaces) {
         this.wonRaces = wonRaces;
+    }
+
+    @Override
+    public Object clone() {
+        return new Horse(this);
     }
 
     @Override

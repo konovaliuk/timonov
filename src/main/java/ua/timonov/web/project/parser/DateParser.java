@@ -8,10 +8,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public final class DateParser implements Parser<Date> {
+public class DateParser implements Parser<Date> {
 
     private static final Logger LOGGER = Logger.getLogger(DateParser.class);
-    private static final SimpleDateFormat simpleFormat = new SimpleDateFormat("dd-MM-yyyy");
+    protected SimpleDateFormat simpleFormat;
+
+    public DateParser(SimpleDateFormat simpleDateFormat) {
+        simpleFormat = simpleDateFormat;
+    }
 
     @Override
     public Date parse(String string, String field) throws ParsingException {

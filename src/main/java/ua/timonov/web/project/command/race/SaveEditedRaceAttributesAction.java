@@ -45,8 +45,8 @@ public class SaveEditedRaceAttributesAction extends ManageRaceAction {
         String parameterId = request.getParameter("raceId");
         Long id = parameterId != null ? Long.valueOf(parameterId) : 0;
         Long locationId = Long.valueOf(request.getParameter("location"));
-        Parser<Date> dateParser = FactoryParser.createDateParser();
         String dateValue = request.getParameter(DATE);
+        Parser<Date> dateParser = FactoryParser.createDateParserInputTypeText();
         Date date = dateParser.parse(dateValue, DATE);
         RaceStatus raceStatus = RaceStatus.valueOf(stringToEnumView(request.getParameter("raceStatus")));
         Location location = locationService.findById(locationId);

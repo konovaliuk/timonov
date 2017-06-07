@@ -43,7 +43,10 @@
                             <td>${user.login}</td>
                             <td>${user.password}</td>
                             <td>${user.userType.toString()}</td>
-                            <td align="right">${user.account.balance.value}</td>
+                            <td align="right">
+                                <c:if test="${user.userType.ordinal() > 1}">
+                                    ${user.account.balance.value}</td>
+                                </c:if>
                             <td>
                                 <c:if test="${user.userType.ordinal() > 1}">
                                     <a href="races?action=userBets&userId=${user.id}">

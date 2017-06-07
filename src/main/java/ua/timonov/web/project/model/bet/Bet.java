@@ -75,19 +75,19 @@ public class Bet implements Entity {
     }
 
     public User getUser() {
-        return user;
+        return (User) this.user.clone();
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.user = (User) user.clone();
     }
 
     public Odds getOdds() {
-        return odds;
+        return (Odds) this.odds.clone();
     }
 
     public void setOdds(Odds odds) {
-        this.odds = odds;
+        this.odds = (Odds) odds.clone();
     }
 
     public Money getSum() {
