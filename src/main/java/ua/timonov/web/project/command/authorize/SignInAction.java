@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command.authorizing;
+package ua.timonov.web.project.command.authorize;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.Action;
@@ -40,7 +40,7 @@ public class SignInAction implements Action {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.warn(LoggerMessages.USER_NOT_SIGN_IN);
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         return Pages.getPage(Pages.INDEX_PAGE);
 
     }

@@ -30,6 +30,8 @@ public class ExceptionMessages {
     public final static String SAME_LOGIN = "user.sameLogin";
     public final static String WRONG_LOGIN = "user.wrongLogin";
     public final static String WRONG_PASSWORD = "user.wrongPassword";
+    public final static String LOGIN_NOT_MATCHES = "user.loginNotMatches";
+    public final static String PASSWORD_NOT_MATCHES = "user.passwordNotMatches";
     public final static String DIFFERENT_PASSWORDS = "user.differentPasswords";
     public final static String ERROR_NOT_IDENTIFIED = "error.notIdentified";
     public final static String WRONG_VALUE = "parser.wrongValue";

@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command.authorizing;
+package ua.timonov.web.project.command.authorize;
 
 import ua.timonov.web.project.command.Action;
 import ua.timonov.web.project.exception.ParsingException;

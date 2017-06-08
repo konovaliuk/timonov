@@ -1,9 +1,9 @@
 package ua.timonov.web.project.command;
 
-import ua.timonov.web.project.command.authorizing.GetSignUpAction;
-import ua.timonov.web.project.command.authorizing.LogoutAction;
-import ua.timonov.web.project.command.authorizing.SignInAction;
-import ua.timonov.web.project.command.authorizing.SignUpAction;
+import ua.timonov.web.project.command.authorize.GetSignUpAction;
+import ua.timonov.web.project.command.authorize.LogoutAction;
+import ua.timonov.web.project.command.authorize.SignInAction;
+import ua.timonov.web.project.command.authorize.SignUpAction;
 import ua.timonov.web.project.command.bet.CancelBet;
 import ua.timonov.web.project.command.bet.GetWonBets;
 import ua.timonov.web.project.command.bet.MakeBetAction;

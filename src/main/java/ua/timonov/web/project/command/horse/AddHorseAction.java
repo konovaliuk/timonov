@@ -40,7 +40,7 @@ public class AddHorseAction extends GetHorsesAction {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.info(LoggerMessages.ERROR_ADD_NEW_HORSE + horse.getName());
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         request.setAttribute(Strings.HORSE_WITH_INPUT_ERROR, horse);
         return prepareHorsesPage(request);
     }

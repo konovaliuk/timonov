@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command.authorizing;
+package ua.timonov.web.project.command.authorize;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.Action;
@@ -37,8 +37,7 @@ public class SignUpAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
         user = createUserFromRequest(request);
         String passwordConfirm = request.getParameter(Strings.PASSWORD_CONFIRM);
-        userService.checkIdenticalPasswords(user, passwordConfirm);
-        userService.findUserWithSameLogin(user);
+        userService.validateUserInput(user, passwordConfirm);
         userAccountService.save(user.getAccount());
         userService.save(user);
         LOGGER.info(LoggerMessages.USER_SIGNED_UP + user.getLogin());
@@ -49,7 +48,7 @@ public class SignUpAction implements Action {
     @Override
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         request.setAttribute(Strings.USER, user);
         LOGGER.warn(LoggerMessages.USER_NOT_SIGNED_UP + user.getLogin());
         return Pages.getPage(Pages.SIGN_UP_PAGE);

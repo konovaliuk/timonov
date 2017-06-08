@@ -39,7 +39,7 @@ public class DeleteOddsAction extends GetHorseInRaceBookieAction {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.warn(LoggerMessages.ERROR_DElETE_ODDS);
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         return prepareHorseInRacePage(request, odds.getHorseInRaceId());
     }
 }

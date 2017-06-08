@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <%@include file="../reusable/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -16,10 +16,10 @@
             </div>
         </header>
 
-        <%@include file="../reusable/nav.jspf"%>
+        <%@include file="reusable/nav.jspf"%>
 
         <article>
-            <%@include file="../reusable/statusMessage.jspf"%>
+            <%@include file="reusable/statusMessage.jspf"%>
             <div class="form-horizontal">
                 <h2><fmt:message key="bet.youveMadeBet" bundle="${bundle}"/></h2>
 
@@ -90,7 +90,7 @@
             </div>
         </article>
 
-        <footer><%@include file="../reusable/footer.jspf"%></footer>
+        <footer><%@include file="reusable/footer.jspf"%></footer>
     </div>
 </div>
 </body>

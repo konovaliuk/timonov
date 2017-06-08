@@ -27,7 +27,7 @@ public class GetWonBets implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ParsingException, ServiceException {
-        long raceId = Long.valueOf(request.getParameter(Strings.RACE_ID));
+        Long raceId = Long.valueOf(request.getParameter(Strings.RACE_ID));
         Race race = raceService.findById(raceId);
 
         return prepareWonBetsPage(request, race);

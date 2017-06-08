@@ -406,12 +406,3 @@ INSERT INTO `races`.`userType` (`id`, `name`) VALUES ('3', 'client');
   INSERT INTO `races`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('6', '10', '29', '30', '1');
   INSERT INTO `races`.`bet` (`id`, `user_id`, `odds_id`, `sum`, `betstatus_id`) VALUES ('7', '6', '24', '35', '2');
 
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (15, 8, 26, 12.00, 1);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (16, 9, 27, 12.00, 1);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (18, 6, 22, 1.23, 1);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (24, 10, 22, 2.25, 3);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (27, 11, 24, 3.25, 2);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (37, 9, 149, 5.00, 1);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (38, 8, 146, 5.00, 2);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (39, 6, 149, 5.00, 1);
-INSERT INTO races.bet (id, user_id, odds_id, sum, betstatus_id) VALUES (40, 7, 156, 10.00, 3);

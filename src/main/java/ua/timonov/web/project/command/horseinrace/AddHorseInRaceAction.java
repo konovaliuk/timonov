@@ -43,8 +43,8 @@ public class AddHorseInRaceAction extends ManageRaceAction {
     @Override
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.warn(LoggerMessages.ERROR_ADD_HORSE_IN_RACE);
-        request.setAttribute(Strings.MESSAGE_SUCCESS, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         return prepareManageRacePage(request, race);
     }
 

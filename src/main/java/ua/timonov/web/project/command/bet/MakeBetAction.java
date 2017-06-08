@@ -53,7 +53,7 @@ public class MakeBetAction implements Action {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.info(LoggerMessages.ERROR_MAKE_BET);
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         request.setAttribute(Strings.HORSE_IN_RACE, horseInRaceService.findById(horseInRaceId));
         request.setAttribute(Strings.RACE, race);
         return Pages.getPage(Pages.HORSE_IN_RACE_PAGE);

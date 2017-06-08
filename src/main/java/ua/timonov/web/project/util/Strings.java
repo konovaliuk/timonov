@@ -56,9 +56,9 @@ public class Strings {
     public static final String HORSE_ID = "horseId";
     public static final String LIST_BET_HORSES = "listBetHorses";
     public static final String YEAR = "year";
+
     /* Horse in race messages */
     public static final String LIST_HORSES_IN_RACE = "listHorsesInRace";
-
     public static final String HORSE_WITH_INPUT_ERROR = "horseWithInputError";
     public static final String HORSE_IN_RACE_ID = "horseInRaceId";
     public static final String HORSE_IN_RACE = "horseInRace";
@@ -88,6 +88,7 @@ public class Strings {
 
     /* 	Miscellaneous messages */
     public static final String LANGUAGE = "lang";
+    public static final String SET_LANG_INDEX = "setLangIndex";
     public static final String EN = "en";
     public static final String EN_US = "en_US";
     public static final String UK_UA = "uk_UA";

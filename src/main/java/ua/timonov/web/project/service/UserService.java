@@ -23,6 +23,8 @@ public class UserService extends DataService<User, Bet> {
     private static UserAccountDao accountDao = daoFactory.createUserAccountDao();
     private static BetDao betDao = daoFactory.createBetDao();
     private static final UserService instance = new UserService();
+    private static final String LOGIN_PATTERN = "[A-Za-z]{3,30}";
+    private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
 
     private UserService() {
         super(userDao, betDao);
@@ -81,6 +83,54 @@ public class UserService extends DataService<User, Bet> {
         accountDao.save(account);
     }
 
+    /* validates inputted login, password and password confirmation */
+    public void validateUserInput(User user, String passwordConfirm) throws ServiceException {
+        checkLoginSymbols(user.getLogin());
+        checkPasswordSymbols(user.getPassword());
+        checkIdenticalPasswords(user.getPassword(), passwordConfirm);
+        findUserWithSameLogin(user);
+    }
+
+    /*  validates login symbols */
+    private void checkLoginSymbols(String login) throws ServiceException {
+        if (!loginMatches(login)) {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.LOGIN_NOT_MATCHES);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    public boolean loginMatches(String login) {
+        return login.matches(LOGIN_PATTERN);
+    }
+
+    /*  validates password symbols */
+    private void checkPasswordSymbols(String password) throws ServiceException {
+        if (!passwordMatches(password)) {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.PASSWORD_NOT_MATCHES);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    public boolean passwordMatches(String login) {
+        return login.matches(PASSWORD_PATTERN);
+    }
+
+    /**
+     * checks if user inputted different passwords while signing up
+     * @param password
+     * @param passwordConfirm
+     * @throws ServiceException
+     */
+    private void checkIdenticalPasswords(String password, String passwordConfirm) throws ServiceException {
+        if (!passwordConfirm.equals(password)) {
+            String message = ExceptionMessages.getMessage(ExceptionMessages.DIFFERENT_PASSWORDS);
+            LOGGER.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
     /**
      * finds user with same login
      * @param user
@@ -128,19 +178,5 @@ public class UserService extends DataService<User, Bet> {
             throw new ServiceException(message);
         }
         return user;
-    }
-
-    /**
-     * checks if user inputted different passwords while signing up
-     * @param user
-     * @param passwordConfirm
-     * @throws ServiceException
-     */
-    public void checkIdenticalPasswords(User user, String passwordConfirm) throws ServiceException {
-        if (!passwordConfirm.equals(user.getPassword())) {
-            String message = ExceptionMessages.getMessage(ExceptionMessages.DIFFERENT_PASSWORDS);
-            LOGGER.warn(message);
-            throw new ServiceException(message);
-        }
     }
 }

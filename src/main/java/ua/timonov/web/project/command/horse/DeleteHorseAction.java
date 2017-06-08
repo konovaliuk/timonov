@@ -35,7 +35,7 @@ public class DeleteHorseAction extends GetHorsesAction {
     public String doOnError(HttpServletRequest request, Exception e) throws AppException {
         LOGGER.warn(LoggerMessages.ERROR_DELETING_HORSE);
         request.setAttribute(Strings.MESSAGE_ERROR, e.getMessage());
-        request.setAttribute(Strings.ERROR_DETAILS, e.getCause());
+        request.setAttribute(Strings.ERROR_DETAILS, e.getStackTrace());
         return prepareHorsesPage(request);
     }
 }

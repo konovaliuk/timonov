@@ -1,4 +1,4 @@
-package ua.timonov.web.project.command.authorizing;
+package ua.timonov.web.project.command.authorize;
 
 import org.apache.log4j.Logger;
 import ua.timonov.web.project.command.Action;

@@ -43,19 +43,6 @@ article {
     overflow: hidden;
 }
 
-/*.signblock {
-    float: right;
-    display: block;
-    width: 120px;
-    text-align: left;
-    color: lightyellow;
-    padding: 5px;
-}
-
-.text-small{
-    font-size: small;
-}*/
-
 .no-bottom-margin {
     margin-bottom: 0px;
 }

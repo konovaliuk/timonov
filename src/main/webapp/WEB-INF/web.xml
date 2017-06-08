@@ -5,10 +5,10 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--<error-page>
+    <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/WEB-INF/jsp/error.jsp</location>
-    </error-page>-->
+    </error-page>
 
     <servlet>
         <servlet-name>MainServlet</servlet-name>
@@ -30,16 +30,9 @@
         <url-pattern>*.png</url-pattern>
     </servlet-mapping>
 
-    <!--<jsp-config>
-        <taglib>
-            <taglib-uri>/WEB-INF/custom.tld</taglib-uri>
-            <taglib-location>/WEB-INF/custom.tld</taglib-location>
-        </taglib>
-    </jsp-config>-->
-
     <session-config>
         <session-timeout>
-            15
+            1
         </session-timeout>
     </session-config>
 
@@ -55,7 +48,7 @@
 
     <filter>
         <filter-name>SignedInFilter</filter-name>
-        <filter-class>ua.timonov.web.project.controller.filter.SignedInFilter</filter-class>
+        <filter-class>ua.timonov.web.project.controller.filter.SignInFilter</filter-class>
     </filter>
 
     <filter-mapping>

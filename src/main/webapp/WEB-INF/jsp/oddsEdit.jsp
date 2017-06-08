@@ -4,7 +4,7 @@
 <html>
 
 <head>
-    <%@include file="../reusable/header.jspf"%>
+    <%@include file="reusable/header.jspf"%>
 </head>
 
 <body>
@@ -15,12 +15,12 @@
         </div>
     </header>
 
-    <nav><%@include file="../reusable/nav.jspf"%></nav>
+    <nav><%@include file="reusable/nav.jspf"%></nav>
 
     <article>
         <div>
-            <%@include file="../reusable/statusMessage.jspf"%>
-            <%@include file="../reusable/raceAndHorse.jspf"%>
+            <%@include file="reusable/statusMessage.jspf"%>
+            <%@include file="reusable/raceAndHorse.jspf"%>
             <h4><fmt:message key="odds.edit" bundle="${bundle}"/>:</h4>
             <form class="form-horizontal" action="races" method="POST">
                 <div>
@@ -82,7 +82,7 @@
         </div>
     </article>
 
-    <footer><%@include file="../reusable/footer.jspf"%></footer>
+    <footer><%@include file="reusable/footer.jspf"%></footer>
 </div>
 </body>
 </html>
